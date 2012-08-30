@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>redmine</title>
+		<meta name="author" content="zhixin wen" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<style>
+			body {font-size: 12px;}
+		</style>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.md5.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/show.js"></script>
+	</head>
+	<body>
+		<div class="show">
+			<div class="default_show">您还未添加任何redmine！</div>
+			<ul class="redmine_list nav nav-list none"></ul>
+			<div class="issue_list none">
+				<div class="w tc pr">
+					<img src="images/back.png" data-view="redmine" class="back" title="返回到上层" />
+					<select></select>
+				</div>
+				<ul class="nav nav-list"></ul>
+			</div>
+			<div class="issue_detail p10">
+				<div class="w tc pr">
+					<img src="images/back.png" data-view="issue" class="back" title="返回到上层" />
+				</div>
+				<div id="detail"></div>
+			</div>
+		</div>
+	</body>
+</html>

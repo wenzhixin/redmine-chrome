@@ -1,0 +1,18 @@
+{
+	"name": "Redmine",
+	"version": "1.0.1",
+	"manifest_version": 2,
+	"description": "Redmine",
+	"icons": {
+		"128": "images/icon128.png"
+	},
+	"browser_action": {
+		"default_icon": "images/icon19.png",
+		"default_popup": "show.html"
+	},
+	"background": {
+		"page": "background.html"
+	},
+	"options_page": "options.html",
+	"permissions": ["http://*/", "https://*/"]
+}

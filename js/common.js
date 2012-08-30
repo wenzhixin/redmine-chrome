@@ -24,6 +24,9 @@ var globalSettings = {
 	 */
 	addRedmine: function(value) {
 		var urls = this.redmineUrls();
+		if (value.charAt(value.length - 1) == "/") {
+			value = value.substring(0, value.length -1);
+		}
 		urls.push(value);
 		this.redmineUrls(urls);
 	},
@@ -32,6 +35,9 @@ var globalSettings = {
 	 */
 	updateRedmine: function(index, value) {
 		var urls = this.redmineUrls();
+		if (value.substring(value.length - 1) == "/") {
+			value = value.substring(0, value.length -1);
+		}
 		urls[index] = value;
 		this.redmineUrls(urls);
 	},
@@ -147,5 +153,9 @@ var util = {
 				+ (d < 10 ? ('0' + d) : d) + " " + (h < 10 ? ('0' + h) : h)
 				+ ":" + (mm < 10 ? ('0' + mm) : mm) + ":"
 				+ (s < 10 ? ('0' + s) : s);
+	},
+	
+	getIuid: function(issue) {
+		return issue.id + new Date(issue.updated_on).getTime();
 	}
 };

@@ -1,3 +1,8 @@
+/**
+ * @author zhixin wen <wenzhixin2010@gmail.com>
+ * @date 2012-08-29
+ */
+
 $(function() {
 	
 	var VIEW_REDMINE = "redmine",
@@ -61,19 +66,26 @@ $(function() {
 		}
 		var curkey = $.md5(selectedItem.redmine + JSON.stringify(selectedItem.filter));
 		$(".issue_list select").unbind("change").bind("change", function() {
-			showIssueList(listData[$(this).val()].issues);
+			showIssueList(listData, $(this).val());
 		}).html(html).val(curkey);
-		showIssueList(listData[curkey].issues);
+		showIssueList(listData, curkey);
 	}
 	
-	function showIssueList(issues) {
+	function showIssueList(listData, curkey) {
+		var data = listData[curkey];
+		var issues = data.issues;
 		if (issues.length == 0) return;
+		showUnreadCount(data.unreadList.length);
 		var html = "";
 		$.each(issues, function(i, issue) {
 			html += "<li data-index='" + i + "'>";
 			html += "<a href='#'>";
 			html += "<div>";
-			html += "<div class='fb fl'>"+ issue.status.name + " | " + issue.priority.name + "</div>";
+			html += "<div class='fb fl'>";
+			html += issue.status.name + " | " + issue.priority.name + "</div>";
+			if ($.inArray(util.getIuid(issue), data.unreadList) != -1) {
+				html += "<span class='new_issue ml5 badge badge-warning'>new</span>";
+			}
 			html += "<div class='fr'>" + "<span class='fb mr10'>" + issue.project.name + "</span>";
 			html += util.dateFormatter(new Date(issue.updated_on)) + "</div>";
 			html += "</div>";
@@ -85,8 +97,43 @@ $(function() {
 		$(".issue_list").show();
 		$(".issue_list ul").html(html);
 		$(".issue_list li").unbind("click").bind("click", function() {
-			showDetail(issues[$(this).attr("data-index")]);
+			var issue = issues[$(this).attr("data-index")];
+			showDetail(issue);
+
+			var index = $.inArray(util.getIuid(issue), data.unreadList);
+			if (index != -1) {
+				$(".new_issue", $(this)).remove();
+				
+				data.unreadList.splice(index, 1);
+				if (data.unreadList.length == 0) {
+					resetUnreadCount(listData, curkey);
+				} else {
+					data.readedList.push(util.getIuid(issue));
+					listData[curkey] = data;
+					globalDatas.listData(listData);
+				}
+			}
 		});
+		$("#unreadCount").unbind("click").bind("click", function() {
+			resetUnreadCount(listData, curkey);
+			main();
+		});
+	}
+	
+	function resetUnreadCount(listData, curkey) {
+		listData[curkey].lastReaded = new Date().getTime();
+		listData[curkey].unreadList = new Array();
+		listData[curkey].readedList = new Array();
+		globalDatas.listData(listData);
+	}
+	
+	function showUnreadCount(count) {
+		//显示未读条数
+		if (count == 0) {
+			$("#unreadCount").hide();
+		} else {
+			$("#unreadCount").text(count).show();
+		}
 	}
 	
 	function showDetail(issue) {

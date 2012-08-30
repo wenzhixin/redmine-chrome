@@ -47,6 +47,7 @@ $(function() {
 				+ " | 显示：" + filter.number + "条");
 		});
 		
+		globalDatas.selectedState("redmine");
 		chrome.extension.getBackgroundPage().refresh();
 	}
 	

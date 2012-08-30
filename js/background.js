@@ -24,7 +24,7 @@ function getPage() {
 	var filters = globalSettings.filters();
 	$.each(redmineUrls, function(i, url) {
 		requestCount = 0;
-		requestTotal = redmineUrls.length * filters.length;
+		requestTotal = filters.length > 0 ? redmineUrls.length * filters.length : redmineUrls.length;
 		unreadCount = 0;
 		if (filters.length == 0) {
 			getList(url, globalSettings.DEFAULT_FILTER);
@@ -54,7 +54,9 @@ function getList(url, filter, completed) {
 			var listData = globalDatas.listData(),
 				key = $.md5(url + JSON.stringify(filter)),
 				lastReaded = new Date(0),
-				lastNotified = new Date(0);
+				lastNotified = new Date(0),
+				unreadList = new Array(),//未读列表
+				readedList = new Array();//已读列表
 			
 			if (!listData.hasOwnProperty(key)) {
 				listData[key] = new Object();
@@ -66,12 +68,21 @@ function getList(url, filter, completed) {
 			if (listData[key].lastNotified) {
 				lastNotified.setTime(listData[key].lastNotified);
 			}
+			if (listData[key].readedList) {
+				readedList = listData[key].readedList;
+			}
+			else {
+				listData[key].readedList = new Array();
+			}
 			var count = 0;
 			for (var i = listData[key].issues.length - 1; i >= 0; i--) {
 				var issue = listData[key].issues[i];
 				var updatedOn = new Date(issue.updated_on);
 				if (lastReaded < updatedOn) {
-					count++;
+					if ($.inArray(util.getIuid(issue), readedList) == -1) {
+						count++;
+						unreadList.push(util.getIuid(issue));
+					}
 				}
 				if (lastNotified < updatedOn) {
 					lastNotified.setTime(updatedOn.getTime());
@@ -80,6 +91,7 @@ function getList(url, filter, completed) {
 				}
 			};
 			listData[key].lastNotified = lastNotified.getTime();
+			listData[key].unreadList = unreadList;
 			globalDatas.listData(listData);
 			unreadCount += count;
 			

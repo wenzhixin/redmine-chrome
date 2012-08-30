@@ -27,7 +27,7 @@ function getPage() {
 		requestTotal = redmineUrls.length * filters.length;
 		unreadCount = 0;
 		if (filters.length == 0) {
-			getList(url, {status: ["*"], number: 100});
+			getList(url, globalSettings.DEFAULT_FILTER);
 		} else {
 			$.each(filters, function(j, filter) {
 				getList(url, filter);

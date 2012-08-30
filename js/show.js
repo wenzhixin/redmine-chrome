@@ -47,16 +47,17 @@ $(function() {
 			selectedItem = globalDatas.selectedItem(),
 			html = "";
 
+		if (filters.length == 0) {
+			filters.push(globalSettings.DEFAULT_FILTER);
+		}
+		
 		$.each(filters, function(i, filter) {
 			var key = $.md5(selectedItem.redmine + JSON.stringify(filter));
 			html += "<option value='" + key + "'>" + filter.name + "(" + listData[key].issues.length + ")" + "</option>";
 		});
 
 		if (!selectedItem.hasOwnProperty("filter")) {
-			selectedItem.filter = {status: ["*"], number: 100};
-			if (filters.length > 0) {
-				selectedItem.filter = filters[0];
-			}
+			selectedItem.filter = filters[0];
 		}
 		var curkey = $.md5(selectedItem.redmine + JSON.stringify(selectedItem.filter));
 		$(".issue_list select").unbind("change").bind("change", function() {

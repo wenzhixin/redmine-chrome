@@ -44,6 +44,8 @@ var globalSettings = {
 		this.redmineUrls(urls);
 	},
 	
+	DEFAULT_FILTER: {name: "默认", status: ["*"], number: 100},
+	
 	/**
 	 * 过滤器(Array)
 	 */

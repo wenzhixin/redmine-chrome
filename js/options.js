@@ -107,6 +107,11 @@ $(function() {
 		$("h3", $redmineModal).text(title);
 		$url.val(value);
 
+		$url.unbind("keyup").bind("keyup", function(event) {
+			if (event.keyCode == 13) {
+				$(".ok", $redmineModal).click();
+			}
+		});
 		$(".ok", $redmineModal).unbind("click").bind("click", function() {
 			var url = $.trim($("input[name='redmineUrl']", $redmineModal).val());
 			if (url == "") {

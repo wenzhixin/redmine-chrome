@@ -118,7 +118,7 @@ function showNotification(issue) {
     	webkitNotifications.requestPermission(showNotification);
     }
     else {
-    	var n = webkitNotifications.createNotification("images/icon19.png",
+    	var n = webkitNotifications.createNotification("/images/icon19.png",
 							      issue.subject, issue.description);
     	n.ondisplay = function() {
     		setTimeout(function() { n.cancel() }, 10000);

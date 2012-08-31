@@ -107,6 +107,7 @@ function getList(url, filter, completed) {
 
 function checkComplete() {
 	if (requestTotal == requestCount) {
+		globalDatas.unreadCount(unreadCount);
 		chrome.browserAction.setBadgeText({text: unreadCount > 0 ? unreadCount + "" : ""});
 	}
 }

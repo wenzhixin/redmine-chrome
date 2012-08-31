@@ -120,6 +120,17 @@ var globalDatas = {
 		}
 	},
 	
+	unreadCount: function(value) {
+		if (typeof value == "number") {
+			if (value < 0) value = 0;
+			localStorage["scutech.unreadCount"] = value;
+		} else {
+			if (!localStorage["scutech.unreadCount"])
+				return 0;
+			return parseInt(localStorage["scutech.unreadCount"]);
+		}
+	},
+	
 	selectedState: function(state) {
 		if (state) {
 			localStorage["scutech.selectedState"] = state;

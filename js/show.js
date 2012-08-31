@@ -58,7 +58,9 @@ $(function() {
 		
 		$.each(filters, function(i, filter) {
 			var key = $.md5(selectedItem.redmine + JSON.stringify(filter));
-			html += "<option value='" + key + "'>" + filter.name + "(" + listData[key].issues.length + ")" + "</option>";
+			html += "<option value='" + key + "' data-index='" + i + "'>";
+			html += filter.name + "(" + listData[key].issues.length + ")";
+			html += "</option>";
 		});
 
 		if (!selectedItem.hasOwnProperty("filter")) {
@@ -67,6 +69,9 @@ $(function() {
 		var curkey = $.md5(selectedItem.redmine + JSON.stringify(selectedItem.filter));
 		$(".issue_list select").unbind("change").bind("change", function() {
 			showIssueList(listData, $(this).val());
+			
+			selectedItem.filter = filters[$(this).find("option:checked").attr("data-index")];
+			globalDatas.selectedItem(selectedItem);
 		}).html(html).val(curkey);
 		showIssueList(listData, curkey);
 	}
@@ -102,8 +107,9 @@ $(function() {
 
 			var index = $.inArray(util.getIuid(issue), data.unreadList);
 			if (index != -1) {
-				$(".new_issue", $(this)).remove();
+				setGlobalUnreadCount(globalDatas.unreadCount() - 1);
 				
+				$(".new_issue", $(this)).remove();
 				data.unreadList.splice(index, 1);
 				if (data.unreadList.length == 0) {
 					resetUnreadCount(listData, curkey);
@@ -115,6 +121,7 @@ $(function() {
 			}
 		});
 		$("#unreadCount").unbind("click").bind("click", function() {
+			setGlobalUnreadCount(globalDatas.unreadCount() - listData[curkey].unreadList.length);
 			resetUnreadCount(listData, curkey);
 			main();
 		});
@@ -125,6 +132,11 @@ $(function() {
 		listData[curkey].unreadList = new Array();
 		listData[curkey].readedList = new Array();
 		globalDatas.listData(listData);
+	}
+	
+	function setGlobalUnreadCount(count) {
+		globalDatas.unreadCount(count);
+		chrome.browserAction.setBadgeText({text: count > 0 ? count + "" : ""});
 	}
 	
 	function showUnreadCount(count) {

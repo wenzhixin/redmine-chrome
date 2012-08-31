@@ -22,7 +22,7 @@
 					<button id="addFilter" class="btn">
 						<i class="icon-plus-sign"></i>添加过滤规则
 					</button>
-					<button class="btn">
+					<button id="settings" class="btn">
 						<i class="icon-wrench"></i>全局设置
 					</button>
 				</div>
@@ -93,6 +93,28 @@
 							<option value="50">50条</option>
 							<option value="100">100条</option>
 							<option value="200">200条</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="cancel btn">取消</button>
+					<button class="ok btn btn-primary">确定</button>
+				</div>
+			</div>
+			
+			<div id="settingsModal" class="modal hide fade">
+				<div class="modal-header">
+					<h3>全局设置</h3>
+				</div>
+				<div class="modal-body">
+					<div class="form-inline mt10">
+						<label>更新间隔：</label>
+						<select name="checkInterval" class="w200">
+							<option value="5">5分钟</option>
+							<option value="10">10分钟</option>
+							<option value="20">20分钟</option>
+							<option value="30">30分钟</option>
+							<option value="60">1小时</option>
 						</select>
 					</div>
 				</div>

@@ -13,9 +13,11 @@ $(function() {
 	
 	var $addRedmine 	= $("#addRedmine"),
 		$addFilter		= $("#addFilter"),
+		$settings		= $("#settings"),
 		$alert			= $("#alert"),
 		$redmineModal 	= $("#redmineModal"),
 		$filterModal	= $("#filterModal"),
+		$settingsModal	= $("#settingsModal"),
 		$confirmModal	= $("#confirmModal"),
 		$remineList 	= $("#remineList"),
 		$filterList		= $("#filterList"),
@@ -27,6 +29,33 @@ $(function() {
 	function main() {
 		initEvents();
 		initList();
+	}
+	
+	function initEvents() {
+		$addRedmine.click(function() {
+			showRedmineDialog(TYPE_ADD);
+		});
+		$addFilter.click(function() {
+			showFilterDialog(TYPE_ADD);
+		});
+		$settings.click(function() {
+			showSettingsDialog();
+		});
+		$updateBtn.live("click", function() {
+			var data = JSON.parse($(this).parent("div").data("data"));
+			switch (data.type) {
+			case TYPE_REDMINE:
+				showRedmineDialog(TYPE_UPDATE, data);
+				break;
+			case TYPE_FILTER:
+				showFilterDialog(TYPE_UPDATE, data);
+				break;
+			}
+		});
+		$deleteBtn.live("click", function() {
+			var data = JSON.parse($(this).parent("div").data("data"));
+			showConfirmDialog(data.type, data);
+		});
 	}
 	
 	function initList() {
@@ -49,30 +78,6 @@ $(function() {
 		
 		globalDatas.selectedState("redmine");
 		chrome.extension.getBackgroundPage().refresh();
-	}
-	
-	function initEvents() {
-		$addRedmine.click(function() {
-			showRedmineDialog(TYPE_ADD);
-		});
-		$addFilter.click(function() {
-			showFilterDialog(TYPE_ADD);
-		});
-		$updateBtn.live("click", function() {
-			var data = JSON.parse($(this).parent("div").data("data"));
-			switch (data.type) {
-			case TYPE_REDMINE:
-				showRedmineDialog(TYPE_UPDATE, data);
-				break;
-			case TYPE_FILTER:
-				showFilterDialog(TYPE_UPDATE, data);
-				break;
-			}
-		});
-		$deleteBtn.live("click", function() {
-			var data = JSON.parse($(this).parent("div").data("data"));
-			showConfirmDialog(data.type, data);
-		});
 	}
 	
 	function showAlert(message) {
@@ -175,6 +180,19 @@ $(function() {
 		});
 		$(".cancel", $filterModal).unbind("click").bind("click", function() {
 			$filterModal.modal("hide");
+		});
+	}
+	
+	function showSettingsDialog() {
+		$settingsModal.modal();
+		var $checkInterval = $("input[name='checkInterval']", $settingsModal);
+		$checkInterval.val(globalSettings.checkInterval());
+		$(".ok", $settingsModal).unbind("click").bind("click", function() {
+			globalSettings.checkInterval($checkInterval.val());
+			$settingsModal.modal("hide");
+		});
+		$(".cancel", $settingsModal).unbind("click").bind("click", function() {
+			$settingsModal.modal("hide");
 		});
 	}
 	

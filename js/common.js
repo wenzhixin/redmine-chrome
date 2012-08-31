@@ -90,6 +90,19 @@ var globalSettings = {
 	},
 	
 	/**
+	 * 桌面通知
+	 */
+	desktopNotify: function(value) {
+		if (typeof value == "boolean") {
+			localStorage["scutech.desktopNotify"] = JSON.stringify(value);
+		} else {
+			if (!localStorage["scutech.desktopNotify"])
+				return true;
+			return JSON.parse(localStorage["scutech.desktopNotify"]);
+		}
+	},
+	
+	/**
 	 * 检查时间间隔(int)：默认为5分钟
 	 */
 	checkInterval: function(value) {

@@ -185,9 +185,12 @@ $(function() {
 	
 	function showSettingsDialog() {
 		$settingsModal.modal();
-		var $checkInterval = $("input[name='checkInterval']", $settingsModal);
+		var $desktopNotify = $("input[name='desktopNotify']", $settingsModal);
+		var $checkInterval = $("select[name='checkInterval']", $settingsModal);
+		$desktopNotify.attr("checked", globalSettings.desktopNotify());
 		$checkInterval.val(globalSettings.checkInterval());
 		$(".ok", $settingsModal).unbind("click").bind("click", function() {
+			globalSettings.desktopNotify(Boolean($desktopNotify.attr("checked")));
 			globalSettings.checkInterval($checkInterval.val());
 			$settingsModal.modal("hide");
 		});

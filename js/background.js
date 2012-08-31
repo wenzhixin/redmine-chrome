@@ -113,6 +113,7 @@ function checkComplete() {
 }
 
 function showNotification(issue) {
+	if (!globalSettings.desktopNotify()) return;
     if (webkitNotifications.checkPermission() > 0) {
     	webkitNotifications.requestPermission(showNotification);
     }

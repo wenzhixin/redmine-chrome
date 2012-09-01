@@ -54,7 +54,29 @@ $(function() {
 		});
 		$deleteBtn.live("click", function() {
 			var data = JSON.parse($(this).parent("div").data("data"));
-			showConfirmDialog(data.type, data);
+			var message = "";
+			switch (data.type) {
+			case TYPE_REDMINE:
+				message = "确定删除该Redmine：" + data.value + "？";
+				break;
+			case TYPE_FILTER:
+				message = "确定删除该过滤规则：" + data.value.name + "？";
+				break;
+			}
+			showConfirmDialog(message, function() {
+				switch (data.type) {
+				case TYPE_REDMINE:
+					globalSettings.deleteRedmine(data.index);
+					showAlert("删除Redmine成功！");
+					break;
+				case TYPE_FILTER:
+					globalSettings.deleteFilter(data.index);
+					showAlert("删除过滤规则成功！");
+					break;
+				}
+				initList();
+				$confirmModal.modal("hide");
+			});
 		});
 	}
 	
@@ -190,13 +212,30 @@ $(function() {
 	
 	function showSettingsDialog() {
 		$settingsModal.modal();
+		var $role = $("select[name='role']", $settingsModal);
 		var $desktopNotify = $("input[name='desktopNotify']", $settingsModal);
 		var $checkInterval = $("select[name='checkInterval']", $settingsModal);
-		$desktopNotify.attr("checked", globalSettings.desktopNotify());
+		$role.val(globalSettings.role());
 		$checkInterval.val(globalSettings.checkInterval());
+		$desktopNotify.attr("checked", globalSettings.desktopNotify());
 		$(".ok", $settingsModal).unbind("click").bind("click", function() {
-			globalSettings.desktopNotify(Boolean($desktopNotify.attr("checked")));
-			globalSettings.checkInterval($checkInterval.val());
+			var saveSettings = function() {
+				globalSettings.checkInterval($checkInterval.val());
+				globalSettings.desktopNotify(Boolean($desktopNotify.attr("checked")));
+				showAlert("设置成功！");
+			}
+			
+			if (globalSettings.role() != $role.val()) {
+				$settingsModal.modal("hide");
+				showConfirmDialog("更改角色会重置数据，是否确定更改？", function() {
+					globalSettings.role($role.val());
+					saveSettings();
+					$confirmModal.modal("hide");
+					chrome.extension.getBackgroundPage().reset();
+				});
+				return;
+			}
+			saveSettings();
 			$settingsModal.modal("hide");
 		});
 		$(".cancel", $settingsModal).unbind("click").bind("click", function() {
@@ -204,33 +243,11 @@ $(function() {
 		});
 	}
 	
-	function showConfirmDialog(type, data) {
+	function showConfirmDialog(message, callback) {
 		$confirmModal.modal();
-		var message = "";
-		switch (type) {
-		case TYPE_REDMINE:
-			message = "确定删除该Redmine：" + data.value + "？";
-			break;
-		case TYPE_FILTER:
-			message = "确定删除该过滤规则：" + data.value.name + "？";
-			value = data.value;
-			break;
-		}
 		$(".message", $confirmModal).text(message);
 
-		$(".ok", $confirmModal).unbind("click").bind("click", function() {
-			switch (type) {
-			case TYPE_REDMINE:
-				globalSettings.deleteRedmine(data.index);
-				showAlert("删除Redmine成功！");
-				break;
-			case TYPE_FILTER:
-				globalSettings.deleteFilter(data.index);
-				break;
-			}
-			initList();
-			$confirmModal.modal("hide");
-		});
+		$(".ok", $confirmModal).unbind("click").bind("click", callback);
 		$(".cancel", $confirmModal).unbind("click").bind("click", function() {
 			$confirmModal.modal("hide");
 		});

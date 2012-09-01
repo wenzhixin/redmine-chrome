@@ -108,8 +108,11 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-inline mt10">
-						<label>桌面通知：</label>
-						<input name="desktopNotify" type="checkbox" />
+						<label>我的角色：</label>
+						<select name="role" class="w200">
+							<option value="assigned_to_id">开发人员</option>
+							<option value="author_id">测试人员</option>
+						</select>
 					</div>
 					<div class="form-inline mt10">
 						<label>更新间隔：</label>
@@ -120,6 +123,10 @@
 							<option value="30">30分钟</option>
 							<option value="60">1小时</option>
 						</select>
+					</div>
+					<div class="form-inline mt10">
+						<label>桌面通知：</label>
+						<input name="desktopNotify" type="checkbox" />
 					</div>
 				</div>
 				<div class="modal-footer">

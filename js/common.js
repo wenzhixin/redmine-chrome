@@ -90,6 +90,19 @@ var globalSettings = {
 	},
 	
 	/**
+	 * 默认为开发人员
+	 */
+	role: function(value) {
+		if (value) {
+			localStorage["scutech.role"] = value;
+		} else {
+			if (!localStorage["scutech.role"])
+				return "assigned_to_id";
+			return localStorage["scutech.role"];
+		}
+	},
+	
+	/**
 	 * 桌面通知
 	 */
 	desktopNotify: function(value) {

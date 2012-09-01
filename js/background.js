@@ -19,6 +19,12 @@ function refresh() {
 	getPage();
 }
 
+function reset() {
+	chrome.browserAction.setBadgeText({text: ""});
+	globalDatas.listData({});
+	refresh();
+}
+
 function getPage() {
 	var redmineUrls = globalSettings.redmineUrls();
 	var filters = globalSettings.filters();
@@ -40,15 +46,15 @@ function getPage() {
 function getList(url, filter, completed) {
 	var param = {
 		set_filter: 1,
-		assigned_to_id: "me",
 		sort: "updated_on:desc",
 		status_id: filter.status.join("|"),
 		limit: filter.number
 	};
+	param[globalSettings.role()] = "me";
 	$.ajax({
 		url : url + "/issues.json?" + $.param(param),
 		type : "GET",
-		timeout: 10000,
+		timeout: 20000,
 		dataType: "json",
 		success : function(data) {
 			var listData = globalDatas.listData(),

@@ -204,5 +204,15 @@ var util = {
 	
 	getIuid: function(issue) {
 		return issue.id + new Date(issue.updated_on).getTime();
+	},
+	
+	getContentUrl: function(value, attachments) {
+		for (var i = 0; i < attachments.length; i++) {
+			var attachment = attachments[i];
+			if (value == attachment.filename) {
+				return attachment.content_url;
+			}
+		}
+		return null;
 	}
 };

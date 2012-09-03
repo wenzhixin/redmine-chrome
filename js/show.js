@@ -157,11 +157,33 @@ $(function() {
 		html += "<div class='ditem'><b>优先级：</b>" + issue.priority.name + "</div>";
 		html += "<div class='ditem'><b>指派给：</b>" + issue.assigned_to.name + "</div>";
 		html += "<div class='ditem'><b>作者：</b>" + issue.author.name + "</div></div>";
-		html += "<div class='tline cl'><h5>描述：</h5>" + issue.description.replace(/\r\n/, "<br/>") + "</div>";
+		html += "<div class='description tline cl'><h5>描述：</h5>" + issue.description.replace(/\r\n/g, "<br/>") + "</div>";
 		$(".show").children().hide();
 		$(".issue_detail").show();
 		$("#detail").html(html);
 		
+		//get attachments
+		$.ajax({
+			url: issueUrl + ".json?include=attachments",
+			type: "get",
+			timeout: 10000,
+			success: function(data) {
+				var pattern = /!([^!]+)!/g,
+					result = null,
+					description = issue.description,
+					attachments = data.issue.attachments;
+				while ((result = pattern.exec(description)) != null) {
+					var imgSrc = util.getContentUrl(result[1], attachments);
+					if (imgSrc) {
+						var reg = new RegExp(result[0],"g");
+						description = description.replace(reg, "<img src='" + imgSrc + "' />");
+					}
+				}
+				$("#detail .description").html(description.replace(/\r\n/g, "<br/>"));
+			}
+		});
+		
+		//get history
 		$.ajax({
 			url: issueUrl,
 			type: "get",
@@ -176,7 +198,7 @@ $(function() {
 				var html = "<div class='history tline'>" + $history.html() + "</div>";
 				$("#detail").append(html);
 			}
-		})
+		});
 	}
 	
 	initEvents();

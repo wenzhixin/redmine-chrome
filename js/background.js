@@ -9,6 +9,7 @@ var timeoutId,
 	unreadCount = 0;
 
 function main() {
+	showOptions();
 	getPage();
 }
 
@@ -23,6 +24,16 @@ function reset() {
 	chrome.browserAction.setBadgeText({text: ""});
 	globalDatas.listData({});
 	refresh();
+}
+
+function showOptions() {
+	var newFlag = globalSettings.newFlag();
+	if (!newFlag) {
+		chrome.tabs.create({
+			url : chrome.extension.getURL("options.html")
+		});
+		globalSettings.newFlag("1");
+	}
 }
 
 function getPage() {

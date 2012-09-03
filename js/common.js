@@ -126,6 +126,16 @@ var globalSettings = {
 				return 5;
 			return localStorage["scutech.checkInterval"];
 		}
+	},
+	
+	newFlag: function(flag) {
+		if (flag) {
+			localStorage["scutech.newFlag"] = flag;
+		} else {
+			if (!localStorage["scutech.newFlag"])
+				return null;
+			return localStorage["scutech.newFlag"];
+		}
 	}
 };
 

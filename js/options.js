@@ -28,7 +28,7 @@ $(function() {
 	
 	function main() {
 		initEvents();
-		initList();
+		initList(true);
 	}
 	
 	function initEvents() {
@@ -80,7 +80,7 @@ $(function() {
 		});
 	}
 	
-	function initList() {
+	function initList(isFirst) {
 		$remineList.html("");
 		var redmineUrls = globalSettings.redmineUrls();
 		$.each(redmineUrls, function(index, redmineUrl) {
@@ -98,7 +98,7 @@ $(function() {
 				+ " | 显示：" + filter.number + "条");
 		});
 		
-		globalDatas.selectedState("redmine");
+		if (!isFirst) globalDatas.selectedState("redmine");
 		chrome.extension.getBackgroundPage().refresh();
 	}
 	

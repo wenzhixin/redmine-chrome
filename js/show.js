@@ -179,7 +179,7 @@ $(function() {
 						description = description.replace(reg, "<img src='" + imgSrc + "' />");
 					}
 				}
-				$("#detail .description").html(description.replace(/\r\n/g, "<br/>"));
+				$("#detail .description").html("<h5>描述：</h5>" + description.replace(/\r\n/g, "<br/>"));
 			}
 		});
 		

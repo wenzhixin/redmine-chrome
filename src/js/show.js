@@ -13,6 +13,15 @@ $(function() {
 			globalDatas.selectedState($(this).attr("data-view"));
 			main();
 		});
+		$("input[name='showAll']").click(function() {
+			var checked = Boolean($(this).attr("checked"));
+			globalDatas.showAll(checked);
+			if (checked) {
+				$(".hidden_issue").show();
+			} else {
+				$(".hidden_issue").hide();
+			}
+		});
 	}
 	
 	function main() {
@@ -62,6 +71,8 @@ $(function() {
 			html += filter.name + "(" + listData[key].issues.length + ")";
 			html += "</option>";
 		});
+		
+		$("input[name='showAll']").attr("checked", globalDatas.showAll());
 
 		if (!selectedItem.hasOwnProperty("filter")) {
 			selectedItem.filter = filters[0];
@@ -81,9 +92,16 @@ $(function() {
 		var issues = data.issues;
 		if (issues.length == 0) return;
 		showUnreadCount(data.unreadList.length);
-		var html = "";
+		var showHtml = "";
+		var hiddenHtml = "";
 		$.each(issues, function(i, issue) {
-			html += "<li data-index='" + i + "'>";
+			var html = "",
+				isShowItem = $.inArray(issue.id, globalDatas.hiddenItems()) == -1;
+			html += "<li data-index='" + i + "'";
+			if (!isShowItem) {
+				html += " class='hidden_issue" + (globalDatas.showAll() ? "'" : " none'");
+			}
+			html += ">";
 			html += "<a href='#'>";
 			html += "<div>";
 			html += "<div class='fb fl'>";
@@ -91,16 +109,26 @@ $(function() {
 			if ($.inArray(util.getIuid(issue), data.unreadList) != -1) {
 				html += "<span class='new_issue ml5 badge badge-warning'>new</span>";
 			}
+			if (isShowItem) {
+				html += "<i class='icon-eye-close ml5' title='隐藏该问题'></i>";
+			} else {
+				html += "<i class='icon-eye-open ml5' title='还原该问题'></i>";
+			}
 			html += "<div class='fr'>" + "<span class='fb mr10'>" + issue.project.name + "</span>";
 			html += util.dateFormatter(new Date(issue.updated_on)) + "</div>";
 			html += "</div>";
 			html += "<div class='cb mt10'>";
 			html += issue.tracker.name + " #" + issue.id + ": " + issue.subject + "</div>";
 			html += "</a></li>";
+			if (isShowItem) {
+				showHtml += html;
+			} else {
+				hiddenHtml += html;
+			}
 		});
 		$(".show").children().hide();
 		$(".issue_list").show();
-		$(".issue_list ul").html(html);
+		$(".issue_list ul").html(showHtml + hiddenHtml);
 		$(".issue_list li").unbind("click").bind("click", function() {
 			var issue = issues[$(this).attr("data-index")];
 			showDetail(issue);
@@ -119,11 +147,42 @@ $(function() {
 					globalDatas.listData(listData);
 				}
 			}
+		}).unbind("mouseover").bind("mouseover", function() {
+			$("i.icon-eye-close, i.icon-eye-open", $(this)).show();
+		}).unbind("mouseout").bind("mouseout", function() {
+			$("i.icon-eye-close, i.icon-eye-open", $(this)).hide();
 		});
 		$("#unreadCount").unbind("click").bind("click", function() {
 			setGlobalUnreadCount(globalDatas.unreadCount() - listData[curkey].unreadList.length);
 			resetUnreadCount(listData, curkey);
 			main();
+		});
+		$("i.icon-eye-close, i.icon-eye-open").hide().unbind("click").bind("click", function(event) {
+			event.stopPropagation();
+			var $li = $(this).parents("li");
+			$li.appendTo($(".issue_list ul"));
+			$li.addClass("hidden_issue");
+			if (!globalDatas.showAll()) {
+				$li.addClass("none");
+			}
+			var issue = issues[$li.attr("data-index")];
+			var items = globalDatas.hiddenItems();
+			items.push(issue.id);
+			globalDatas.hiddenItems(items);
+		});
+		$("i.icon-eye-open").hide().unbind("click").bind("click", function(event) {
+			event.stopPropagation();
+			var $li = $(this).parents("li");
+			$li.removeClass("hidden_issue");
+			$li.prependTo($(".issue_list ul"));
+			if (!globalDatas.showAll()) {
+				$li.removeClass("none");
+			}
+			var issue = issues[$li.attr("data-index")];
+			var items = globalDatas.hiddenItems();
+			var index = $.inArray(issue.id, items);
+			items.splice(index, 1);
+			globalDatas.hiddenItems(items);
 		});
 	}
 	

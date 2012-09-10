@@ -185,6 +185,26 @@ var globalDatas = {
 				return {};
 			return JSON.parse(localStorage["scutech.selectedItem"]);
 		}
+	},
+	
+	hiddenItems: function(data) {
+		if (data) {
+			localStorage["scutech.hiddenItems"] = JSON.stringify(data);
+		} else {
+			if (!localStorage["scutech.hiddenItems"])
+				return [];
+			return JSON.parse(localStorage["scutech.hiddenItems"]);
+		}
+	},
+	
+	showAll: function(value) {
+		if (typeof value == "boolean") {
+			localStorage["scutech.showAll"] = JSON.stringify(value);
+		} else {
+			if (!localStorage["scutech.showAll"])
+				return false;
+			return JSON.parse(localStorage["scutech.showAll"]);
+		}
 	}
 };
 

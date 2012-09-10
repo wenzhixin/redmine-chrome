@@ -106,7 +106,7 @@ function getList(url, filter, completed) {
 				    if (count < 4)
 				    	showNotification(issue);
 				}
-			};
+			}
 			listData[key].lastNotified = lastNotified.getTime();
 			listData[key].unreadList = unreadList;
 			globalDatas.listData(listData);

@@ -108,10 +108,11 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-inline mt10">
-						<label>我的角色：</label>
-						<select name="role" class="w200">
-							<option value="assigned_to_id">开发人员</option>
-							<option value="author_id">测试人员</option>
+						<label>问题显示：</label>
+						<select name="roles" class="w200" multiple="multiple">
+							<option value="assigned_to_id">指派给我的问题</option>
+							<option value="author_id">我报告的问题</option>
+              <option value="watcher_id">我跟踪的问题</option>
 						</select>
 					</div>
 					<div class="form-inline mt10">

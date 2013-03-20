@@ -90,15 +90,17 @@ var globalSettings = {
 	},
 	
 	/**
-	 * 默认为开发人员
+	 * 指派给我的问题： assigned_to_id
+	 * 我报告的问题： author_id
+	 * 我跟踪的问题： watcher_id
 	 */
-	role: function(value) {
+	roles: function(value) {
 		if (value) {
-			localStorage["scutech.role"] = value;
+			localStorage["scutech.roles"] = JSON.stringify(value);
 		} else {
-			if (!localStorage["scutech.role"])
-				return "assigned_to_id";
-			return localStorage["scutech.role"];
+			if (!localStorage["scutech.roles"])
+				return ["assigned_to_id"];
+			return JSON.parse(localStorage["scutech.roles"]);
 		}
 	},
 	

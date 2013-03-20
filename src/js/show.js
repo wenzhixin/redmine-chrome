@@ -57,27 +57,38 @@ $(function() {
 	
 	function showIssue() {
 		var filters = globalSettings.filters(),
+			roles = globalSettings.roles(),
 			listData = globalDatas.listData(),
 			selectedItem = globalDatas.selectedItem(),
+			rolesValue = {
+				assigned_to_id: "指派给我的问题",
+				author_id: "我报告的问题",
+				watcher_id: "我跟踪的问题"
+			},
 			html = "";
 
 		if (filters.length == 0) {
 			filters.push(globalSettings.DEFAULT_FILTER);
 		}
-		
 		$.each(filters, function(i, filter) {
-			var key = $.md5(selectedItem.redmine + JSON.stringify(filter));
-			html += "<option value='" + key + "' data-index='" + i + "'>";
-			html += filter.name + "(" + listData[key].issues.length + ")";
-			html += "</option>";
+			$.each(roles, function(j, role) {
+				filter.role = role;
+				var key = $.md5(selectedItem.redmine + JSON.stringify(filter));
+				html += "<option value='" + key + "' data-index='" + i + "'>";
+				html += filter.name + "-" + rolesValue[role] + "(" + listData[key].issues.length + ")";
+				html += "</option>";
+			});
 		});
 		
 		$("input[name='showAll']").attr("checked", globalDatas.showAll());
 
-		if (!selectedItem.hasOwnProperty("filter")) {
-			selectedItem.filter = filters[0];
-		}
 		var curkey = $.md5(selectedItem.redmine + JSON.stringify(selectedItem.filter));
+		if (!listData.hasOwnProperty(curkey)) {
+			var curFilter = filters[0];
+			curFilter.role = roles[0];
+			curkey = $.md5(selectedItem.redmine + JSON.stringify(curFilter));
+		}
+		
 		$(".issue_list select").unbind("change").bind("change", function() {
 			showIssueList(listData, $(this).val());
 			

@@ -37,37 +37,43 @@ function showOptions() {
 }
 
 function getPage() {
-	var redmineUrls = globalSettings.redmineUrls();
-	var filters = globalSettings.filters();
+	var redmineUrls = globalSettings.redmineUrls(),
+		filters = globalSettings.filters(),
+		roles = globalSettings.roles();
+	
+	if (filters.length === 0) {
+		filters.push(globalSettings.DEFAULT_FILTER);
+	}
+	requestCount = 0;
+	unreadCount = 0;
+	requestTotal = redmineUrls.length * filters.length * roles.length;
+	
 	$.each(redmineUrls, function(i, url) {
-		requestCount = 0;
-		requestTotal = filters.length > 0 ? redmineUrls.length * filters.length : redmineUrls.length;
-		unreadCount = 0;
-		if (filters.length == 0) {
-			getList(url, globalSettings.DEFAULT_FILTER);
-		} else {
-			$.each(filters, function(j, filter) {
-				getList(url, filter);
+		$.each(filters, function(j, filter) {
+			$.each(roles, function(k, role) {
+				getList(url, filter, role);
 			});
-		}
+		});
 	});
 	timeoutId = setTimeout(getPage, globalSettings.checkInterval() * 60 * 1000);
 }
 
-function getList(url, filter, completed) {
+function getList(url, filter, role) {
 	var param = {
 		set_filter: 1,
 		sort: "updated_on:desc",
 		status_id: filter.status.join("|"),
 		limit: filter.number
 	};
-	param[globalSettings.role()] = "me";
+	param[role] = "me";
 	$.ajax({
 		url : url + "/issues.json?" + $.param(param),
 		type : "GET",
 		timeout: 20000,
 		dataType: "json",
 		success : function(data) {
+			filter.role = role;//add role to filter
+			
 			var listData = globalDatas.listData(),
 				key = $.md5(url + JSON.stringify(filter)),
 				lastReaded = new Date(0),

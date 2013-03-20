@@ -212,10 +212,10 @@ $(function() {
 	
 	function showSettingsDialog() {
 		$settingsModal.modal();
-		var $role = $("select[name='role']", $settingsModal);
+		var $roles = $("select[name='roles']", $settingsModal);
 		var $desktopNotify = $("input[name='desktopNotify']", $settingsModal);
 		var $checkInterval = $("select[name='checkInterval']", $settingsModal);
-		$role.val(globalSettings.role());
+		$roles.val(globalSettings.roles());
 		$checkInterval.val(globalSettings.checkInterval());
 		$desktopNotify.attr("checked", globalSettings.desktopNotify());
 		$(".ok", $settingsModal).unbind("click").bind("click", function() {
@@ -224,11 +224,14 @@ $(function() {
 				globalSettings.desktopNotify(Boolean($desktopNotify.attr("checked")));
 				showAlert("设置成功！");
 			}
-			
-			if (globalSettings.role() != $role.val()) {
+			if (!$roles.val()) {
+				$roles.focus();
+				return;
+			}
+			if (globalSettings.roles().toString() != $roles.val().toString()) {
 				$settingsModal.modal("hide");
-				showConfirmDialog("更改角色会重置数据，是否确定更改？", function() {
-					globalSettings.role($role.val());
+				showConfirmDialog("更改问题显示会重置数据，是否确定更改？", function() {
+					globalSettings.roles($roles.val());
 					saveSettings();
 					$confirmModal.modal("hide");
 					chrome.extension.getBackgroundPage().reset();

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Settings</title>
+		<meta name="author" content="zhixin wen" />
+		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="assets/bootstrap/css/narrow.css" />
+        <link rel="stylesheet" href="assets/multiple-select/multiple-select.css" />
+	</head>
+	<body>
+        <div class="container">
+            <div class="header">
+                <h3 class="text-muted">Redmine Notification</h3>
+            </div>
+
+            <h3>
+                Redmine List:
+                <a id="addUrl" href="javascript:void(0)"><i class="glyphicon glyphicon-plus"></i></a>
+            </h3>
+            <div id="urls"></div>
+
+            <hr>
+
+            <h3>Issues List:</h3>
+            <select id="roles" class="form-control" multiple="multiple">
+                <option value="assigned_to_id">Issues assigned to me</option>
+                <option value="author_id">Reported issues</option>
+                <option value="watcher_id">Watched issues</option>
+            </select>
+
+            <hr>
+
+            <h3>Issue Status:</h3>
+            <select id="status" class="form-control" multiple="multiple">
+                <option value="1">New</option>
+                <option value="2">In Progress</option>
+                <option value="7">Reopened</option>
+                <option value="4">Feedback</option>
+                <option value="3">Resolved</option>
+                <option value="6">Rejected</option>
+                <option value="16">Verified</option>
+                <option value="5">Closed</option>
+            </select>
+
+            <hr>
+
+            <h3>Issue number:</h3>
+            <select id="number" class="form-control">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+
+            <hr>
+
+            <h3>Update interval:</h3>
+            <select id="interval" class="form-control">
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="20">20 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+            </select>
+
+            <hr>
+
+            <div class="checkbox">
+                <label><input id="notify" type="checkbox"> Desktop notify</label>
+            </div>
+
+            <div class="footer">
+                <p>&copy; wenzhixin.net.cn 2014</p>
+            </div>
+        </div>
+
+        <script id="itemTpl" type="text/template">
+            <div class="input-group">
+                <input class="form-control" type="text" value="%s">
+                <span class="input-group-addon">
+                    <a class="remove-url" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></a>
+                </span>
+            </div>
+        </script>
+
+		<script src="assets/jquery.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/multiple-select/jquery.multiple.select.js"></script>
+        <script src="assets/store.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/options.js"></script>
+	</body>
+</html>

@@ -1,4 +1,4 @@
-# redmine 问题查看
+# Redmine notify
 
 chrome 插件
 

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>redmine</title>
+		<meta name="author" content="zhixin wen" />
+		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/popup.css" />
+	</head>
+	<body>
+		<div class="options">
+			<a href="options.html" target="_blank">Please add redmine.</a>
+		</div>
+        <div class="main none">
+            <select id="urls" class="none form-control"></select>
+            <select id="filters" class="none form-control"></select>
+            <ul id="roles" class="none nav nav-tabs">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Messages</a></li>
+            </ul>
+            <div id="issues" class="list-group"></div>
+        </div>
+        <div class="issue-detail none"></div>
+
+        <script id="roleTpl" type="text/template">
+            <li data-value="%s">
+                <a href="javascript:void(0)">
+                    %s(%s)
+                    <span class="label label-info">%s</span>
+                </a>
+            </li>
+        </script>
+        <script id="issueTpl" type="text/template">
+            <div class="list-group-item" data-index="%s">
+                <div class="list-group-item-heading">
+                    <div class="fl">%s | %s</div>
+                    <span class="ml5 label label-info %s">new</span>
+                    <div class="fr">%s | <span class="f14">%s</span></div>
+                </div>
+                <p class="list-group-item-text cb pt10">
+                    <a href="%s" class="mr5" target="_blank">%s #%s: </a>
+                    %s
+                </p>
+            </div>
+        </script>
+        <script id="detailTpl" type="text/template">
+            <a class="close">&times;</a>
+            <div class="title">
+                <a href="%s">%s #%s: %s</a>
+            </div>
+            <hr>
+            <div>
+                <div class="item"><b>%s</b>%s</div>
+                <div class="item"><b>%s</b>%s</div>
+                <div class="item"><b>%s</b>%s</div>
+                <div class="item"><b>%s</b>%s</div>
+            </div>
+            <div class="cb"></div>
+            <hr>
+            <div class="desc">
+                <div><b>%s</b></div>
+                <div>%s</div>
+            </div>
+            <hr>
+        </script>
+
+        <script src="assets/jquery.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/jquery.md5.js"></script>
+        <script src="assets/store.js"></script>
+        <script src="locale/en.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/popup.js"></script>
+	</body>
+</html>

@@ -1,15 +1,15 @@
 {
-	"name": "Scutech Redmine",
+	"name": "RedmineNotification",
 	"description": "Redmine notification tools",
-	"version": "1.0.3",
+	"version": "2.0.1",
 	"manifest_version": 2,
 	"update_url": "http://clients2.google.com/service/update2/crx",
 	"icons": {
-		"128": "images/icon128.png"
+		"128": "icon128.png"
 	},
 	"browser_action": {
-		"default_icon": "images/icon19.png",
-		"default_popup": "show.html"
+		"default_icon": "icon128.png",
+		"default_popup": "popup.html"
 	},
 	"background": {
 		"page": "background.html"

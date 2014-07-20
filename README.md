@@ -1,17 +1,12 @@
-# Redmine notify
+# Redmine Notification
 
-chrome 插件
+Redmine notification tools
 
-## 主要功能：
+## Feature
 
-* 通过插件直接查看问题
-
-* 实时更新问题并自动提示更新
-
-* 支持多个remine，集中管理问题
-
-* 支持多个自定义过滤规则
-
-* 支持开发用户和测试用户
-
-* 支持离线查看问题（不能上网或者回家的情况）
+* See the problem and the discuss directly through the plugin.
+* Real time updates and automatically prompted to the problem.
+* Support for multiple redmine, centralized management issues.
+* Support for custom issue roles (developer and tester).
+* issue status and issue number.
+* Support offline viewing problems.

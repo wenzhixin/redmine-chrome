@@ -1,8 +1,10 @@
 # Redmine Notification
 
-Redmine notification tools
+Redmine notification tools for chrome extension.
 
-## Feature
+[Install](https://chrome.google.com/webstore/detail/cenhhgabijhpobnfnmkigobcefkmhjbj)
+
+## Features
 
 * See the problem and the discuss directly through the plugin.
 * Real time updates and automatically prompted to the problem.

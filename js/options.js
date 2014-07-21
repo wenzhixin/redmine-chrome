@@ -60,7 +60,10 @@ $(function() {
     function save() {
         var urls = [];
         $urls.find('input').each(function() {
-            urls.push($(this).val());
+            var url = $.trim($(this).val());
+            if (url) {
+                urls.push(url);
+            }
         });
         settings('urls', urls);
         settings('roles', $roles.multipleSelect('getSelects'));

@@ -60,3 +60,28 @@
 .issue-detail img {
     max-width: 100%;
 }
+
+/* history */
+.issue-detail .journal {
+    clear: left;
+    border-bottom: 1px solid #eee;
+}
+
+.issue-detail .journal-link {
+    float: right;
+}
+
+.issue-detail img.gravatar {
+    padding: 2px;
+    border: solid 1px #d5d5d5;
+    background: #fff;
+}
+
+.issue-detail h3 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.issue-detail h4 {
+    font-size: 14px;
+}

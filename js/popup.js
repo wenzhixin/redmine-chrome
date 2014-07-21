@@ -121,7 +121,7 @@ Popup.prototype.initIssues = function () {
         });
 };
 
-Popup.prototype.showIssue = function (issue) {
+Popup.prototype.showIssue = function (issue) {console.log(issue);
     var that = this,
         url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
 
@@ -154,12 +154,13 @@ Popup.prototype.showIssue = function (issue) {
         });
 
     this.showAttachments(url, issue.description);
+    this.showHistories(url);
 };
 
 Popup.prototype.showAttachments = function (url, description) {
     var that = this;
 
-    $.get(url + '.json?include=attachments', function(data) {
+    $.get(url + '.json?include=attachments', function (data) {
         var pattern = /!([^!]+)!/g,
             result = null,
             attachments = data.issue.attachments;
@@ -173,6 +174,22 @@ Popup.prototype.showAttachments = function (url, description) {
         }
         description = description.replace(/\r\n/g, '<br>');
         that.$detail.find('.desc-detail').html(description);
+    });
+};
+
+Popup.prototype.showHistories = function (url) {
+    var that = this;
+
+    $.get(url, function (data) {
+        var $history = $(data).find('#history');
+
+        if (!$history.length) {
+            return;
+        }
+        $history.find('a').each(function () {
+            $(this).replaceWith('<span>' + $(this).text() + '</span>');
+        });
+        that.$detail.append($history.html());
     });
 };
 

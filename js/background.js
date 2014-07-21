@@ -3,7 +3,6 @@
  */
 
 function Background() {
-    this.data = settings('data');
     this.timeoutId = 0;
     this.unreadCount = 0;
 }
@@ -25,6 +24,7 @@ Background.prototype.initOptions = function () {
 Background.prototype.initRequest = function () {
     var that = this;
 
+    this.data = settings('data');
     async.each(settings('urls'), function (url, callback) {
         async.each(settings('roles'), function (role, callback) {
             that.getList(url, role, callback);
@@ -87,7 +87,7 @@ Background.prototype.getList = function (url, role, callback) {
                     updatedOn = new Date(issue.updated_on);
 
                 if (lastRead < updatedOn) {
-                    if ($.inArray(util.getIuid(issue), readList) == -1) {
+                    if ($.inArray(util.getIuid(issue), readList) === -1) {
                         count++;
                         unreadList.push(util.getIuid(issue));
                     }

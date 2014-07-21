@@ -2,8 +2,6 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
 
-
-
 function Popup() {
     this.$options = $('.options');
     this.$main = $('.main');
@@ -55,6 +53,7 @@ Popup.prototype.initRoles = function () {
             i ,
             locale['roles_' + role],
             data.issues.length,
+            data.unreadList.length === 0 ? 'none' : ' ',
             data.unreadList.length
         ));
     });
@@ -74,6 +73,9 @@ Popup.prototype.initIssues = function () {
         url = settings('urls')[settings('url_index')],
         data = settings('data')[this.getKey()];
 
+    html.push(util.sprintf($('#markTpl').html(),
+        data.unreadList.length ? ' ' : 'none', locale.mark_all_read));
+
     $.each(data.issues, function (i, issue) {
         html.push(util.sprintf($('#issueTpl').html(),
             i,
@@ -88,11 +90,35 @@ Popup.prototype.initIssues = function () {
             issue.subject
         ));
     });
-    this.$issues.scrollTop(0).html(html.join('')).find('.list-group-item').off('click').on('click', function () {
-        var issue = data.issues[$(this).data('index')];
+    this.$issues.scrollTop(0).html(html.join(''))
+        .find('.mark-all').off('click').on('click', function () {
+            $(this).hide();
+            that.$issues.find('.new-label').hide();
+            that.setUnreadCount(0, settings('unread') - data.unreadList.length);
+            that.resetUnreadData();
+        }).end()
+        .find('.list-group-item')
+        .off('click').on('click', function () {
+            var issue = data.issues[$(this).data('index')],
+                index = $.inArray(util.getIuid(issue), data.unreadList);
 
-        that.showIssue(issue);
-    });
+            that.showIssue(issue);
+
+            if (index !== -1) {
+                $(".new-label", $(this)).hide();
+                data.unreadList.splice(index, 1);
+                that.setUnreadCount(data.unreadList.length, settings('unread') - 1);
+
+                if (data.unreadList.length) {
+                    var dataList = settings('data');
+                    data.readList.push(util.getIuid(issue));
+                    dataList[that.getKey()] = data;
+                    settings('data', dataList);
+                } else {
+                    that.resetUnreadData();
+                }
+            }
+        });
 };
 
 Popup.prototype.showIssue = function (issue) {
@@ -129,6 +155,28 @@ Popup.prototype.showIssue = function (issue) {
         });
 };
 
+Popup.prototype.setUnreadCount = function (roleCount, count) {
+    var $role = this.$roles.find('li').eq(settings('role_index'));
+
+    if (roleCount) {
+        $role.find('.label-info').text(roleCount);
+    } else {
+        $role.find('.label-info').hide();
+    }
+    settings('unread', count);
+    chrome.browserAction.setBadgeText({
+        text: count > 0 ? count + '' : ''
+    });
+};
+
+Popup.prototype.resetUnreadData = function () {
+    var data = settings('data');
+    data[this.getKey()].lastRead = +new Date();
+    data[this.getKey()].unreadList = [];
+    data[this.getKey()].readedList = [];
+    settings('data', data);
+};
+
 Popup.prototype.getKey = function (role) {
     var url = settings('urls')[settings('url_index')];
 
@@ -139,6 +187,8 @@ Popup.prototype.getKey = function (role) {
 $(function() {
     'use strict';
 
-    var popup = new Popup();
-    popup.init();
+    initLocale(function() {
+        var popup = new Popup();
+        popup.init();
+    });
 });

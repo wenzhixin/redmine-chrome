@@ -23,5 +23,7 @@ var locale = {
     author: 'Author: ',
     description: 'Description: ',
     save_your_changes: 'Save your changes',
-    save_successful: 'Save successful!'
+    save_successful: 'Save successful!',
+    add_redmine_first: 'Please add redmine first.',
+    mark_all_read: 'Mark all as read'
 };

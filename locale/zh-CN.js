@@ -23,5 +23,7 @@ var locale = {
     author: '作者：',
     description: '描述：',
     save_your_changes: '保存您的更改',
-    save_successful: '保存成功！'
+    save_successful: '保存成功！',
+    add_redmine_first: '请先添加 redmine。',
+    mark_all_read: '标记所有为已读'
 };

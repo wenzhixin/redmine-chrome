@@ -49,10 +49,14 @@
 }
 
 .issue-detail .title {
-    padding-right: 10px;
+    padding-right: 15px;
 }
 
 .issue-detail .item {
     width: 240px;
     float: left;
+}
+
+.issue-detail img {
+    max-width: 100%;
 }

@@ -123,7 +123,7 @@ Popup.prototype.initIssues = function () {
 
 Popup.prototype.showIssue = function (issue) {
     var that = this,
-        url = settings('urls')[settings('url_index')];
+        url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
 
     issue = $.extend({}, {
         tracker: {name: ''},
@@ -135,7 +135,7 @@ Popup.prototype.showIssue = function (issue) {
 
     this.$main.hide();
     this.$detail.show().html(util.sprintf($('#detailTpl').html(),
-            url + '/issues/' + issue.id,
+            url,
             issue.tracker.name,
             issue.id,
             issue.subject,
@@ -147,12 +147,33 @@ Popup.prototype.showIssue = function (issue) {
             issue.assigned_to.name,
             locale.author,
             issue.author.name,
-            locale.description,
-            issue.description
+            locale.description
         )).find('.close').off('click').on('click', function () {
             that.$detail.hide();
             that.$main.show();
         });
+
+    this.showAttachments(url, issue.description);
+};
+
+Popup.prototype.showAttachments = function (url, description) {
+    var that = this;
+
+    $.get(url + '.json?include=attachments', function(data) {
+        var pattern = /!([^!]+)!/g,
+            result = null,
+            attachments = data.issue.attachments;
+
+        while ((result = pattern.exec(description)) != null) {
+            var imgSrc = util.getContentUrl(result[1], attachments);
+            if (imgSrc) {
+                var reg = new RegExp(result[0], 'g');
+                description = description.replace(reg, util.sprintf('<img src="%s">', imgSrc));
+            }
+        }
+        description = description.replace(/\r\n/g, '<br>');
+        that.$detail.find('.desc-detail').html(description);
+    });
 };
 
 Popup.prototype.setUnreadCount = function (roleCount, count) {

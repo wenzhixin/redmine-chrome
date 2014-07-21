@@ -53,7 +53,6 @@ Background.prototype.getList = function (url, role, callback) {
     $.ajax({
         url: url + '/issues.json',
         data: data,
-        type : 'GET',
         dataType: 'json',
         success: function (res) {
             var key = $.md5(url + role),

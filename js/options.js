@@ -62,7 +62,7 @@ $(function() {
         $urls.find('input').each(function() {
             var url = $.trim($(this).val());
             if (url) {
-                urls.push(url);
+                urls.push(url.replace(/\/$/, ''));
             }
         });
         settings('urls', urls);

@@ -53,7 +53,7 @@ Popup.prototype.initRoles = function () {
 
         html.push(util.sprintf($('#roleTpl').html(),
             i ,
-            locale.roles[role],
+            locale['roles_' + role],
             data.issues.length,
             data.unreadList.length
         ));

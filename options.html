@@ -11,27 +11,43 @@
 	<body>
         <div class="container">
             <div class="header">
-                <h3 class="text-muted">Redmine Notification</h3>
+                <h3 class="text-muted pull-left" i18n-values="title"></h3>
+                <div class="pull-right">
+                    <span i18n-values="language"></span>
+                    <select id="language">
+                        <option value="zh-CN" i18n-values="chinese"></option>
+                        <option value="en-US" i18n-values="english"></option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
             </div>
 
+            <div>
+                <button id="save" class="btn btn-primary btn-lg">
+                    <i class="glyphicon glyphicon-floppy-open"></i> <span i18n-values="save_your_changes"></span>
+                </button>
+            </div>
+
+            <hr>
+
             <h3>
-                Redmine List:
+                <span i18n-values="redmine_list"></span>
                 <a id="addUrl" href="javascript:void(0)"><i class="glyphicon glyphicon-plus"></i></a>
             </h3>
             <div id="urls"></div>
 
             <hr>
 
-            <h3>Issues List:</h3>
+            <h3 i18n-values="issues_list"></h3>
             <select id="roles" class="form-control" multiple="multiple">
-                <option value="assigned_to_id">Issues assigned to me</option>
-                <option value="author_id">Reported issues</option>
-                <option value="watcher_id">Watched issues</option>
+                <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
+                <option value="author_id" i18n-values="roles_author_id"></option>
+                <option value="watcher_id" i18n-values="roles_watcher_id"></option>
             </select>
 
             <hr>
 
-            <h3>Issue Status:</h3>
+            <h3 i18n-values="issue_status"></h3>
             <select id="status" class="form-control" multiple="multiple">
                 <option value="1">New</option>
                 <option value="2">In Progress</option>
@@ -40,12 +56,12 @@
                 <option value="3">Resolved</option>
                 <option value="6">Rejected</option>
                 <option value="16">Verified</option>
-                <option value="5">Closed</option>
+                <option value="5">Closed</option></select>
             </select>
 
             <hr>
 
-            <h3>Issue number:</h3>
+            <h3 i18n-values="issue_number"></h3>
             <select id="number" class="form-control">
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -54,19 +70,19 @@
 
             <hr>
 
-            <h3>Update interval:</h3>
+            <h3 i18n-values="update_interval"></h3>
             <select id="interval" class="form-control">
-                <option value="5">5 minutes</option>
-                <option value="10">10 minutes</option>
-                <option value="20">20 minutes</option>
-                <option value="30">30 minutes</option>
-                <option value="60">1 hour</option>
+                <option value="5" i18n-values="minutes_5"></option>
+                <option value="10" i18n-values="minutes_10"></option>
+                <option value="20" i18n-values="minutes_20"></option>
+                <option value="30" i18n-values="minutes_30"></option>
+                <option value="60" i18n-values="hours_1"></option>
             </select>
 
             <hr>
 
             <div class="checkbox">
-                <label><input id="notify" type="checkbox"> Desktop notify</label>
+                <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
             </div>
 
             <div class="footer">
@@ -87,7 +103,8 @@
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/multiple-select/jquery.multiple.select.js"></script>
         <script src="assets/store.js"></script>
-		<script src="js/common.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/locale.js"></script>
 		<script src="js/options.js"></script>
 	</body>
 </html>

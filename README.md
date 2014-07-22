@@ -12,3 +12,21 @@ Redmine notification tools for chrome extension.
 * Support for custom issue roles (developer and tester).
 * issue status and issue number.
 * Support offline viewing problems.
+
+## Changelog
+
+### 2.0.2
+
+* Add i18n support.
+* Add placeholder and check url.
+* Handler unread list and count.
+* Add issue attachments.
+* Add histories.
+* Add mark all as read.
+* Update the options view.
+* Update the issue item view.
+* Add moment to format the update time.
+
+### 2.0.1
+
+* Initial release

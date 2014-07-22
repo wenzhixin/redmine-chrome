@@ -78,10 +78,10 @@ Popup.prototype.initIssues = function () {
 
     $.each(data.issues, function (i, issue) {
         html.push(util.sprintf($('#issueTpl').html(),
+            $.inArray(util.getIuid(issue), data.unreadList) === -1 ? '' : 'fb',
             i,
-            issue.status.name,
+            util.getPriorityLabel(issue.priority.name),
             issue.priority.name,
-            $.inArray(util.getIuid(issue), data.unreadList) === -1 ? 'none' : '',
             issue.project.name,
             util.dateFormatter(new Date(issue.updated_on)),
             url + '/issues/' + issue.id,
@@ -93,7 +93,7 @@ Popup.prototype.initIssues = function () {
     this.$issues.scrollTop(0).html(html.join(''))
         .find('.mark-all').off('click').on('click', function () {
             $(this).hide();
-            that.$issues.find('.new-label').hide();
+            that.$issues.find('.list-group-item').removeClass('fb');
             that.setUnreadCount(0, settings('unread') - data.unreadList.length);
             that.resetUnreadData();
         }).end()
@@ -105,7 +105,7 @@ Popup.prototype.initIssues = function () {
             that.showIssue(issue);
 
             if (index !== -1) {
-                $(".new-label", $(this)).hide();
+                $(this).removeClass('fb');
                 data.unreadList.splice(index, 1);
                 that.setUnreadCount(data.unreadList.length, settings('unread') - 1);
 

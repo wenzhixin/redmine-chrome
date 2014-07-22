@@ -74,5 +74,15 @@ var util = {
 			}
 		}
 		return null;
-	}
+	},
+
+    getPriorityLabel: function (priority) {
+        return {
+            Low: 'info',
+            Normal: 'warning',
+            High: 'default',
+            Urgent: 'primary',
+            Immediate: 'danger'
+        }[priority];
+    }
 };

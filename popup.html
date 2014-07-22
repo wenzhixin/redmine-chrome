@@ -31,7 +31,8 @@
 <script id="markTpl" type="text/template">
     <div>
         <button class="mark-all btn btn-default btn-xs btn-block %s">
-            <i class="glyphicon glyphicon-ok"></i> %s
+            <i class="glyphicon glyphicon-ok"></i>
+            <span i18n-values="mark_all_read"></span>
         </button>
     </div>
 </script>
@@ -57,18 +58,26 @@
     </div>
     <hr>
     <div>
-        <div class="item"><b>%s</b>%s</div>
-        <div class="item"><b>%s</b>%s</div>
-        <div class="item"><b>%s</b>%s</div>
-        <div class="item"><b>%s</b>%s</div>
+        <div class="item"><b i18n-values="status"></b>%s</div>
+        <div class="item"><b i18n-values="priority"></b>%s</div>
+        <div class="item"><b i18n-values="assigned_to"></b>%s</div>
+        <div class="item"><b i18n-values="author"></b>%s</div>
     </div>
     <div class="cb"></div>
     <hr>
     <div class="desc">
-        <h3>%s</h3>
+        <h3 i18n-values="description"></h3>
         <div class="desc-detail">%s</div>
     </div>
     <hr>
+    <div class="history"></div>
+    <hr>
+    <div class="edit">
+        <a href="javascript:void(0)" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            <span i18n-values="update"></span>
+        </a>
+    </div>
 </script>
 
 <script src="assets/jquery.min.js"></script>

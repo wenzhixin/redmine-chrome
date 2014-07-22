@@ -74,7 +74,7 @@ Popup.prototype.initIssues = function () {
         data = settings('data')[this.getKey()];
 
     html.push(util.sprintf($('#markTpl').html(),
-        data.unreadList.length ? ' ' : 'none', locale.mark_all_read));
+        data.unreadList.length ? ' ' : 'none'));
 
     $.each(data.issues, function (i, issue) {
         html.push(util.sprintf($('#issueTpl').html(),
@@ -127,9 +127,11 @@ Popup.prototype.initIssues = function () {
         }).find('[data-toggle="tooltip"]').tooltip({
             placement: 'bottom'
         });
+
+    util.setLocale(this.$issues);
 };
 
-Popup.prototype.showIssue = function (issue) {console.log(issue);
+Popup.prototype.showIssue = function (issue) {
     var that = this,
         url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
 
@@ -147,20 +149,17 @@ Popup.prototype.showIssue = function (issue) {console.log(issue);
             issue.tracker.name,
             issue.id,
             issue.subject,
-            locale.status,
             issue.status.name,
-            locale.priority,
             issue.priority.name,
-            locale.assigned_to,
             issue.assigned_to.name,
-            locale.author,
             issue.author.name,
-            locale.description,
             issue.description
         )).find('.close').off('click').on('click', function () {
             that.$detail.hide();
             that.$main.show();
         });
+
+    util.setLocale(this.$detail);
 
     this.showAttachments(url, issue.description);
     this.showHistories(url);
@@ -198,7 +197,7 @@ Popup.prototype.showHistories = function (url) {
         $history.find('a').each(function () {
             $(this).replaceWith('<span>' + $(this).text() + '</span>');
         });
-        that.$detail.append($history.html());
+        that.$detail.find('.history').html($history.html());
     });
 };
 

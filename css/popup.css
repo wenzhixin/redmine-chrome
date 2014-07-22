@@ -67,6 +67,10 @@
     border-bottom: 1px solid #eee;
 }
 
+.issue-detail .journal:last-child {
+    border-bottom: none;
+}
+
 .issue-detail .journal-link {
     float: right;
 }

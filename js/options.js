@@ -7,6 +7,7 @@ $(function() {
     var $language = $('#language'),
         $save = $('#save'),
         $urls = $('#urls'),
+        $advance = $('#advance'),
         $addUrl = $('#addUrl'),
         $roles = $('#roles'),
         $status = $('#status'),
@@ -38,9 +39,23 @@ $(function() {
             $(this).parents('.input-group').remove();
         });
 
+        if (settings('urls').length) {
+            $advance.show();
+        } else {
+            $addUrl.trigger('click');
+            $urls.find('input').focus().keyup(function () {
+                if ($.trim($(this).val())) {
+                    $advance.show();
+                } else {
+                    $advance.hide();
+                }
+            });
+        }
+
         // roles, status
         $.each(['roles', 'status'], function (i, name) {
             var $name = $('#' + name).multipleSelect({
+                width: '100%',
                 selectAll: false,
                 countSelected: false
             }).multipleSelect('setSelects', settings(name));
@@ -49,6 +64,7 @@ $(function() {
         // number, interval
         $.each(['number', 'interval'], function (i, name) {
             var $name = $('#' + name).multipleSelect({
+                width: '100%',
                 single: true,
                 name: name
             }).multipleSelect('setSelects', [settings(name)]);

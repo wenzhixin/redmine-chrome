@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/bootstrap/css/narrow.css"/>
     <link rel="stylesheet" href="assets/multiple-select/multiple-select.css"/>
+    <link rel="stylesheet" href="css/base.css"/>
 </head>
 <body>
 <div class="container">
@@ -39,55 +40,60 @@
 
     <div id="urls"></div>
 
-    <hr>
+    <div id="advance" class="none">
+        <hr>
 
-    <h3 i18n-values="issues_list"></h3>
-    <select id="roles" class="form-control" multiple="multiple">
-        <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
-        <option value="author_id" i18n-values="roles_author_id"></option>
-        <option value="watcher_id" i18n-values="roles_watcher_id"></option>
-    </select>
+        <h3 i18n-values="issues_list"></h3>
+        <select id="roles" class="w" multiple="multiple">
+            <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
+            <option value="author_id" i18n-values="roles_author_id"></option>
+            <option value="watcher_id" i18n-values="roles_watcher_id"></option>
+        </select>
 
-    <hr>
+        <hr>
 
-    <h3 i18n-values="issue_status"></h3>
-    <select id="status" class="form-control" multiple="multiple">
-        <option value="1">New</option>
-        <option value="2">In Progress</option>
-        <option value="7">Reopened</option>
-        <option value="4">Feedback</option>
-        <option value="3">Resolved</option>
-        <option value="6">Rejected</option>
-        <option value="16">Verified</option>
-        <option value="5">Closed</option>
-    </select>
-    </select>
+        <h3 i18n-values="issue_status"></h3>
+        <select id="status" class="w" multiple="multiple">
+            <option value="1">New</option>
+            <option value="2">In Progress</option>
+            <option value="7">Reopened</option>
+            <option value="4">Feedback</option>
+            <option value="3">Resolved</option>
+            <option value="6">Rejected</option>
+            <option value="16">Verified</option>
+            <option value="5">Closed</option>
+        </select>
+        </select>
 
-    <hr>
+        <hr>
 
-    <h3 i18n-values="issue_number"></h3>
-    <select id="number" class="form-control">
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-    </select>
+        <h3 i18n-values="issue_number"></h3>
+        <select id="number" class="w">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
 
-    <hr>
+        <hr>
 
-    <h3 i18n-values="update_interval"></h3>
-    <select id="interval" class="form-control">
-        <option value="5" i18n-values="minutes_5"></option>
-        <option value="10" i18n-values="minutes_10"></option>
-        <option value="20" i18n-values="minutes_20"></option>
-        <option value="30" i18n-values="minutes_30"></option>
-        <option value="60" i18n-values="hours_1"></option>
-    </select>
+        <h3 i18n-values="update_interval"></h3>
+        <select id="interval" class="w">
+            <option value="5" i18n-values="minutes_5"></option>
+            <option value="10" i18n-values="minutes_10"></option>
+            <option value="20" i18n-values="minutes_20"></option>
+            <option value="30" i18n-values="minutes_30"></option>
+            <option value="60" i18n-values="hours_1"></option>
+        </select>
 
-    <hr>
+        <hr>
 
-    <div class="checkbox">
-        <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
+        <div class="checkbox">
+            <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
+        </div>
+
     </div>
+
+    <hr>
 
     <div class="footer">
         <p>&copy; wenzhixin.net.cn 2014</p>

@@ -16,8 +16,9 @@
 
         this.$el = $el.hide();
         this.options = options;
-        this.$parent = $('<div class="ms-parent"' + $.map(['title'],function (att) {
+        this.$parent = $('<div' + $.map(['class', 'title'],function (att) {
             var attValue = that.$el.attr(att) || '';
+            attValue = (att === 'class' ? ('ms-parent' + (attValue ? ' ' : '')) : '') + attValue;
             return attValue ? (' ' + att + '="' + attValue + '"') : '';
         }).join('') + '>');
         this.$choice = $('<button type="button" class="ms-choice"><span class="placeholder">' +

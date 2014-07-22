@@ -152,7 +152,8 @@ Popup.prototype.showIssue = function (issue) {console.log(issue);
             issue.assigned_to.name,
             locale.author,
             issue.author.name,
-            locale.description
+            locale.description,
+            issue.description
         )).find('.close').off('click').on('click', function () {
             that.$detail.hide();
             that.$main.show();

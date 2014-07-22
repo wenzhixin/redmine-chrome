@@ -8,7 +8,7 @@ var settings = function (key, value) {
         language: 'en-US',
         urls: [],
         roles: ['assigned_to_id'],
-        status: [1, 2, 7, 4, 3, 6, 16, 5],
+        status: [1, 2, 7, 4], // [1, 2, 7, 4, 3, 6, 16, 5]
         number: 25,
         interval: 5,
         notify: true,

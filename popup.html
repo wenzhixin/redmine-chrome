@@ -39,7 +39,10 @@
     <div class="list-group-item %s" data-index="%s">
         <div class="list-group-item-heading">
             <div class="fl"><span class="label label-%s">%s</span></div>
-            <div class="fr">%s | <span class="f14">%s</span></div>
+            <div class="fr">
+                <span>%s</span>
+                <span data-toggle="tooltip" class="f14" title="%s">(%s)</span>
+            </div>
         </div>
         <p class="list-group-item-text cb pt10">
             <a href="%s" class="mr5" target="_blank">%s #%s: </a>
@@ -72,6 +75,7 @@
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/jquery.md5.js"></script>
 <script src="assets/store.js"></script>
+<script src="assets/moment-with-langs.min.js"></script>
 <script src="js/locale.js"></script>
 <script src="js/common.js"></script>
 <script src="js/popup.js"></script>

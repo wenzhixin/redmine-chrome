@@ -83,7 +83,8 @@ Popup.prototype.initIssues = function () {
             util.getPriorityLabel(issue.priority.name),
             issue.priority.name,
             issue.project.name,
-            util.dateFormatter(new Date(issue.updated_on)),
+            moment(new Date(issue.updated_on)).format('YYYY-MM-DD HH:mm:ss'),
+            moment(new Date(issue.updated_on)).fromNow(),
             url + '/issues/' + issue.id,
             issue.tracker.name,
             issue.id,
@@ -123,6 +124,8 @@ Popup.prototype.initIssues = function () {
                     that.$roles.eq(settings('role_index')).find('.mark-all').hide();
                 }
             }
+        }).find('[data-toggle="tooltip"]').tooltip({
+            placement: 'bottom'
         });
 };
 
@@ -230,6 +233,8 @@ Popup.prototype.getKey = function (role) {
 
 $(function() {
     'use strict';
+
+    moment.lang(settings('language').toLowerCase());
 
     initLocale(function() {
         var popup = new Popup();

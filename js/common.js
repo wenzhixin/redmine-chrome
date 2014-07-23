@@ -56,15 +56,21 @@ var util = {
     },
 
     setLocale: function ($el) {
+        $el.find('[i18n-properties]').each(function () {
+            var properties = $(this).attr('i18n-properties').split(':');
+            if (properties.length === 2) {
+                $(this).attr(properties[0], locale[properties[1]]);
+            }
+        });
         $el.find('[i18n-values]').each(function () {
             $(this).text(locale[$(this).attr('i18n-values')]);
         });
     },
 
-    filterIssues: function (key, issues, data) {
+    filterIssues: function (keys, issues, data) {
         return issues.filter(function (issue) {
             for (var k in data) {
-                if (k === key) continue;
+                if ($.inArray(k, keys) === -1) continue;
                 for (var i = 0; i < data[k].issues.length; i++) {
                     if (data[k].issues[i].id === issue.id) {
                         return false;
@@ -97,5 +103,14 @@ var util = {
             Urgent: 'primary',
             Immediate: 'danger'
         }[priority];
+    },
+
+    copyText: function (text) {
+        var $copyFrom = $('<textarea/>');
+        $copyFrom.val(text);
+        $('body').append($copyFrom);
+        $copyFrom.select();
+        document.execCommand('copy');
+        $copyFrom.remove();
     }
 };

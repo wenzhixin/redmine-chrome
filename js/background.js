@@ -25,6 +25,7 @@ Background.prototype.initRequest = function () {
     var that = this;
 
     this.data = settings('data');
+    this.keys = [];
     async.eachSeries(settings('urls'), function (url, callback) {
         async.eachSeries(settings('roles'), function (role, callback) {
             that.getList(url, role, callback);
@@ -60,7 +61,9 @@ Background.prototype.getList = function (url, role, callback) {
                 lastNotified = new Date(0),
                 unreadList = [],
                 readList = [],
-                issues = util.filterIssues(key, res.issues, that.data);
+                issues = util.filterIssues(that.keys, res.issues, that.data);
+
+            that.keys.push(key);
 
             if (!that.data.hasOwnProperty(key)) {
                 that.data[key] = {};

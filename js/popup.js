@@ -158,6 +158,9 @@ Popup.prototype.showIssue = function (issue) {
             )).find('.close').off('click').on('click', function () {
                 that.$detail.hide();
                 that.$main.show();
+            }).end()
+            .find('.copy-issue').off('click').on('click', function () {
+                util.copyText('#' + issue.id);
             });
 
         util.setLocale(that.$detail);

@@ -27,5 +27,5 @@ var locale = {
     add_redmine_first: '请先添加 redmine。',
     mark_all_read: '标记所有为已读',
     update: '更新',
-    percent_done: '% 完成'
+    percent_done: '% 完成：'
 };

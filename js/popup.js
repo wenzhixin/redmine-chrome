@@ -100,6 +100,7 @@ Popup.prototype.initIssues = function () {
         }).end()
         .find('.list-group-item')
         .off('click').on('click', function () {
+            $(this).removeClass('fb');
             that.showIssue(data.issues[$(this).data('index')]);
         }).find('[data-toggle="tooltip"]').tooltip({
             placement: 'bottom'
@@ -242,7 +243,6 @@ Popup.prototype.updateUnreadCount = function (issue) {
         index = $.inArray(iuid, curData.unreadList);
 
     if (index !== -1) {
-        $(this).removeClass('fb');
         curData.unreadList.splice(index, 1);
         this.setUnreadCount(curData.unreadList.length, settings('unread') - 1);
 

@@ -114,7 +114,7 @@ Background.prototype.getList = function (url, role, callback) {
 };
 
 Background.prototype.showNotification = function (issue) {
-    if (!settings('nodify')) return;
+    if (!settings('notify')) return;
 
     if (webkitNotifications.checkPermission() > 0) {
         webkitNotifications.requestPermission(showNotification);

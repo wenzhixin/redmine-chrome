@@ -15,6 +15,13 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.4
+
+* Fix filterIssues bug.
+* Add copy issue feature.
+* Do not add issue to unread list when update issue on extension.
+* Fix do not show desktop notify bug.
+
 ### 2.0.3
 
 * Add reply issue feature.

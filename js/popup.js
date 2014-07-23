@@ -121,7 +121,7 @@ Popup.prototype.initIssues = function () {
 
                 // fix #11: hide mark all as read
                 if (data.unreadList.length === 0) {
-                    that.$roles.eq(settings('role_index')).find('.mark-all').hide();
+                    that.$issues.find('.mark-all').hide();
                 }
             }
         }).find('[data-toggle="tooltip"]').tooltip({

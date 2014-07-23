@@ -100,30 +100,7 @@ Popup.prototype.initIssues = function () {
         }).end()
         .find('.list-group-item')
         .off('click').on('click', function () {
-            var issue = data.issues[$(this).data('index')],
-                index = $.inArray(util.getIuid(issue), data.unreadList);
-
-            that.showIssue(issue);
-
-            if (index !== -1) {
-                $(this).removeClass('fb');
-                data.unreadList.splice(index, 1);
-                that.setUnreadCount(data.unreadList.length, settings('unread') - 1);
-
-                if (data.unreadList.length) {
-                    var dataList = settings('data');
-                    data.readList.push(util.getIuid(issue));
-                    dataList[that.getKey()] = data;
-                    settings('data', dataList);
-                } else {
-                    that.resetUnreadData();
-                }
-
-                // fix #11: hide mark all as read
-                if (data.unreadList.length === 0) {
-                    that.$issues.find('.mark-all').hide();
-                }
-            }
+            that.showIssue(data.issues[$(this).data('index')]);
         }).find('[data-toggle="tooltip"]').tooltip({
             placement: 'bottom'
         });
@@ -168,6 +145,7 @@ Popup.prototype.showIssue = function (issue) {
         that.showAttachments(url, issue.description);
         that.showHistories(url);
         that.showEdit(issue, url);
+        that.updateUnreadCount(issue);
     });
 };
 
@@ -251,6 +229,36 @@ Popup.prototype.showEdit = function (issue, url) {
             });
         });
     });
+};
+
+Popup.prototype.updateUnreadCount = function (issue) {
+    var data = settings('data'),
+        curData = data[this.getKey()],
+        iuid = util.getIuid(issue),
+        index = $.inArray(iuid, curData.unreadList);
+
+    if (index !== -1) {
+        $(this).removeClass('fb');
+        curData.unreadList.splice(index, 1);
+        this.setUnreadCount(curData.unreadList.length, settings('unread') - 1);
+
+        if (curData.unreadList.length) {
+            curData.readList.push(iuid);
+            data[this.getKey()] = curData;
+            settings('data', data);
+        } else {
+            this.resetUnreadData();
+        }
+
+        // fix #11: hide mark all as read
+        if (curData.unreadList.length === 0) {
+            this.$issues.find('.mark-all').hide();
+        }
+    } else if ($.inArray(util.getIuid(issue), curData.readList) === -1) {
+        curData.readList.push(iuid);
+        data[this.getKey()] = curData;
+        settings('data', data);
+    }
 };
 
 Popup.prototype.setUnreadCount = function (roleCount, count) {

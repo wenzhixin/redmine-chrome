@@ -48,6 +48,13 @@ var util = {
         return '';
     },
 
+    initLocale: function (callback) {
+        $.getScript('locale/' + settings('language') + '.js', function() {
+            util.setLocale($('body'));
+            callback();
+        });
+    },
+
     setLocale: function ($el) {
         $el.find('[i18n-values]').each(function () {
             $(this).text(locale[$(this).attr('i18n-values')]);

@@ -91,5 +91,5 @@ $(function() {
         chrome.extension.getBackgroundPage().background.reset();
     }
 
-    initLocale(init);
+    util.initLocale(init);
 });

@@ -71,13 +71,57 @@
     </div>
     <hr>
     <div class="history"></div>
-    <hr>
-    <div class="edit">
-        <a href="javascript:void(0)" class="btn btn-default">
-            <i class="glyphicon glyphicon-edit"></i>
-            <span i18n-values="update"></span>
-        </a>
-    </div>
+    <form class="edit none form-horizontal"
+          enctype="multipart/form-data"
+          method="post"
+          accept-charset="utf-8">
+        <hr>
+        <div class="item">
+            <label class="col-xs-4 control-label" i18n-values="status"></label>
+            <div class="col-xs-7">
+                <select class="form-control" name="issue[status_id]">
+                    <option value="1">New</option>
+                    <option value="2">In Progress</option>
+                    <option value="7">Reopened</option>
+                    <option value="4">Feedback</option>
+                    <option value="3">Resolved</option>
+                    <option value="6">Rejected</option>
+                    <option value="16">Verified</option>
+                    <option value="5">Closed</option>
+                </select>
+            </div>
+        </div>
+        <div class="item">
+            <label class="col-xs-4 control-label" i18n-values="percent_done"></label>
+            <div class="col-xs-7">
+                <select class="form-control" name="issue[done_ratio]">
+                    <option value="0">0 %</option>
+                    <option value="10">10 %</option>
+                    <option value="20">20 %</option>
+                    <option value="30">30 %</option>
+                    <option value="40">40 %</option>
+                    <option value="50">50 %</option>
+                    <option value="60">60 %</option>
+                    <option value="70">70 %</option>
+                    <option value="80">80 %</option>
+                    <option value="90">90 %</option>
+                    <option value="100">100 %</option>
+                </select>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="mt10">
+            <textarea class="form-control" name="notes" rows="3"></textarea>
+        </div>
+        <div class="mt10">
+            <button type="submit" class="btn btn-primary">
+                <i class="glyphicon glyphicon-edit"></i>
+                <span i18n-values="update"></span>
+            </button>
+        </div>
+        <input type="hidden" name="_method" value="put">
+        <input type="hidden" name="authenticity_token">
+    </from>
 </script>
 
 <script src="assets/jquery.min.js"></script>
@@ -85,7 +129,6 @@
 <script src="assets/jquery.md5.js"></script>
 <script src="assets/store.js"></script>
 <script src="assets/moment-with-langs.min.js"></script>
-<script src="js/locale.js"></script>
 <script src="js/common.js"></script>
 <script src="js/popup.js"></script>
 </body>

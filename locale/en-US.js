@@ -26,5 +26,6 @@ var locale = {
     save_successful: 'Save successful!',
     add_redmine_first: 'Please add redmine first.',
     mark_all_read: 'Mark all as read',
-    update: 'Update'
+    update: 'Update',
+    percent_done: '% Done'
 };

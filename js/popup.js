@@ -135,34 +135,49 @@ Popup.prototype.showIssue = function (issue) {
     var that = this,
         url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
 
-    issue = $.extend({}, {
-        tracker: {name: ''},
-        status: {name: ''},
-        priority: {name: ''},
-        assigned_to: {name: ''},
-        author: {name: ''}
-    }, issue);
+    this.getIssue(issue, url, function (issue) {
+        issue = $.extend({}, {
+            tracker: {name: ''},
+            status: {name: ''},
+            priority: {name: ''},
+            assigned_to: {name: ''},
+            author: {name: ''}
+        }, issue);
 
-    this.$main.hide();
-    this.$detail.show().html(util.sprintf($('#detailTpl').html(),
-            url,
-            issue.tracker.name,
-            issue.id,
-            issue.subject,
-            issue.status.name,
-            issue.priority.name,
-            issue.assigned_to.name,
-            issue.author.name,
-            issue.description
-        )).find('.close').off('click').on('click', function () {
-            that.$detail.hide();
-            that.$main.show();
-        });
+        that.$main.hide();
+        that.$detail.show().html(util.sprintf($('#detailTpl').html(),
+                url,
+                issue.tracker.name,
+                issue.id,
+                issue.subject,
+                issue.status.name,
+                issue.priority.name,
+                issue.assigned_to.name,
+                issue.author.name,
+                issue.description
+            )).find('.close').off('click').on('click', function () {
+                that.$detail.hide();
+                that.$main.show();
+            });
 
-    util.setLocale(this.$detail);
+        util.setLocale(that.$detail);
 
-    this.showAttachments(url, issue.description);
-    this.showHistories(url);
+        that.showAttachments(url, issue.description);
+        that.showHistories(url);
+        that.showEdit(issue, url);
+    });
+};
+
+Popup.prototype.getIssue = function (issue, url, callback) {
+    $.ajax({
+        url: url + '.json',
+        success: function (res) {
+            callback(res.issue);
+        },
+        error: function () {
+            callback(issue);
+        }
+    });
 };
 
 Popup.prototype.showAttachments = function (url, description) {
@@ -188,8 +203,8 @@ Popup.prototype.showAttachments = function (url, description) {
 Popup.prototype.showHistories = function (url) {
     var that = this;
 
-    $.get(url, function (data) {
-        var $history = $(data).find('#history');
+    $.get(url, function (res) {
+        var $history = $(res).find('#history');
 
         if (!$history.length) {
             return;
@@ -198,6 +213,40 @@ Popup.prototype.showHistories = function (url) {
             $(this).replaceWith('<span>' + $(this).text() + '</span>');
         });
         that.$detail.find('.history').html($history.html());
+    });
+};
+
+Popup.prototype.showEdit = function (issue, url) {
+    var that = this;
+
+    $.get(url + '/edit', function (res) {
+        var $res = $(res),
+            $edit = that.$detail.find('.edit').show();
+
+        $edit.find('[name="issue[status_id]"]')
+            .html($res.find('[name="issue[status_id]"]').html())
+            .val(issue.status.id);
+        $edit.find('[name="issue[done_ratio]"]').val(issue.done_ratio);
+        $edit.find('[name="authenticity_token"]')
+            .val($res.find('[name="authenticity_token"]').val());
+
+        $edit.off('submit').on('submit', function (event) {
+            event.preventDefault();
+
+            $(this).find(':submit').prop('disabled', true);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: new FormData($(this)[0]),
+                success: function (res) {
+                    that.showIssue(issue);
+                }
+            });
+        });
     });
 };
 
@@ -235,7 +284,7 @@ $(function() {
 
     moment.lang(settings('language').toLowerCase());
 
-    initLocale(function() {
+    util.initLocale(function() {
         var popup = new Popup();
         popup.init();
     });

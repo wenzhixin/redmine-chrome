@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.3
+
+* Add reply issue feature.
+* Filter the same issue in different roles.
+
 ### 2.0.2
 
 * Add i18n support.

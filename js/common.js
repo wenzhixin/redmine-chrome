@@ -106,10 +106,9 @@ var util = {
     },
 
     copyText: function (text) {
-        var $copyFrom = $('<textarea class="none"/>');
-        $copyFrom.val(text);
+        var $copyFrom = $('<textarea></textarea>');
         $('body').append($copyFrom);
-        $copyFrom.select();
+        $copyFrom.val(text).select();
         document.execCommand('copy');
         $copyFrom.remove();
     }

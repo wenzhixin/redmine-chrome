@@ -132,15 +132,19 @@ Popup.prototype.showIssue = function (issue) {
                 issue.assigned_to.name,
                 issue.author.name,
                 issue.description
-            )).find('.close').off('click').on('click', function () {
-                that.$detail.hide();
-                that.$main.show();
-            }).end()
-            .find('.copy-issue').off('click').on('click', function () {
-                util.copyText('#' + issue.id);
-            });
+            ));
+        that.$detail.find('.close').off('click').on('click', function () {
+            that.$detail.hide();
+            that.$main.show();
+        });
+        that.$detail.find('.copy-issue').off('click').on('click', function () {
+            util.copyText('#' + issue.id);
+        });
 
         util.setLocale(that.$detail);
+        that.$detail.find('[data-toggle="tooltip"]').tooltip({
+            placement: 'bottom'
+        });
 
         that.showAttachments(url, issue.description);
         that.showHistories(url);

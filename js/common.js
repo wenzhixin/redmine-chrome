@@ -61,6 +61,19 @@ var util = {
         });
     },
 
+    filterIssues: function (issues, data) {
+        return issues.filter(function (issue) {
+            for (var key in data) {
+                for (var i = 0; i < data[key].issues.length; i++) {
+                    if (data[key].issues[i].id === issue.id) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
+    },
+
     getIuid: function (issue) {
         return issue.id + new Date(issue.updated_on).getTime();
     },

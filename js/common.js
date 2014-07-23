@@ -61,11 +61,12 @@ var util = {
         });
     },
 
-    filterIssues: function (issues, data) {
+    filterIssues: function (key, issues, data) {
         return issues.filter(function (issue) {
-            for (var key in data) {
-                for (var i = 0; i < data[key].issues.length; i++) {
-                    if (data[key].issues[i].id === issue.id) {
+            for (var k in data) {
+                if (k === key) continue;
+                for (var i = 0; i < data[k].issues.length; i++) {
+                    if (data[k].issues[i].id === issue.id) {
                         return false;
                     }
                 }

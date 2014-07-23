@@ -60,7 +60,7 @@ Background.prototype.getList = function (url, role, callback) {
                 lastNotified = new Date(0),
                 unreadList = [],
                 readList = [],
-                issues = util.filterIssues(res.issues, that.data);
+                issues = util.filterIssues(key, res.issues, that.data);
 
             if (!that.data.hasOwnProperty(key)) {
                 that.data[key] = {};

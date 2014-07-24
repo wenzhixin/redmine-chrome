@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.6
+
+* Add textile-js to parse issue description.
+* Add feedback link.
+
 ### 2.0.5
 
 * Update getIssue timeout to 1000ms.

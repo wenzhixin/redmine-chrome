@@ -50,7 +50,7 @@ var util = {
 
     initLocale: function (callback) {
         $.getScript('locale/' + settings('language') + '.js', function() {
-            util.setLocale($('body'));
+            util.setLocale($('html'));
             callback();
         });
     },

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Settings</title>
+    <title i18n-values="options"></title>
     <meta name="author" content="zhixin wen"/>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/bootstrap/css/narrow.css"/>
@@ -13,6 +13,12 @@
 <div class="container">
     <div class="header">
         <h3 class="text-muted pull-left" i18n-values="title"></h3>
+        <a data-toggle="tooltip"
+           href="https://github.com/wenzhixin/scutech-redmine/issues"
+           target="_blank"
+           i18n-properties="title:feedback">
+            <i class="f16 glyphicon glyphicon-send"></i>
+        </a>
 
         <div class="pull-right">
             <i class="glyphicon glyphicon-flag"></i>
@@ -96,7 +102,9 @@
     <hr>
 
     <div class="footer">
-        <p>&copy; wenzhixin.net.cn 2014</p>
+        <p>
+            &copy; wenzhixin.net.cn 2014
+        </p>
     </div>
 </div>
 

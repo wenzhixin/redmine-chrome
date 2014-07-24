@@ -1,4 +1,5 @@
 var locale = {
+    options: 'Options',
     title: 'Redmine Notification',
     language: 'Select language: ',
     chinese: 'Chinese',
@@ -28,5 +29,6 @@ var locale = {
     mark_all_read: 'Mark all as read',
     update: 'Update',
     percent_done: '% Done: ',
-    copy_issue_id: 'Copy the issue id'
+    copy_issue_id: 'Copy the issue id',
+    feedback: 'Feedback'
 };

@@ -1,4 +1,5 @@
 var locale = {
+    options: '选项',
     title: 'Redmine 通知',
     language: '选择语言：',
     chinese: '简体中文',
@@ -28,5 +29,6 @@ var locale = {
     mark_all_read: '标记所有为已读',
     update: '更新',
     percent_done: '% 完成：',
-    copy_issue_id: '复制问题编号'
+    copy_issue_id: '复制问题编号',
+    feedback: '问题反馈'
 };

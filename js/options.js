@@ -16,6 +16,10 @@ $(function() {
         $notify = $('#notify');
 
     function init() {
+        $('[data-toggle="tooltip"]').tooltip({
+            placement: 'bottom'
+        });
+
         // language
         $language.change(function() {
             settings('language', $(this).val());

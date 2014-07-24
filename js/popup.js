@@ -157,6 +157,7 @@ Popup.prototype.showIssue = function (issue) {
 Popup.prototype.getIssue = function (issue, url, callback) {
     $.ajax({
         url: url + '.json',
+        timeout: 1000,
         success: function (res) {
             callback(res.issue);
         },
@@ -209,10 +210,18 @@ Popup.prototype.showEdit = function (issue, url) {
         var $res = $(res),
             $edit = that.$detail.find('.edit').show();
 
-        $edit.find('[name="issue[status_id]"]')
-            .html($res.find('[name="issue[status_id]"]').html())
-            .val(issue.status.id);
-        $edit.find('[name="issue[done_ratio]"]').val(issue.done_ratio);
+        $.each([
+            'issue[status_id]:status.id',
+            'issue[done_ratio]:done_ratio',
+            'issue[priority_id]:priority.id',
+            'issue[assigned_to_id]:assigned_to.id'
+        ], function (i, name) {
+            var names = name.split(':');
+
+            name = util.sprintf('[name="%s"]', names[0]);
+            $edit.find(name).html($res.find(name).html())
+                .val(util.getValueByString(issue, names[1]));
+        });
         $edit.find('[name="authenticity_token"]')
             .val($res.find('[name="authenticity_token"]').val());
 

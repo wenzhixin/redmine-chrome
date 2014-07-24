@@ -130,6 +130,7 @@ Popup.prototype.showIssue = function (issue) {
         }, issue);
 
         that.$main.hide();
+        console.log(textile(issue.description));
         that.$detail.show().html(util.sprintf($('#detailTpl').html(),
                 url,
                 issue.tracker.name,
@@ -139,7 +140,7 @@ Popup.prototype.showIssue = function (issue) {
                 issue.priority.name,
                 issue.assigned_to.name,
                 issue.author.name,
-                issue.description
+                textile(issue.description)
             ));
         that.$detail.find('.close').off('click').on('click', function () {
             that.$detail.hide();
@@ -192,7 +193,7 @@ Popup.prototype.showAttachments = function (url, description) {
             }
         }
         description = description.replace(/\r\n/g, '<br>');
-        that.$detail.find('.desc-detail').html(description);
+        that.$detail.find('.desc-detail').html(textile(description));
     });
 };
 

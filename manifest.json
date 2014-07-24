@@ -15,6 +15,6 @@
 		"page": "background.html"
 	},
 	"options_page": "options.html",
-	"permissions": ["http://*/", "https://*/"],
+	"permissions": ["http://*/", "https://*/", "notifications"],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

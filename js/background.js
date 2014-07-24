@@ -116,12 +116,16 @@ Background.prototype.getList = function (url, role, callback) {
 Background.prototype.showNotification = function (issue) {
     if (!settings('notify')) return;
 
-    if (webkitNotifications.checkPermission() > 0) {
-        webkitNotifications.requestPermission(showNotification);
-    } else {
-        webkitNotifications.createNotification('icon128.png',
-            issue.subject, issue.description).show();
-    }
+    chrome.notifications.create(new Date().getTime() + '', {
+        type: 'basic',
+        title: issue.subject,
+        message: issue.description,
+        iconUrl: chrome.runtime.getURL("/icon128.png")
+    }, function(id) {
+        setTimeout(function() {
+            chrome.notifications.clear(id);
+        }, 5000);
+    });
 };
 
 Background.prototype.refresh = function () {

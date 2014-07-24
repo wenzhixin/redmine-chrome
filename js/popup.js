@@ -102,18 +102,25 @@ Popup.prototype.initIssues = function () {
         .off('click').on('click', function () {
             $(this).removeClass('fb');
             that.showIssue(data.issues[$(this).data('index')]);
-        }).find('[data-toggle="tooltip"]').tooltip({
-            placement: 'bottom'
         });
 
     util.setLocale(this.$issues);
+    that.$issues.find('.copy-issue').off('click').on('click', function (event) {
+        event.stopImmediatePropagation();
+
+        var index = $(this).parents('.list-group-item').data('index');
+        util.copyText('#' + data.issues[index].id);
+    });
+    that.$issues.find('[data-toggle="tooltip"]').tooltip({
+        placement: 'bottom'
+    });
 };
 
 Popup.prototype.showIssue = function (issue) {
     var that = this,
         url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
 
-    this.getIssue(issue, url, function (issue) {
+    this.getIssue(issue, url, function (issue, error) {
         issue = $.extend({}, {
             tracker: {name: ''},
             status: {name: ''},
@@ -138,19 +145,21 @@ Popup.prototype.showIssue = function (issue) {
             that.$detail.hide();
             that.$main.show();
         });
+
+        util.setLocale(that.$detail);
         that.$detail.find('.copy-issue').off('click').on('click', function () {
             util.copyText('#' + issue.id);
         });
-
-        util.setLocale(that.$detail);
         that.$detail.find('[data-toggle="tooltip"]').tooltip({
             placement: 'bottom'
         });
 
-        that.showAttachments(url, issue.description);
-        that.showHistories(url);
-        that.showEdit(issue, url);
-        that.updateUnreadCount(issue);
+        if (!error) {
+            that.showAttachments(url, issue.description);
+            that.showHistories(url);
+            that.showEdit(issue, url);
+            that.updateUnreadCount(issue);
+        }
     });
 };
 
@@ -162,7 +171,7 @@ Popup.prototype.getIssue = function (issue, url, callback) {
             callback(res.issue);
         },
         error: function () {
-            callback(issue);
+            callback(issue, true);
         }
     });
 };

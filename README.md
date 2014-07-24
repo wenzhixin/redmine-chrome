@@ -15,6 +15,12 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.5
+
+* Update getIssue timeout to 1000ms.
+* Add priority and assigned_to to reply form.
+* Add copy issue to issues list.
+
 ### 2.0.4
 
 * Fix filterIssues bug.

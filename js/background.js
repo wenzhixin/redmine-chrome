@@ -123,7 +123,7 @@ Background.prototype.showNotification = function (issue) {
         iconUrl: chrome.runtime.getURL("/icon128.png")
     }, function(id) {
         setTimeout(function() {
-            chrome.notifications.clear(id);
+            chrome.notifications.clear(id, function() {});
         }, 5000);
     });
 };

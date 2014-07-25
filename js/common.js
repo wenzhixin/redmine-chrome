@@ -113,6 +113,15 @@ var util = {
         $copyFrom.remove();
     },
 
+    convertTextile: function (text) {
+        var $copyFrom = $('<textarea></textarea>');
+        $('body').append($copyFrom);
+        $copyFrom.val(text);
+        text = textile.convert($copyFrom.val());
+        $copyFrom.remove();
+        return text;
+    },
+
     getValueByString: function (o, s) {
         s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
         s = s.replace(/^\./, '');           // strip a leading dot

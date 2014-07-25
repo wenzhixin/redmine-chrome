@@ -130,7 +130,6 @@ Popup.prototype.showIssue = function (issue) {
         }, issue);
 
         that.$main.hide();
-        console.log(textile(issue.description));
         that.$detail.show().html(util.sprintf($('#detailTpl').html(),
                 url,
                 issue.tracker.name,
@@ -140,7 +139,7 @@ Popup.prototype.showIssue = function (issue) {
                 issue.priority.name,
                 issue.assigned_to.name,
                 issue.author.name,
-                textile(issue.description)
+                util.convertTextile(issue.description)
             ));
         that.$detail.find('.close').off('click').on('click', function () {
             that.$detail.hide();
@@ -155,11 +154,11 @@ Popup.prototype.showIssue = function (issue) {
             placement: 'bottom'
         });
 
+        that.updateUnreadCount(issue);
         if (!error) {
-            that.showAttachments(url, issue.description);
+            that.showAttachments(url);
             that.showHistories(url);
             that.showEdit(issue, url);
-            that.updateUnreadCount(issue);
         }
     });
 };
@@ -177,23 +176,15 @@ Popup.prototype.getIssue = function (issue, url, callback) {
     });
 };
 
-Popup.prototype.showAttachments = function (url, description) {
+Popup.prototype.showAttachments = function (url) {
     var that = this;
 
     $.get(url + '.json?include=attachments', function (data) {
-        var pattern = /!([^!]+)!/g,
-            result = null,
-            attachments = data.issue.attachments;
-
-        while ((result = pattern.exec(description)) != null) {
-            var imgSrc = util.getContentUrl(result[1], attachments);
-            if (imgSrc) {
-                var reg = new RegExp(result[0], 'g');
-                description = description.replace(reg, util.sprintf('<img src="%s">', imgSrc));
-            }
-        }
-        description = description.replace(/\r\n/g, '<br>');
-        that.$detail.find('.desc-detail').html(textile(description));
+        that.$detail.find('img').each(function () {
+            var src = util.getContentUrl($(this).attr('src'), data.issue.attachments);
+            $(this).attr('src', src);
+            $(this).wrap(util.sprintf('<a href="%s" target="_blank"></a>', src));
+        });
     });
 };
 
@@ -302,7 +293,7 @@ Popup.prototype.resetUnreadData = function () {
     var data = settings('data');
     data[this.getKey()].lastRead = +new Date();
     data[this.getKey()].unreadList = [];
-    data[this.getKey()].readedList = [];
+    data[this.getKey()].readList = [];
     settings('data', data);
 };
 

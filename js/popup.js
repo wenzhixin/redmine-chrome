@@ -278,6 +278,7 @@ Popup.prototype.updateUnreadCount = function (issue) {
         }
     } else if ($.inArray(util.getIuid(issue), curData.readList) === -1) {
         curData.readList.push(iuid);
+        curData.lastNotified = +new Date();
         data[this.getKey()] = curData;
         settings('data', data);
     }

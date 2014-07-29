@@ -54,22 +54,24 @@
     </div>
 </script>
 <script id="detailTpl" type="text/template">
-    <a class="close">&times;</a>
-    <div class="title">
-        <a class="copy-issue f16 mr5 cp" data-toggle="tooltip" i18n-properties="title:copy_issue_id">
-            <i class="glyphicon glyphicon-floppy-saved"></i>
-        </a>
-        <a href="%s" target="_blank">%s #%s: %s</a>
+    <div class="detail-header">
+        <a class="close">&times;</a>
+        <div class="title">
+            <a class="copy-issue f16 mr5 cp" data-toggle="tooltip" i18n-properties="title:copy_issue_id">
+                <i class="glyphicon glyphicon-floppy-saved"></i>
+            </a>
+            <a href="%s" target="_blank">%s #%s: %s</a>
+        </div>
+        <hr>
+        <div>
+            <div class="item"><b i18n-values="status"></b>%s</div>
+            <div class="item"><b i18n-values="priority"></b>%s</div>
+            <div class="item"><b i18n-values="assigned_to"></b>%s</div>
+            <div class="item"><b i18n-values="author"></b>%s</div>
+        </div>
+        <div class="cb"></div>
+        <hr>
     </div>
-    <hr>
-    <div>
-        <div class="item"><b i18n-values="status"></b>%s</div>
-        <div class="item"><b i18n-values="priority"></b>%s</div>
-        <div class="item"><b i18n-values="assigned_to"></b>%s</div>
-        <div class="item"><b i18n-values="author"></b>%s</div>
-    </div>
-    <div class="cb"></div>
-    <hr>
     <div class="desc">
         <h3 i18n-values="description"></h3>
         <div class="desc-detail">%s</div>

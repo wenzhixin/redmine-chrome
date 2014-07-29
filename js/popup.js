@@ -140,7 +140,8 @@ Popup.prototype.showIssue = function (issue) {
                 issue.assigned_to.name,
                 issue.author.name,
                 util.convertTextile(issue.description)
-            ));
+            )).css('padding-top', that.$detail.find('.detail-header').height());
+
         that.$detail.find('.close').off('click').on('click', function () {
             that.$detail.hide();
             that.$main.show();

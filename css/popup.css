@@ -89,3 +89,11 @@
 .issue-detail h4 {
     font-size: 14px;
 }
+
+.detail-header {
+    position: fixed;
+    width: 480px;
+    top: 0;
+    padding-top: 10px;
+    background: #fff;
+}

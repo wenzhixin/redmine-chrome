@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.8
+
+* Update textile parse lib.
+
 ### 2.0.7
 
 * Fix textile convert bug.

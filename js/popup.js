@@ -227,6 +227,13 @@ Popup.prototype.showEdit = function (issue, url) {
         $edit.find('[name="authenticity_token"]')
             .val($res.find('[name="authenticity_token"]').val());
 
+        // fix #29
+        $edit.find('[name="issue[status_id]"]').on('change', function () {
+            $('[name="issue[done_ratio]"]').val(
+                +$(this).val() === 3 ? '100' :
+                $res.find('[name="issue[done_ratio]"]').val());
+        });
+
         $edit.off('submit').on('submit', function (event) {
             event.preventDefault();
 

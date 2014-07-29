@@ -114,12 +114,8 @@ var util = {
     },
 
     convertTextile: function (text) {
-        var $copyFrom = $('<textarea></textarea>');
-        $('body').append($copyFrom);
-        $copyFrom.val(text);
-        text = textile.convert($copyFrom.val());
-        $copyFrom.remove();
-        return text;
+        var textile = new Textile();
+        return textile.parse(text) || '';
     },
 
     getValueByString: function (o, s) {

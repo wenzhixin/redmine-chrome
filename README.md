@@ -15,6 +15,13 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.7
+
+* Fix textile convert bug.
+* Fix notify bug.
+* Fix #28: fixed the issue detail header.
+* Fix #29: add status list change event.
+
 ### 2.0.6
 
 * Add textile-js to parse issue description.

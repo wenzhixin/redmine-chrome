@@ -21,6 +21,7 @@ Redmine notification tools for chrome extension.
 * Fix notify bug.
 * Fix #28: fixed the issue detail header.
 * Fix #29: add status list change event.
+* Fix #27: do not show notification when update the issue using extension.
 
 ### 2.0.6
 

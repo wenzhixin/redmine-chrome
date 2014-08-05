@@ -140,7 +140,9 @@ Popup.prototype.showIssue = function (issue) {
                 issue.assigned_to.name,
                 issue.author.name,
                 util.convertTextile(issue.description)
-            )).css('padding-top', that.$detail.find('.detail-header').height());
+            ))
+            .find('img').hide().end()
+            .css('padding-top', that.$detail.find('.detail-header').height());
 
         that.$detail.find('.close').off('click').on('click', function () {
             that.$detail.hide();
@@ -200,11 +202,11 @@ Popup.prototype.updateIssue = function (url) {
             }
             $this.attr('href', util.getUrl(url, href)).attr('target', '_blank');
         });
-        $description.find('img').each(function () {
+        that.$detail.find('img').each(function () {
             var src = util.getUrl(url, $(this).attr('src'));
             $(this).attr('src', src);
-            $(this).wrap(util.sprintf('<a href="%s"></a>', src));
-        });
+            $(this).wrap(util.sprintf('<a href="%s" target="_blank"></a>', src));
+        }).show();
     });
 };
 

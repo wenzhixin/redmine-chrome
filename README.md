@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.0.9
+
+* Fix #30: update blockquote style.
+* Fix #31: update issue detail use redmine detail page.
+
 ### 2.0.8
 
 * Update textile parse lib.

@@ -85,16 +85,6 @@ var util = {
         return issue.id + new Date(issue.updated_on).getTime();
     },
 
-    getContentUrl: function (value, attachments) {
-        for (var i = 0; i < attachments.length; i++) {
-            var attachment = attachments[i];
-            if (value == attachment.filename) {
-                return attachment.content_url;
-            }
-        }
-        return null;
-    },
-
     getPriorityLabel: function (priority) {
         return {
             Low: 'info',
@@ -114,8 +104,12 @@ var util = {
     },
 
     convertTextile: function (text) {
-        var textile = new Textile();
-        return textile.parse(text) || '';
+        var $copyFrom = $('<textarea></textarea>');
+        $('body').append($copyFrom);
+        $copyFrom.val(text);
+        text = textile.convert($copyFrom.val());
+        $copyFrom.remove();
+        return text;
     },
 
     getValueByString: function (o, s) {
@@ -131,5 +125,14 @@ var util = {
             }
         }
         return o;
+    },
+
+    getUrl: function (base, url) {
+        if (url && url.slice(0, 1) === '/') {
+            var a = document.createElement('a');
+            a.href = base;
+            return a.protocol + '//' + a.host + url;
+        }
+        return url;
     }
 };

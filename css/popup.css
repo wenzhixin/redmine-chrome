@@ -97,3 +97,13 @@
     padding-top: 10px;
     background: #fff;
 }
+
+blockquote {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-style: italic;
+    border-left: 3px solid #e0e0e0;
+    padding-left: 0.6em;
+    margin-left: 2.4em;
+}

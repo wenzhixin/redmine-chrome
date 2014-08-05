@@ -190,14 +190,20 @@ Popup.prototype.updateIssue = function (url) {
         if ($history.length) {
             that.$detail.find('.history').html($history.html());
         }
-        that.$detail.find('img').each(function () {
+        that.$detail.find('a').each(function () {
+            var $this = $(this),
+                href = $this.attr('href');
+
+            if (href === '#' || href === 'javascript:void(0)') {
+                $this.remove();
+                return;
+            }
+            $this.attr('href', util.getUrl(url, href)).attr('target', '_blank');
+        });
+        $description.find('img').each(function () {
             var src = util.getUrl(url, $(this).attr('src'));
             $(this).attr('src', src);
             $(this).wrap(util.sprintf('<a href="%s"></a>', src));
-        });
-        that.$detail.find('a').each(function () {
-            $(this).attr('href', util.getUrl(url, $(this).attr('href')));
-            $(this).attr('target', '_blank');
         });
     });
 };

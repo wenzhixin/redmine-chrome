@@ -30,5 +30,10 @@ var locale = {
     update: '更新',
     percent_done: '% 完成：',
     copy_issue_id: '复制问题编号',
-    feedback: '问题反馈'
+    feedback: '问题反馈',
+    order_by: '问题排序',
+    order_by_default: '默认',
+    order_by_priority: '优先级',
+    order_by_updated: '更新时间',
+    order_by_created: '创建时间'
 };

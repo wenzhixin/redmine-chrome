@@ -30,5 +30,10 @@ var locale = {
     update: 'Update',
     percent_done: '% Done: ',
     copy_issue_id: 'Copy the issue id',
-    feedback: 'Feedback'
+    feedback: 'Feedback',
+    order_by: 'Issues order',
+    order_by_default: 'Default',
+    order_by_updated: 'Updated',
+    order_by_priority: 'Priority',
+    order_by_created: 'Created'
 };

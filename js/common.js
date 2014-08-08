@@ -16,7 +16,8 @@ var settings = function (key, value) {
         data: {},
         unread: 0,
         url_index: 0,
-        role_index: 0
+        role_index: 0,
+        order: 'default' // default, updated_on, priority.id, created_on
     };
 
     if (typeof value === 'undefined') {
@@ -134,5 +135,39 @@ var util = {
             return a.protocol + '//' + a.host + url;
         }
         return url;
+    },
+
+    sortIssues: function (issues, unreadList) {
+        var order = settings('order'),
+            sorter = function (a, b) {
+                var aa = util.getValueByString(a, order),
+                    bb = util.getValueByString(b, order);
+
+                if (aa < bb) {
+                    return 1;
+                }
+                if (aa > bb) {
+                    return -1;
+                }
+                return 0;
+            };
+
+        if (order === 'default') {
+            var issues1 = [],
+                issues2 = [];
+
+            $.each(issues, function (i, issue) {
+                if ($.inArray(util.getIuid(issue), unreadList) !== -1) {
+                    issues1.push(issue);
+                } else {
+                    issues2.push(issue);
+                }
+            });
+            order = 'priority.id';
+            issues2 = issues2.sort(sorter);
+            return issues1.concat(issues2);
+        }
+
+        return issues.sort(sorter);
     }
 };

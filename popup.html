@@ -53,6 +53,40 @@
         </p>
     </div>
 </script>
+<script id="sortTpl" type="text/template">
+    <div class="order-by">
+        <a href="javascript:void(0)"
+           data-toggle="dropdown">
+            <i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li data-order="default">
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-heart"></i>
+                    <span i18n-values="order_by_default"></span>
+                </a>
+            </li>
+            <li data-order="priority.id">
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                    <span i18n-values="order_by_priority"></span>
+                </a>
+            </li>
+            <li data-order="updated_on">
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                    <span i18n-values="order_by_updated"></span>
+                </a>
+            </li>
+            <li data-order="created_on">
+                <a href="javascript:void(0)">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                    <span i18n-values="order_by_created"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</script>
 <script id="detailTpl" type="text/template">
     <div class="detail-header">
         <a class="close">&times;</a>

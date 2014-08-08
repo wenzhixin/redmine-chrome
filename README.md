@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.0
+
+* Fix #32: add sort issues list.
+
 ### 2.0.9
 
 * Fix #30: update blockquote style.

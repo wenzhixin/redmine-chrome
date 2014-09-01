@@ -71,12 +71,13 @@ Popup.prototype.initIssues = function () {
     var that = this,
         html = [$('#sortTpl').html()],
         url = settings('urls')[settings('url_index')],
-        data = settings('data')[this.getKey()];
+        data = settings('data')[this.getKey()],
+        issues = util.sortIssues(data.issues, data.unreadList);
 
     html.push(util.sprintf($('#markTpl').html(),
         data.unreadList.length ? ' ' : 'none'));
 
-    $.each(util.sortIssues(data.issues, data.unreadList), function (i, issue) {
+    $.each(issues, function (i, issue) {
         html.push(util.sprintf($('#issueTpl').html(),
             $.inArray(util.getIuid(issue), data.unreadList) === -1 ? '' : 'fb',
             i,
@@ -101,7 +102,7 @@ Popup.prototype.initIssues = function () {
         .find('.list-group-item')
         .off('click').on('click', function () {
             $(this).removeClass('fb');
-            that.showIssue(data.issues[$(this).data('index')]);
+            that.showIssue(issues[$(this).data('index')]);
         }).end()
         .find('.order-by li')
         .off('click').on('click', function () {
@@ -116,7 +117,7 @@ Popup.prototype.initIssues = function () {
         event.stopImmediatePropagation();
 
         var index = $(this).parents('.list-group-item').data('index');
-        util.copyText('#' + data.issues[index].id);
+        util.copyText('#' + issues[index].id);
     });
     that.$issues.find('[data-toggle="tooltip"]').tooltip({
         placement: 'bottom'

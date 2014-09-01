@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.3
+
+* Add content scripts to toggle redmine slidebar.
+
 ### 2.1.2
 
 * Update the color of the priority label.

@@ -87,13 +87,7 @@ var util = {
     },
 
     getPriorityLabel: function (priority) {
-        return {
-            Low: 'info',
-            Normal: 'warning',
-            High: 'default',
-            Urgent: 'primary',
-            Immediate: 'danger'
-        }[priority];
+        return priority.toLowerCase();
     },
 
     copyText: function (text) {

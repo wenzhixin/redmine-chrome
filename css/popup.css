@@ -113,3 +113,24 @@ blockquote {
     position: absolute;
     z-index: 1000;
 }
+
+/* priority color */
+.label-immediate {
+    background: BlueViolet;
+}
+
+.label-urgent {
+    background: #d9534f;
+}
+
+.label-high {
+    background: #d1761f;
+}
+
+.label-normal {
+    background-color: #f0ad4e;
+}
+
+.label-low {
+    background: #aed2e8;
+}

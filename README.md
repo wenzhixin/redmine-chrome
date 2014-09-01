@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.2
+
+* Update the color of the priority label.
+
 ### 2.1.1
 
 * Fix issue detail error!

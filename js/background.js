@@ -146,3 +146,16 @@ Background.prototype.reset = function() {
 
 var background = new Background();
 background.init();
+
+// add listener for content scripts
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    switch (request.method) {
+        case "getUrls":
+            sendResponse({
+                urls: settings('urls')
+            });
+            break;
+        default:
+            break;
+    }
+});

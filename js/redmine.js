@@ -1,6 +1,7 @@
 $(function() {
 
     var $header = $('#header'),
+        $main = $('#main'),
         $sidebar = $('#sidebar'),
         $content = $('#content'),
         $toggle,
@@ -40,6 +41,29 @@ $(function() {
         $content.css('width', '75%');
     }
 
-    initView();
-    onToggle();
+    function check(callback) {
+        chrome.extension.sendRequest({method: 'getUrls'}, function (response) {
+            var result = false;
+
+            $.each(response.urls, function (i, url) {
+                if (location.href.indexOf(url) !== -1) {
+                    result = true;
+                    return false;
+                }
+            });
+            
+            if (result && !$main.hasClass('nosidebar')) {
+                return callback(true);
+            }
+            return callback(false);
+        });
+    }
+
+    check(function (result) {
+        if (!result) {
+            return;
+        }
+        initView();
+        onToggle();
+    });
 });

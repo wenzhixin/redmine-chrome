@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.4
+
+* Add check redmine url and sidebar.
+
 ### 2.1.3
 
 * Add content scripts to toggle redmine slidebar.

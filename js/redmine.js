@@ -1,6 +1,7 @@
 $(function() {
 
-    var $header = $('#header'),
+    var $body = $('body'),
+        $header = $('#header'),
         $main = $('#main'),
         $sidebar = $('#sidebar'),
         $content = $('#content'),
@@ -8,14 +9,29 @@ $(function() {
         hidden = localStorage && +localStorage['redmine.hidden'] || 0;
 
     function initView() {
-        $('head').append('<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">');
-        $toggle = $('<a href="javascript:void(0)" style="position: absolute; right: 5px; margin-top: -5px;"><i class="fa fa-angle-double-right fa-2x"></i></a>');
+        // toggle
+        $toggle = $('<a class="plugin-toggle" href="javascript:void(0)"><i class="fa fa-angle-double-right fa-2x"></i></a>');
         $header.append($toggle);
-
+        
         $toggle.click(function () {
             hidden = hidden === 0 ? 1 : 0;
             if (localStorage) localStorage['redmine.hidden'] = hidden;
             onToggle();
+        });
+        
+        // back to top
+        $body.append('<a class="plugin-back-to-top" href="#top" title="Back to top"><i class="fa fa-arrow-up"></i></a>');
+        
+        
+        // copy
+        if (!$('pre').length) {
+            return;
+        }
+        $body.append('<div data-swf-path="' + chrome.extension.getURL('assets/ZeroClipboard.swf') + '"></div>');
+        loadScript(chrome.extension.getURL('assets/jquery.min.js'), function () {    
+            loadScript(chrome.extension.getURL('assets/ZeroClipboard.js'), function () {
+                loadScript(chrome.extension.getURL('js/copy.js'));
+            });
         });
     }
 
@@ -66,4 +82,19 @@ $(function() {
         initView();
         onToggle();
     });
+    
+    function loadScript(url, callback) {
+        // Adding the script tag to the head as suggested before
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.src = url;
+
+        // Then bind the event to the callback function.
+        // There are several events for cross browser compatibility.
+        script.onreadystatechange = callback;
+        script.onload = callback;
+
+        // Fire the loading
+        head.appendChild(script);
+    }
 });

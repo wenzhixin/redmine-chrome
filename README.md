@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.5
+
+* Add 'Back to top' link.
+* Add 'Copy' to pre.
+
 ### 2.1.4
 
 * Add check redmine url and sidebar.

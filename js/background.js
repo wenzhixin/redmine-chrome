@@ -150,7 +150,7 @@ background.init();
 // add listener for content scripts
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     switch (request.method) {
-        case "getUrls":
+        case 'getUrls':
             sendResponse({
                 urls: settings('urls')
             });

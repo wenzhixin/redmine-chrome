@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.6
+
+* Fix copy pre without code bug.
+
 ### 2.1.5
 
 * Add 'Back to top' link.

@@ -1,7 +1,14 @@
 $(function () {
     ZeroClipboard.config({swfPath: $('[data-swf-path]').data('swf-path')});
 
-    $('pre').append('<div class="plugin-zclip" data-clipboard-text="Copy Me!" title="Click to copy me.">Copy</div>');
+    $('pre').each(function () {
+        if (!$(this).find('code').length) {
+            var code = $(this).html();
+            $(this).html('');
+            $('<code></code>').html(code).appendTo($(this));
+        }
+    }).append('<div class="plugin-zclip" title="Click to copy me.">Copy</div>');
+    
     $('.plugin-zclip').each(function () {
         var $this = $(this),
             client = new ZeroClipboard($this[0]);

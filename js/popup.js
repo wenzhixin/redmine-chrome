@@ -215,6 +215,9 @@ Popup.prototype.updateIssue = function (url) {
             $(this).attr('src', src);
             $(this).wrap(util.sprintf('<a href="%s" target="_blank"></a>', src));
         }).show();
+
+        // update table
+        that.$detail.find('table').addClass('table table-bordered');
     });
 };
 

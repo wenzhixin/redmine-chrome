@@ -17,7 +17,7 @@ Redmine notification tools for chrome extension.
 
 ### 2.1.7
 
-*  Add table clsses
+*  Add table classes
 
 ### 2.1.6
 

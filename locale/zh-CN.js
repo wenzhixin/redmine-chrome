@@ -35,5 +35,6 @@ var locale = {
     order_by_default: '默认',
     order_by_priority: '优先级',
     order_by_updated: '更新时间',
-    order_by_created: '创建时间'
+    order_by_created: '创建时间',
+    go_backup: '返回'
 };

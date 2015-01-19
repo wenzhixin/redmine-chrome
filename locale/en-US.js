@@ -35,5 +35,6 @@ var locale = {
     order_by_default: 'Default',
     order_by_updated: 'Updated',
     order_by_priority: 'Priority',
-    order_by_created: 'Created'
+    order_by_created: 'Created',
+    go_backup: 'Go back'
 };

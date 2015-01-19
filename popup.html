@@ -89,7 +89,9 @@
 </script>
 <script id="detailTpl" type="text/template">
     <div class="detail-header">
-        <a class="close">&times;</a>
+        <a class="close" i18n-properties="title:go_back">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+        </a>
         <div class="title">
             <a class="copy-issue f16 mr5 cp" data-toggle="tooltip" i18n-properties="title:copy_issue_id">
                 <i class="glyphicon glyphicon-floppy-saved"></i>
@@ -150,6 +152,10 @@
                 <i class="glyphicon glyphicon-edit"></i>
                 <span i18n-values="update"></span>
             </button>
+            <a class="btn btn-default btn-close">
+                <i class="glyphicon glyphicon-arrow-left"></i>
+                <span i18n-values="go_backup"></span>
+            </a>
         </div>
         <input type="hidden" name="_method" value="put">
         <input type="hidden" name="authenticity_token">

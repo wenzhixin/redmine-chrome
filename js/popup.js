@@ -152,7 +152,7 @@ Popup.prototype.showIssue = function (issue) {
             .find('img').hide().end()
             .css('padding-top', that.$detail.find('.detail-header').height());
 
-        that.$detail.find('.close').off('click').on('click', function () {
+        that.$detail.find('.close, .btn-close').off('click').on('click', function () {
             that.$detail.hide();
             that.$main.show();
         });

@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.8
+
+* Add and update go back buttons.
+
 ### 2.1.7
 
 *  Add table classes

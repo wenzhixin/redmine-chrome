@@ -83,6 +83,7 @@ Popup.prototype.initIssues = function () {
             i,
             util.getPriorityLabel(issue.priority.name),
             issue.priority.name,
+            issue.status.name,
             issue.project.name,
             moment(new Date(issue.updated_on)).format('YYYY-MM-DD HH:mm:ss'),
             moment(new Date(issue.updated_on)).fromNow(),

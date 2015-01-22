@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.1.9
+
+Fix #35: add status in issue list.
+
 ### 2.1.8
 
 * Add and update go back buttons.

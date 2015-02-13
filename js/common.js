@@ -1,6 +1,5 @@
 /**
  * @author zhixin wen <wenzhixin2010@gmail.com>
- * @date 2012-08-28
  */
 
 var settings = function (key, value) {

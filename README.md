@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.2.0
+
+Fix #37: conflict between jQuery and prototype.js.
+
 ### 2.1.9
 
 Fix #35: add status in issue list.

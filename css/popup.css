@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.list-group {
+    margin-bottom: 0;
+}
+
 .main {
     position: relative;
     width: 520px;

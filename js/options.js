@@ -2,7 +2,7 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
 
-$(function() {
+$(function () {
 
     var $language = $('#language'),
         $save = $('#save'),
@@ -21,7 +21,7 @@ $(function() {
         });
 
         // language
-        $language.change(function() {
+        $language.change(function () {
             settings('language', $(this).val());
             location.reload(true);
         }).val(settings('language'));
@@ -33,21 +33,21 @@ $(function() {
             urlsHtml = [];
 
         $.each(settings('urls'), function (i, url) {
-            urlsHtml.push(util.sprintf(itemTpl, url));
+            urlsHtml.push(util.sprintf(itemTpl, url, settings('keys')[i]));
         });
         $urls.html(urlsHtml.join(''));
         $addUrl.click(function () {
-            $urls.append(util.sprintf(itemTpl, ''));
+            $urls.append(util.sprintf(itemTpl, '', ''));
         });
         $(document).on('click', '.remove-url', function () {
-            $(this).parents('.input-group').remove();
+            $(this).parents('.input-inline').remove();
         });
 
         if (settings('urls').length) {
             $advance.show();
         } else {
             $addUrl.trigger('click');
-            $urls.find('input').focus().keyup(function () {
+            $urls.find('input[name="url"]').focus().keyup(function () {
                 if ($.trim($(this).val())) {
                     $advance.show();
                 } else {
@@ -78,14 +78,20 @@ $(function() {
     }
 
     function save() {
-        var urls = [];
-        $urls.find('input').each(function() {
+        var urls = [],
+            keys = [];
+
+        $urls.find('input[name="url"]').each(function () {
             var url = $.trim($(this).val());
             if (url) {
                 urls.push(url.replace(/\/$/, ''));
             }
         });
+        $urls.find('input[name="key"]').each(function () {
+            keys.push($.trim($(this).val()));
+        });
         settings('urls', urls);
+        settings('keys', keys);
         settings('roles', $roles.multipleSelect('getSelects'));
         settings('status', $status.multipleSelect('getSelects'));
         settings('number', +($number.multipleSelect('getSelects')[0]));

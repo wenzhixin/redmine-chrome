@@ -49,6 +49,10 @@ Popup.prototype.initRoles = function () {
     $.each(settings('roles'), function (i, role) {
         var data = settings('data')[that.getKey(role)];
 
+        if (data.error) {
+            return;
+        }
+
         html.push(util.sprintf($('#roleTpl').html(),
             i ,
             locale['roles_' + role],
@@ -72,8 +76,20 @@ Popup.prototype.initIssues = function () {
         html = [$('#sortTpl').html()],
         url = settings('urls')[settings('url_index')],
         data = settings('data')[this.getKey()],
-        issues = util.sortIssues(data.issues, data.unreadList);
+        issues = data.issues;
 
+    if (data.error) {
+        this.$issues.html([
+            '<div class="options">',
+                '<a href="options.html" target="_blank">',
+                    locale.settings_error,
+                '</a>',
+            '</div>'
+        ].join(''));
+        return;
+    }
+
+    issues = util.sortIssues(data.issues, data.unreadList);
     html.push(util.sprintf($('#markTpl').html(),
         data.unreadList.length ? ' ' : 'none'));
 

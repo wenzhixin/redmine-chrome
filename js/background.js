@@ -22,42 +22,52 @@ Background.prototype.initOptions = function () {
 };
 
 Background.prototype.initRequest = function () {
-    var that = this;
+    var that = this,
+        addresses = [];
 
+    this.error = false;
     this.data = settings('data');
     this.keys = [];
-    async.eachSeries(settings('urls'), function (url, callback) {
+    $.each(settings('urls'), function (i, url) {
+        addresses.push({
+            url: url,
+            key: settings('keys')[i]
+        });
+    });
+    async.eachSeries(addresses, function (address, callback) {
         async.eachSeries(settings('roles'), function (role, callback) {
-            that.getList(url, role, callback);
+            that.getList(address, role, callback);
         }, callback);
     }, function () {
         settings('data', that.data);
         settings('unread', that.unreadCount);
+        console.log(that.error);
         chrome.browserAction.setBadgeText({
-            text: that.unreadCount > 0 ? that.unreadCount + '' : ''
+            text: that.error ? 'x' : (that.unreadCount > 0 ? that.unreadCount + '' : '')
         });
         that.unreadCount = 0;
         that.timeoutId = setTimeout($.proxy(that.initRequest, that), settings('interval') * 60 * 1000);
     });
 };
 
-Background.prototype.getList = function (url, role, callback) {
+Background.prototype.getList = function (address, role, callback) {
     var that = this,
+        key = $.md5(address.url + role),
         data = {
             set_filter: 1,
             sort: 'updated_on:desc',
             status_id: settings('status').join('|'),
-            limit: settings('number')
+            limit: settings('number'),
+            key: address.key
         };
 
     data[role] = 'me';
     $.ajax({
-        url: url + '/issues.json',
+        url: address.url + '/issues.json',
         data: data,
         dataType: 'json',
         success: function (res) {
-            var key = $.md5(url + role),
-                lastRead = new Date(0),
+            var lastRead = new Date(0),
                 lastNotified = new Date(0),
                 unreadList = [],
                 readList = [],
@@ -70,6 +80,7 @@ Background.prototype.getList = function (url, role, callback) {
             }
 
             that.data[key].issues = issues;
+            that.data[key].error = false;
 
             if (that.data[key].lastRead) {
                 lastRead.setTime(that.data[key].lastRead);
@@ -109,7 +120,14 @@ Background.prototype.getList = function (url, role, callback) {
             that.unreadCount += count;
             callback();
         },
-        error: callback
+        error: function () {
+            if (!that.data.hasOwnProperty(key)) {
+                that.data[key] = {};
+            }
+            that.data[key].error = true;
+            that.error = true;
+            callback();
+        }
     });
 };
 

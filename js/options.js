@@ -33,7 +33,7 @@ $(function () {
             urlsHtml = [];
 
         $.each(settings('urls'), function (i, url) {
-            urlsHtml.push(util.sprintf(itemTpl, url, settings('keys')[i]));
+            urlsHtml.push(util.sprintf(itemTpl, url, settings('keys') ? settings('keys')[i] : ''));
         });
         $urls.html(urlsHtml.join(''));
         $addUrl.click(function () {

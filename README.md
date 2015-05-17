@@ -15,6 +15,14 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.1
+
+Fix undefined keys error.
+
+### 2.3.0
+
+Add api key support.
+
 ### 2.2.0
 
 Fix #37: conflict between jQuery and prototype.js.

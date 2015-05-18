@@ -6,6 +6,7 @@ var settings = function (key, value) {
     var defaults = {
         language: 'en-US',
         urls: [],
+        keys: [],
         roles: ['assigned_to_id'],
         status: [1, 2, 7, 4], // [1, 2, 7, 4, 3, 6, 16, 5]
         number: 25,

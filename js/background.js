@@ -31,7 +31,7 @@ Background.prototype.initRequest = function () {
     $.each(settings('urls'), function (i, url) {
         addresses.push({
             url: url,
-            key: settings('keys')[i]
+            key: settings('keys')[i] || ''
         });
     });
     async.eachSeries(addresses, function (address, callback) {

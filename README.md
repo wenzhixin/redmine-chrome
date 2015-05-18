@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.3
+
+Fix issue detail.
+
 ### 2.3.2
 
 Fix the keys default.

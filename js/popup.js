@@ -143,9 +143,10 @@ Popup.prototype.initIssues = function () {
 
 Popup.prototype.showIssue = function (issue) {
     var that = this,
-        url = settings('urls')[settings('url_index')] + '/issues/' + issue.id;
+        url = settings('urls')[settings('url_index')] + '/issues/' + issue.id,
+        key = settings('keys')[settings('url_index')];
 
-    this.getIssue(issue, url, function (issue, error) {
+    this.getIssue(issue, url, key, function (issue, error) {
         issue = $.extend({}, {
             tracker: {name: ''},
             status: {name: ''},
@@ -190,9 +191,10 @@ Popup.prototype.showIssue = function (issue) {
     });
 };
 
-Popup.prototype.getIssue = function (issue, url, callback) {
+Popup.prototype.getIssue = function (issue, url, key, callback) {
     $.ajax({
         url: url + '.json',
+        data: {key: key},
         timeout: 1000,
         success: function (res) {
             callback(res.issue);

@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.4
+
+Fix issue update textare name.
+
 ### 2.3.3
 
 Fix issue detail.

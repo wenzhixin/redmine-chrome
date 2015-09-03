@@ -269,6 +269,10 @@ Popup.prototype.showEdit = function (issue, url) {
                 $res.find('[name="issue[done_ratio]"]').val());
         });
 
+        var toolbar = new jsToolBar($edit.find('textarea')[0]);
+        toolbar.setHelpLink('http://www.redmine.org/help/en/wiki_syntax.html');
+        toolbar.draw();
+
         $edit.off('submit').on('submit', function (event) {
             event.preventDefault();
 

@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.5
+
+* Fix #40: Create Tool bar for comments.
+* Add ja-JP support.
+
 ### 2.3.4
 
 Fix issue update textare name.

@@ -1,4 +1,4 @@
- var locale = {
+var locale = {
     options: 'オプション',
     title: 'Redmine 通知',
     language: '言語選択：',

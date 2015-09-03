@@ -14,6 +14,7 @@
 
 .nav-tabs li {
     position: relative;
+    max-width: 170px;
 }
 
 .nav-tabs li a {

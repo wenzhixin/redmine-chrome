@@ -5,6 +5,7 @@ var locale = {
     chinese: 'Chinese',
     english: 'English',
     japanese: 'Japanese',
+    russian: 'Russian',
     redmine_list: 'Redmine address: ',
     issues_list: 'Issues list: ',
     roles_assigned_to_id: 'Assigned to me',

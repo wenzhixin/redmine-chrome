@@ -5,6 +5,7 @@ var locale = {
     chinese: '中国語',
     english: '英語',
     japanese: '日本語',
+    russian: 'ロシア語',
     redmine_list: 'Redmine 一覧：',
     issues_list: 'チケット一覧：',
     roles_assigned_to_id: '担当しているチケット',

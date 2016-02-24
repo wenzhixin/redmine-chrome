@@ -1,7 +1,7 @@
 {
     "name": "Redmine Notification",
     "description": "Redmine notification tools",
-    "version": "2.3.5",
+    "version": "2.3.6",
     "manifest_version": 2,
     "update_url": "http://clients2.google.com/service/update2/crx",
     "icons": {
@@ -20,7 +20,7 @@
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],
         "css": ["assets/font-awesome/css/font-awesome.min.css", "css/redmine.css"],
-        "js": ["assets/jquery.min.js", "js/redmine.js"]
+        "js": ["assets/jquery.min.js", "assets/jsonlint.js", "js/redmine.js"]
     }],
     "web_accessible_resources": [
         "assets/jquery.min.js",

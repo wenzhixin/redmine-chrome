@@ -21,17 +21,22 @@ $(function() {
         
         // back to top
         $body.append('<a class="plugin-back-to-top" href="#top" title="Back to top"><i class="fa fa-arrow-up"></i></a>');
-        
-        
-        // copy
-        if (!$('pre').length) {
-            return;
-        }
-        $body.append('<div data-swf-path="' + chrome.extension.getURL('assets/ZeroClipboard.swf') + '"></div>');
-        loadScript(chrome.extension.getURL('assets/jquery.min.js'), function () {    
-            loadScript(chrome.extension.getURL('assets/ZeroClipboard.js'), function () {
-                loadScript(chrome.extension.getURL('js/copy.js'));
-            });
+
+        // check json
+        $('pre code.json').each(function () {
+            var text = $.map($(this).text().split('\n'), function (str) {
+                    return $.trim(str);
+                }).join('\n'),
+                alert = '';
+
+            try {
+                checkKey(jsonlint.parse(text));
+            } catch (e) {
+                alert = e;
+            }
+            if (alert) {
+                $(this).parent().after('<pre>' + alert + '</pre>');
+            }
         });
     }
 
@@ -96,5 +101,21 @@ $(function() {
 
         // Fire the loading
         head.appendChild(script);
+    }
+
+    function checkKey(obj) {
+        if ($.isArray(obj)) {
+            $.each(obj, function (i, value) {
+                checkKey(value);
+            });
+        }
+        if ($.isPlainObject(obj)) {
+            for (var key in obj) {
+                if (/[A-Z]/.test(key)) {
+                    throw new Error('Key "' + key + '" can not use Upper Case...');
+                }
+                checkKey(obj[key]);
+            }
+        }
     }
 });

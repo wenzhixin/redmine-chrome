@@ -15,6 +15,11 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.6
+
+* Add ja-JP support.
+* Update `nav-tabs` display.
+
 ### 2.3.5
 
 * Fix #40: Create Tool bar for comments.

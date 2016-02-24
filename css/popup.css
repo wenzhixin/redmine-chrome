@@ -12,9 +12,12 @@
     width: 520px;
 }
 
+.nav-tabs {
+    display: flex;
+}
+
 .nav-tabs li {
     position: relative;
-    max-width: 200px;
 }
 
 .nav-tabs li a {

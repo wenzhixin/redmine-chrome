@@ -139,7 +139,7 @@ Background.prototype.showNotification = function (issue) {
     chrome.notifications.create(new Date().getTime() + '', {
         type: 'basic',
         title: issue.subject,
-        message: issue.description,
+        message: $('<div/>').html(util.convertTextile(issue.description)).text(),
         iconUrl: chrome.runtime.getURL("/icon128.png")
     }, function(id) {
         setTimeout(function() {

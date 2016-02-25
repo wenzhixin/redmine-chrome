@@ -15,6 +15,14 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.7
+
+* Fix #23: update issues after get issue from api.
+* Add json lint.
+* Fix #10: add notify_status option.
+* Fix #44: html notification trouble.
+* Fix #43: save editor content.
+
 ### 2.3.6
 
 * Add ja-JP support.

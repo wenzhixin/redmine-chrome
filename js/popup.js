@@ -141,12 +141,29 @@ Popup.prototype.initIssues = function () {
     });
 };
 
+Popup.prototype.updateIssues = function (issue) {
+    var data = settings('data'),
+        issues = data[this.getKey()].issues;
+
+    for (var i = 0; i < issues.length; i++) {
+        if (issues[i].id === issue.id) {
+            issues[i] = issue;
+            if (settings('status').indexOf('' + issue.status.id) === -1) {
+                issues.splice(i, 1);
+                this.$issues.find('[data-index="' + i + '"]').remove();
+            }
+            settings('data', data);
+        }
+    }
+};
+
 Popup.prototype.showIssue = function (issue) {
     var that = this,
         url = settings('urls')[settings('url_index')] + '/issues/' + issue.id,
         key = settings('keys')[settings('url_index')];
 
     this.getIssue(issue, url, key, function (issue, error) {
+        that.updateIssues(issue);
         issue = $.extend({}, {
             tracker: {name: ''},
             status: {name: ''},
@@ -285,7 +302,7 @@ Popup.prototype.showEdit = function (issue, url) {
                 contentType: false,
                 processData: false,
                 data: new FormData($(this)[0]),
-                success: function (res) {
+                success: function () {
                     that.showIssue(issue);
                 }
             });

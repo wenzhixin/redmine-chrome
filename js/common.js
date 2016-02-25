@@ -15,6 +15,7 @@ var settings = function (key, value) {
         notify_status: [1, 2, 7, 4, 3, 6, 16, 5],
         'new': false,
         data: {},
+        editors: {}, // save the editor content
         unread: 0,
         url_index: 0,
         role_index: 0,

@@ -259,6 +259,7 @@ Popup.prototype.updateIssue = function (url) {
 
 Popup.prototype.showEdit = function (issue, url) {
     var that = this;
+    var editors = settings('editors');
 
     $.get(url + '/edit', function (res) {
         var $res = $(res),
@@ -290,6 +291,17 @@ Popup.prototype.showEdit = function (issue, url) {
         toolbar.setHelpLink('http://www.redmine.org/help/en/wiki_syntax.html');
         toolbar.draw();
 
+        // fix #43: save editor
+        var saveTimeout = 0;
+        var saveEditor = function () {
+            editors[issue.id] = $edit.find('textarea').val();
+            settings('editors', editors);
+        };
+        $edit.find('textarea').on('keyup focus', function () {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveEditor, 500);
+        }).val(settings('editors')[issue.id] || '');
+
         $edit.off('submit').on('submit', function (event) {
             event.preventDefault();
 
@@ -303,6 +315,8 @@ Popup.prototype.showEdit = function (issue, url) {
                 processData: false,
                 data: new FormData($(this)[0]),
                 success: function () {
+                    delete editors[issue.id];
+                    settings('editors', editors);
                     that.showIssue(issue);
                 }
             });

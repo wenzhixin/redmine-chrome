@@ -15,10 +15,11 @@ Background.prototype.init = function () {
 Background.prototype.initOptions = function () {
     if (!settings('new')) {
         chrome.tabs.create({
-            url : chrome.extension.getURL("options.html")
+            url : chrome.extension.getURL('options.html')
         });
         settings('new', true);
     }
+    settings('status').map(function (i) {return +i;});
 };
 
 Background.prototype.initRequest = function () {
@@ -133,6 +134,7 @@ Background.prototype.getList = function (address, role, callback) {
 
 Background.prototype.showNotification = function (issue) {
     if (!settings('notify')) return;
+    if (settings('notify_status').indexOf(issue.status.id) === -1) return;
 
     chrome.notifications.create(new Date().getTime() + '', {
         type: 'basic',

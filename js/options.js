@@ -13,7 +13,8 @@ $(function () {
         $status = $('#status'),
         $number = $('#number'),
         $interval = $('#interval'),
-        $notify = $('#notify');
+        $notify = $('#notify'),
+        $notifyStatus = $('#notify_status');
 
     function init() {
         $('[data-toggle="tooltip"]').tooltip({
@@ -56,9 +57,9 @@ $(function () {
             });
         }
 
-        // roles, status
-        $.each(['roles', 'status'], function (i, name) {
-            var $name = $('#' + name).multipleSelect({
+        // roles, status, notify_status
+        $.each(['roles', 'status', 'notify_status'], function (i, name) {
+            $('#' + name).multipleSelect({
                 width: '100%',
                 selectAll: false,
                 countSelected: false
@@ -75,6 +76,14 @@ $(function () {
         });
 
         $notify.prop('checked', settings('notify'));
+        // notify_status
+        var updateNotifyStatus = function (checked) {
+            $notifyStatus.multipleSelect(checked ? 'enable' : 'disable');
+        };
+        $notify.click(function () {
+            updateNotifyStatus($notify.prop('checked'));
+        });
+        updateNotifyStatus(settings('notify'));
     }
 
     function save() {
@@ -93,10 +102,12 @@ $(function () {
         settings('urls', urls);
         settings('keys', keys);
         settings('roles', $roles.multipleSelect('getSelects'));
-        settings('status', $status.multipleSelect('getSelects'));
+        settings('status', $status.multipleSelect('getSelects').map(function (i) {return +i;}));
         settings('number', +($number.multipleSelect('getSelects')[0]));
         settings('interval', +($interval.multipleSelect('getSelects')[0]));
         settings('notify', $notify.prop('checked'));
+        settings('notify_status', $notifyStatus.multipleSelect('getSelects').map(function (i) {return +i;}));
+
         alert(locale.save_successful);
         chrome.extension.getBackgroundPage().background.reset();
     }

@@ -12,6 +12,7 @@ var settings = function (key, value) {
         number: 25,
         interval: 5,
         notify: true,
+        notify_status: [1, 2, 7, 4],
         'new': false,
         data: {},
         unread: 0,

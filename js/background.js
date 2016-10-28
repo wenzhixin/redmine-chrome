@@ -19,7 +19,6 @@ Background.prototype.initOptions = function () {
         });
         settings('new', true);
     }
-    settings('status').map(function (i) {return +i;});
 };
 
 Background.prototype.initRequest = function () {

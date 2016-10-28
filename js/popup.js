@@ -148,7 +148,8 @@ Popup.prototype.updateIssues = function (issue) {
     for (var i = 0; i < issues.length; i++) {
         if (issues[i].id === issue.id) {
             issues[i] = issue;
-            if (settings('status').indexOf(issue.status.id) === -1) {
+            var status = settings('status').map(function (i) {return +i;});
+            if (status.indexOf(issue.status.id) === -1) {
                 issues.splice(i, 1);
                 this.$issues.find('[data-index="' + i + '"]').remove();
             }

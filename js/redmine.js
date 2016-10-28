@@ -1,7 +1,6 @@
 $(function() {
 
     var $body = $('body'),
-        $header = $('#header'),
         $main = $('#main'),
         $sidebar = $('#sidebar'),
         $content = $('#content'),
@@ -9,18 +8,26 @@ $(function() {
         hidden = localStorage && +localStorage['redmine.hidden'] || 0;
 
     function initView() {
+        $body.append([
+            '<div class="redmine-pluin-tools">',
+            '<a class="plugin-toggle" href="javascript:">',
+            '<i class="fa fa-angle-double-right"></i>',
+            '</a>',
+            '<hr>',
+            '<a class="plugin-back-to-top" href="#top" title="Back to top">',
+            '<i class="fa fa-arrow-up"></i>',
+            '</a>',
+            '</div>'
+        ].join(''));
+
         // toggle
-        $toggle = $('<a class="plugin-toggle" href="javascript:void(0)"><i class="fa fa-angle-double-right fa-2x"></i></a>');
-        $header.append($toggle);
-        
+        $toggle = $('.redmine-pluin-tools > .plugin-toggle');
+
         $toggle.click(function () {
             hidden = hidden === 0 ? 1 : 0;
             if (localStorage) localStorage['redmine.hidden'] = hidden;
             onToggle();
         });
-        
-        // back to top
-        $body.append('<a class="plugin-back-to-top" href="#top" title="Back to top"><i class="fa fa-arrow-up"></i></a>');
 
         // check json
         $('pre code.json').each(function () {
@@ -72,7 +79,7 @@ $(function() {
                     return false;
                 }
             });
-            
+
             if (result && !$main.hasClass('nosidebar')) {
                 return callback(true);
             }
@@ -87,7 +94,7 @@ $(function() {
         initView();
         onToggle();
     });
-    
+
     function loadScript(url, callback) {
         // Adding the script tag to the head as suggested before
         var head = document.getElementsByTagName('head')[0];

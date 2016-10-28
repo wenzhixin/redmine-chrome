@@ -2,20 +2,16 @@ pre {
     position: relative;
 }
 
-.plugin-toggle {
-    position: absolute;
-    right: 5px;
-    margin-top: -5px;
-}
-
-.plugin-back-to-top {
+.redmine-pluin-tools {
     position: fixed;
     bottom: 10px;
     right: 10px;
-    font-size: 20px;
+    font-size: 16px;
     border: 1px solid #90AECB;
     border-radius: 5px;
     padding: 5px;
+    text-align: center;
+    z-index: 10000;
 }
 
 .plugin-zclip {

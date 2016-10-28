@@ -15,6 +15,14 @@ Redmine notification tools for chrome extension.
 
 ## Changelog
 
+### 2.3.9
+
+* Update toggle icon position.
+
+### 2.3.8
+
+* Fix update issues bug.
+
 ### 2.3.7
 
 * Fix #23: update issues after get issue from api.

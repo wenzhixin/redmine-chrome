@@ -1,143 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title i18n-values="options"></title>
-    <meta name="author" content="zhixin wen"/>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="assets/bootstrap/css/narrow.css"/>
-    <link rel="stylesheet" href="assets/multiple-select/multiple-select.css"/>
-    <link rel="stylesheet" href="css/base.css"/>
-</head>
-<body>
-<div class="container">
-    <div class="header">
-        <h3 class="text-muted pull-left" i18n-values="title"></h3>
-        <a data-toggle="tooltip"
-           href="https://github.com/wenzhixin/scutech-redmine/issues"
-           target="_blank"
-           i18n-properties="title:feedback">
-            <i class="f16 glyphicon glyphicon-send"></i>
-        </a>
 
-        <div class="pull-right">
-            <i class="glyphicon glyphicon-flag"></i>
-            <span i18n-values="language"></span>
-            <select id="language">
-                <option value="zh-CN" i18n-values="chinese"></option>
-                <option value="en-US" i18n-values="english"></option>
-                <option value="ja-JP" i18n-values="japanese"></option>
-                <option value="ru-RU" i18n-values="russian"></option>
-            </select>
-        </div>
-        <div class="clearfix"></div>
+<head>
+  <meta charset="utf-8" />
+  <title i18n-values="options"></title>
+  <meta name="author" content="zhixin wen" />
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/bootstrap/css/narrow.css" />
+  <link rel="stylesheet" href="assets/multiple-select/multiple-select.css" />
+  <link rel="stylesheet" href="css/base.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h3 class="text-muted pull-left" i18n-values="title"></h3>
+      <a data-toggle="tooltip" href="https://github.com/wenzhixin/scutech-redmine/issues" target="_blank" i18n-properties="title:feedback">
+        <i class="f16 glyphicon glyphicon-send"></i>
+      </a>
+
+      <div class="pull-right">
+        <i class="glyphicon glyphicon-flag"></i>
+        <span i18n-values="language"></span>
+        <select id="language">
+          <option value="zh-CN" i18n-values="chinese"></option>
+          <option value="en-US" i18n-values="english"></option>
+          <option value="ja-JP" i18n-values="japanese"></option>
+          <option value="ru-RU" i18n-values="russian"></option>
+        </select>
+      </div>
+      <div class="clearfix"></div>
     </div>
 
     <div>
-        <button id="save" class="btn btn-primary btn-lg">
-            <i class="glyphicon glyphicon-floppy-open"></i> <span i18n-values="save_your_changes"></span>
-        </button>
+      <button id="save" class="btn btn-primary btn-lg">
+        <i class="glyphicon glyphicon-floppy-open"></i> <span i18n-values="save_your_changes"></span>
+      </button>
     </div>
 
     <hr>
 
     <h3>
-        <span i18n-values="redmine_list"></span>
-        <a id="addUrl" href="javascript:void(0)"><i class="glyphicon glyphicon-plus"></i></a>
+      <span i18n-values="redmine_list"></span>
+      <a id="addUrl" href="javascript:void(0)" class="hidden">
+        <i class="glyphicon glyphicon-plus"></i>
+      </a>
     </h3>
 
     <div id="urls"></div>
+    <div class="clearfix"></div>
 
     <div id="advance" class="none">
-        <hr>
+      <hr>
 
-        <h3 i18n-values="issues_list"></h3>
-        <select id="roles" class="w" multiple="multiple">
-            <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
-            <option value="author_id" i18n-values="roles_author_id"></option>
-            <option value="watcher_id" i18n-values="roles_watcher_id"></option>
-        </select>
+      <h3 i18n-values="issues_list"></h3>
+      <select id="roles" class="w" multiple="multiple">
+        <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
+        <option value="author_id" i18n-values="roles_author_id"></option>
+        <option value="watcher_id" i18n-values="roles_watcher_id"></option>
+      </select>
 
-        <hr>
+      <hr>
 
-        <h3 i18n-values="issue_status"></h3>
-        <select id="status" class="w" multiple="multiple">
-            <option value="1">New</option>
-            <option value="2">In Progress</option>
-            <option value="7">Reopened</option>
-            <option value="4">Feedback</option>
-            <option value="3">Resolved</option>
-            <option value="6">Rejected</option>
-            <option value="16">Verified</option>
-            <option value="5">Closed</option>
-        </select>
+      <h3 i18n-values="issue_status"></h3>
+      <select id="status" class="w" multiple="multiple">
+      </select>
 
-        <hr>
+      <hr>
 
-        <h3 i18n-values="issue_number"></h3>
-        <select id="number" class="w">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
+      <h3 i18n-values="issue_number"></h3>
+      <select id="number" class="w">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
 
-        <hr>
+      <hr>
 
-        <h3 i18n-values="update_interval"></h3>
-        <select id="interval" class="w">
-            <option value="5" i18n-values="minutes_5"></option>
-            <option value="10" i18n-values="minutes_10"></option>
-            <option value="20" i18n-values="minutes_20"></option>
-            <option value="30" i18n-values="minutes_30"></option>
-            <option value="60" i18n-values="hours_1"></option>
-        </select>
+      <h3 i18n-values="update_interval"></h3>
+      <select id="interval" class="w">
+        <option value="5" i18n-values="minutes_5"></option>
+        <option value="10" i18n-values="minutes_10"></option>
+        <option value="20" i18n-values="minutes_20"></option>
+        <option value="30" i18n-values="minutes_30"></option>
+        <option value="60" i18n-values="hours_1"></option>
+      </select>
 
-        <hr>
+      <hr>
 
-        <div class="checkbox">
-            <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
-        </div>
-        <select id="notify_status" class="w" multiple="multiple">
-            <option value="1">New</option>
-            <option value="2">In Progress</option>
-            <option value="7">Reopened</option>
-            <option value="4">Feedback</option>
-            <option value="3">Resolved</option>
-            <option value="6">Rejected</option>
-            <option value="16">Verified</option>
-            <option value="5">Closed</option>
-        </select>
+      <div class="checkbox">
+        <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
+      </div>
+      <select id="notify_status" class="w" multiple="multiple">
+      </select>
 
     </div>
 
     <hr>
 
     <div class="footer">
-        <p>
-            &copy; http://wenzhixin.net.cn 2014-2016
-        </p>
+      <p>
+        &copy; http://wenzhixin.net.cn 2014-2016
+      </p>
     </div>
-</div>
+  </div>
 
-<script id="itemTpl" type="text/template">
-    <div class="input-inline">
-        <div class="form-group col-md-6">
-            <input name="url" class="form-control" type="text" value="%s" placeholder="http://demo.redmine.org">
-        </div>
-        <div class="form-group col-md-5">
-            <input name="key" class="form-control" type="text" value="%s" placeholder="Access API key">
-        </div>
-        <span class="form-group col-md-1">
-            <button class="remove-url btn btn-danger" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></button>
-        </span>
+  <script id="itemTpl" type="text/template">
+    <div class="input-inline row">
+      <div class="form-group col-md-6">
+        <input name="url" class="form-control" type="text" value="%s" placeholder="http://demo.redmine.org">
+      </div>
+      <div class="form-group col-md-6">
+        <input name="key" class="form-control" type="text" value="%s" placeholder="Access API key">
+      </div>
+      <span class="form-group col-md-1 hidden">
+        <button class="remove-url btn btn-danger" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></button>
+      </span>
     </div>
-</script>
+  </script>
 
-<script src="assets/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/multiple-select/jquery.multiple.select.js"></script>
-<script src="assets/store.js"></script>
-<script src="js/common.js"></script>
-<script src="js/options.js"></script>
+  <script src="assets/jquery.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/multiple-select/jquery.multiple.select.js"></script>
+  <script src="assets/store.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/options.js"></script>
 </body>
+
 </html>

@@ -39,5 +39,6 @@ var locale = {
     order_by_updated: 'По дате обновления',
     order_by_priority: 'По приоритету задачи',
     order_by_created: 'По дате создания',
-    go_backup: 'Вернуться'
+    go_backup: 'Вернуться',
+    trackers: 'Трекеры'
 };

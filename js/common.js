@@ -13,6 +13,7 @@ var settings = function(key, value) {
     interval: 5,
     notify: true,
     notify_status: [1, 2, 7, 4, 3, 6, 16, 5],
+    trackers: [],
     'new': false,
     data: {},
     editors: {}, // save the editor content

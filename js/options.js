@@ -11,6 +11,7 @@ $(function() {
     $addUrl = $('#addUrl'),
     $roles = $('#roles'),
     $status = $('#status'),
+    $trackers = $('#trackers'),
     $number = $('#number'),
     $interval = $('#interval'),
     $notify = $('#notify'),
@@ -46,7 +47,8 @@ $(function() {
 
     if (settings('urls').length) {
       $advance.show()
-      getStatus()
+      getStatus();
+      getTrackers();
     } else {
       $addUrl.trigger('click')
       $urls.find('input[name="url"]').focus().keyup(function() {
@@ -58,7 +60,10 @@ $(function() {
       })
     }
 
-    $urls.find('input[name="url"], input[name="key"]').blur(getStatus)
+    $urls.find('input[name="url"], input[name="key"]').blur(function(){
+        getStatus();
+        getTrackers();
+    });
 
     initMultipleSelects()
 
@@ -98,9 +103,25 @@ $(function() {
     })
   }
 
-  function initMultipleSelects() {
-    // roles, status, notify_status
-    $.each(['roles', 'status', 'notify_status'], function(i, name) {
+  function getTrackers(){
+      let url = $urls.find('input[name="url"]').val().trim();
+      const key = $urls.find('input[name="key"]').val().trim();
+
+      if(!url || !key) return;
+      url = url.replace(/\/$/, '') + '/trackers.json?key=' + key;
+      $.getJSON(url).then(res => {
+          const html = []
+          res.trackers.forEach(item => {
+          html.push(`<option value="${item.id}">${item.name}</option>`)
+      });
+      $('#trackers').html(html.join(''));
+      initMultipleSelects()
+    });
+  }
+
+    function initMultipleSelects() {
+    // roles, status, notify_status, trackers
+    $.each(['roles', 'status', 'notify_status', 'trackers'], function(i, name) {
       $('#' + name).multipleSelect({
         width: '100%',
         selectAll: false,
@@ -127,6 +148,9 @@ $(function() {
     settings('roles', $roles.multipleSelect('getSelects'))
     settings('status', $status.multipleSelect('getSelects').map(function(i) {
       return +i
+    }))
+    settings('trackers', $trackers.multipleSelect('getSelects').map(function(i) {
+        return +i
     }))
     settings('number', +($number.multipleSelect('getSelects')[0]))
     settings('interval', +($interval.multipleSelect('getSelects')[0]))

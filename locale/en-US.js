@@ -39,5 +39,6 @@ var locale = {
     order_by_updated: 'Updated',
     order_by_priority: 'Priority',
     order_by_created: 'Created',
-    go_backup: 'Go back'
+    go_backup: 'Go back',
+    trackers: 'Trackers'
 };

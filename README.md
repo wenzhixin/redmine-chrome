@@ -1,6 +1,6 @@
 # Redmine Notification
 
-Redmine notification tools for chrome extension.
+Redmine notification tools for chrome extension.[![Build Status](https://travis-ci.org/wenzhixin/redmine-chrome.svg?branch=master)](https://travis-ci.org/wenzhixin/redmine-chrome)
 
 [Install](https://chrome.google.com/webstore/detail/cenhhgabijhpobnfnmkigobcefkmhjbj)
 

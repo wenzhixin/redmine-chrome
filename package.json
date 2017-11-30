@@ -4,7 +4,7 @@
   "author": "zhixin <wenzhixin2010@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "eslint": "eslint js locale --ext js"
+    "test": "eslint js locale --ext js"
   },
   "devDependencies": {
     "eslint": "^4.12.0",

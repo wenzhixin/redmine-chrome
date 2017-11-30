@@ -2,8 +2,8 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
 
-var settings = function(key, value) {
-  var defaults = {
+window.settings = (key, value) => {
+  const defaults = {
     language: 'en-US',
     urls: [],
     keys: [],
@@ -32,14 +32,14 @@ var settings = function(key, value) {
   return this
 }
 
-var util = {
-  sprintf: function(str) {
-    var args = arguments,
-      flag = true,
-      i = 1
+window.util = {
+  sprintf (str) {
+    const args = arguments
+    let flag = true
+    let i = 1
 
-    str = str.replace(/%s/g, function() {
-      var arg = args[i++]
+    str = str.replace(/%s/g, () => {
+      let arg = args[i++]
 
       if (typeof arg === 'undefined') {
         flag = false
@@ -53,30 +53,30 @@ var util = {
     return ''
   },
 
-  initLocale: function(callback) {
-    $.getScript('locale/' + settings('language') + '.js', function() {
+  initLocale (callback) {
+    $.getScript('locale/' + settings('language') + '.js', () => {
       util.setLocale($('html'))
       callback()
     })
   },
 
-  setLocale: function($el) {
-    $el.find('[i18n-properties]').each(function() {
-      var properties = $(this).attr('i18n-properties').split(':')
+  setLocale ($el) {
+    $el.find('[i18n-properties]').each((i, el) => {
+      const properties = $(el).attr('i18n-properties').split(':')
       if (properties.length === 2) {
-        $(this).attr(properties[0], locale[properties[1]])
+        $(el).attr(properties[0], locale[properties[1]])
       }
     })
-    $el.find('[i18n-values]').each(function() {
-      $(this).text(locale[$(this).attr('i18n-values')])
+    $el.find('[i18n-values]').each((i, el) => {
+      $(el).text(locale[$(el).attr('i18n-values')])
     })
   },
 
-  filterIssues: function(keys, issues, data) {
-    return issues.filter(function(issue) {
-      for (var k in data) {
+  filterIssues (keys, issues, data) {
+    return issues.filter(issue => {
+      for (const k in data) {
         if ($.inArray(k, keys) === -1) continue
-        for (var i = 0; i < data[k].issues.length; i++) {
+        for (let i = 0; i < data[k].issues.length; i++) {
           if (data[k].issues[i].id === issue.id) {
             return false
           }
@@ -86,24 +86,24 @@ var util = {
     })
   },
 
-  getIuid: function(issue) {
+  getIuid (issue) {
     return issue.id + new Date(issue.updated_on).getTime()
   },
 
-  getPriorityLabel: function(priority) {
+  getPriorityLabel (priority) {
     return priority.toLowerCase()
   },
 
-  copyText: function(text) {
-    var $copyFrom = $('<textarea></textarea>')
+  copyText (text) {
+    const $copyFrom = $('<textarea></textarea>')
     $('body').append($copyFrom)
     $copyFrom.val(text).select()
     document.execCommand('copy')
     $copyFrom.remove()
   },
 
-  convertTextile: function(text) {
-    var $copyFrom = $('<textarea></textarea>')
+  convertTextile (text) {
+    const $copyFrom = $('<textarea></textarea>')
     $('body').append($copyFrom)
     $copyFrom.val(text)
     text = textile.convert($copyFrom.val())
@@ -111,12 +111,12 @@ var util = {
     return text
   },
 
-  getValueByString: function(o, s) {
+  getValueByString (o, s) {
     s = s.replace(/\[(\w+)\]/g, '.$1') // convert indexes to properties
     s = s.replace(/^\./, '') // strip a leading dot
-    var a = s.split('.')
+    const a = s.split('.')
     while (a.length) {
-      var n = a.shift()
+      const n = a.shift()
       if (n in o) {
         o = o[n]
       } else {
@@ -126,35 +126,35 @@ var util = {
     return o
   },
 
-  getUrl: function(base, url) {
+  getUrl (base, url) {
     if (url && url.slice(0, 1) === '/') {
-      var a = document.createElement('a')
+      const a = document.createElement('a')
       a.href = base
       return a.protocol + '//' + a.host + url
     }
     return url
   },
 
-  sortIssues: function(issues, unreadList) {
-    var order = settings('order'),
-      sorter = function(a, b) {
-        var aa = util.getValueByString(a, order),
-          bb = util.getValueByString(b, order)
+  sortIssues (issues, unreadList) {
+    let order = settings('order')
+    const sorter = (a, b) => {
+      const aa = util.getValueByString(a, order)
+      const bb = util.getValueByString(b, order)
 
-        if (aa < bb) {
-          return 1
-        }
-        if (aa > bb) {
-          return -1
-        }
-        return 0
+      if (aa < bb) {
+        return 1
       }
+      if (aa > bb) {
+        return -1
+      }
+      return 0
+    }
 
     if (order === 'default') {
-      var issues1 = [],
-        issues2 = []
+      const issues1 = []
+      let issues2 = []
 
-      $.each(issues, function(i, issue) {
+      $.each(issues, (i, issue) => {
         if ($.inArray(util.getIuid(issue), unreadList) !== -1) {
           issues1.push(issue)
         } else {

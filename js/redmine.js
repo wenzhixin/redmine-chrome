@@ -1,13 +1,12 @@
-$(function() {
+$(() => {
+  const $body = $('body')
+  const $main = $('#main')
+  const $sidebar = $('#sidebar')
+  const $content = $('#content')
+  let $toggle
+  let hidden = (localStorage && +localStorage['redmine.hidden']) || 0
 
-  var $body = $('body'),
-    $main = $('#main'),
-    $sidebar = $('#sidebar'),
-    $content = $('#content'),
-    $toggle,
-    hidden = localStorage && +localStorage['redmine.hidden'] || 0
-
-  function initView() {
+  const initView = () => {
     $body.append([
       '<div class="redmine-pluin-tools">',
       '<a class="plugin-toggle" href="javascript:">',
@@ -23,18 +22,18 @@ $(function() {
     // toggle
     $toggle = $('.redmine-pluin-tools > .plugin-toggle')
 
-    $toggle.click(function() {
+    $toggle.click(() => {
       hidden = hidden === 0 ? 1 : 0
       if (localStorage) localStorage['redmine.hidden'] = hidden
       onToggle()
     })
 
     // check json
-    $('pre code.json').each(function() {
-      var text = $.map($(this).text().split('\n'), function(str) {
-          return $.trim(str)
-        }).join('\n'),
-        alert = ''
+    $('pre code.json').each((i, el) => {
+      const text = $.map($(el).text().split('\n'), str => {
+        return $.trim(str)
+      }).join('\n')
+      let alert = ''
 
       try {
         checkKey(jsonlint.parse(text))
@@ -42,12 +41,12 @@ $(function() {
         alert = e
       }
       if (alert) {
-        $(this).parent().after('<pre>' + alert + '</pre>')
+        $(el).parent().after('<pre>' + alert + '</pre>')
       }
     })
   }
 
-  function onToggle() {
+  const onToggle = () => {
     if (hidden) {
       hideSidebar()
     } else {
@@ -55,41 +54,38 @@ $(function() {
     }
   }
 
-  function hideSidebar() {
+  const hideSidebar = () => {
     $toggle.find('i').removeClass('fa-angle-double-right')
       .addClass('fa-angle-double-left')
     $sidebar.hide()
     $content.css('width', '98%')
   }
 
-  function showSidebar() {
+  const showSidebar = () => {
     $toggle.find('i').removeClass('fa-angle-double-left')
       .addClass('fa-angle-double-right')
     $sidebar.show()
     $content.css('width', '75%')
   }
 
-  function check(callback) {
+  const check = callback => {
     chrome.extension.sendRequest({
       method: 'getUrls'
-    }, function(response) {
-      var result = false
+    }, response => {
+      let result = false
 
-      $.each(response.urls, function(i, url) {
-        if (location.href.indexOf(url) !== -1) {
+      $.each(response.urls, (i, url) => {
+        if (window.location.href.indexOf(url) !== -1) {
           result = true
           return false
         }
       })
 
-      if (result && !$main.hasClass('nosidebar')) {
-        return callback(true)
-      }
-      return callback(false)
+      callback(result && !$main.hasClass('nosidebar'))
     })
   }
 
-  check(function(result) {
+  check(result => {
     if (!result) {
       return
     }
@@ -97,29 +93,14 @@ $(function() {
     onToggle()
   })
 
-  function loadScript(url, callback) {
-    // Adding the script tag to the head as suggested before
-    var head = document.getElementsByTagName('head')[0]
-    var script = document.createElement('script')
-    script.src = url
-
-    // Then bind the event to the callback function.
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback
-    script.onload = callback
-
-    // Fire the loading
-    head.appendChild(script)
-  }
-
-  function checkKey(obj) {
+  const checkKey = obj => {
     if ($.isArray(obj)) {
-      $.each(obj, function(i, value) {
+      $.each(obj, (i, value) => {
         checkKey(value)
       })
     }
     if ($.isPlainObject(obj)) {
-      for (var key in obj) {
+      for (const key in obj) {
         if (/[A-Z]/.test(key)) {
           throw new Error('Key "' + key + '" can not use Upper Case...')
         }

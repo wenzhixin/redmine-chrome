@@ -2,58 +2,61 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
 
-function Background() {
-  this.timeoutId = 0
-  this.unreadCount = 0
-}
+class Background {
+  constructor () {
+    this.timeoutId = 0
+    this.unreadCount = 0
 
-Background.prototype.init = function() {
-  this.initOptions()
-  this.initRequest()
-}
-
-Background.prototype.initOptions = function() {
-  if (!settings('new')) {
-    chrome.tabs.create({
-      url: chrome.extension.getURL('options.html')
-    })
-    settings('new', true)
+    this.init()
   }
-}
 
-Background.prototype.initRequest = function() {
-  var that = this,
-    addresses = []
+  init () {
+    this.initOptions()
+    this.initRequest()
+  }
 
-  this.error = false
-  this.data = settings('data')
-  this.keys = []
-  $.each(settings('urls'), function(i, url) {
-    addresses.push({
-      url: url,
-      key: settings('keys')[i] || ''
+  initOptions () {
+    if (!settings('new')) {
+      chrome.tabs.create({
+        url: chrome.extension.getURL('options.html')
+      })
+      settings('new', true)
+    }
+  }
+
+  initRequest () {
+    const addresses = []
+
+    this.error = false
+    this.data = settings('data')
+    this.keys = []
+    settings('urls').forEach((url, i) => {
+      addresses.push({
+        url: url,
+        key: settings('keys')[i] || ''
+      })
     })
-  })
-  async.eachSeries(addresses, function(address, callback) {
-    async.eachSeries(settings('roles'), function(role, callback) {
-      that.getList(address, role, callback)
-    }, callback)
-  }, function() {
-    settings('data', that.data)
-    settings('unread', that.unreadCount)
-    console.log(that.error)
-    chrome.browserAction.setBadgeText({
-      text: that.error ? 'x' : (that.unreadCount > 0 ? that.unreadCount + '' : '')
+    async.eachSeries(addresses, (address, callback) => {
+      async.eachSeries(settings('roles'), (role, callback) => {
+        this.getList(address, role, callback)
+      }, callback)
+    }, () => {
+      settings('data', this.data)
+      settings('unread', this.unreadCount)
+      console.log(this.error)
+      chrome.browserAction.setBadgeText({
+        text: this.error ? 'x' : (this.unreadCount > 0 ? this.unreadCount + '' : '')
+      })
+      this.unreadCount = 0
+      this.timeoutId = setTimeout(() => {
+        this.initRequest()
+      }, settings('interval') * 60 * 1000)
     })
-    that.unreadCount = 0
-    that.timeoutId = setTimeout($.proxy(that.initRequest, that), settings('interval') * 60 * 1000)
-  })
-}
+  }
 
-Background.prototype.getList = function(address, role, callback) {
-  var that = this,
-    key = $.md5(address.url + role),
-    data = {
+  getList (address, role, callback) {
+    const key = $.md5(address.url + role)
+    const data = {
       set_filter: 1,
       sort: 'updated_on:desc',
       status_id: settings('status').join('|'),
@@ -62,115 +65,115 @@ Background.prototype.getList = function(address, role, callback) {
       key: address.key
     }
 
-  data[role] = 'me'
-  $.ajax({
-    url: address.url + '/issues.json',
-    data: data,
-    dataType: 'json',
-    success: function(res) {
-      var lastRead = new Date(0),
-        lastNotified = new Date(0),
-        unreadList = [],
-        readList = [],
-        issues = util.filterIssues(that.keys, res.issues, that.data)
+    data[role] = 'me'
+    $.ajax({
+      url: address.url + '/issues.json',
+      data: data,
+      dataType: 'json',
+      success: res => {
+        const lastRead = new Date(0)
+        const lastNotified = new Date(0)
+        const unreadList = []
+        let readList = []
+        const issues = util.filterIssues(this.keys, res.issues, this.data)
 
-      that.keys.push(key)
+        this.keys.push(key)
 
-      if (!that.data.hasOwnProperty(key)) {
-        that.data[key] = {}
-      }
+        if (!this.data.hasOwnProperty(key)) {
+          this.data[key] = {}
+        }
 
-      that.data[key].issues = issues
-      that.data[key].error = false
+        this.data[key].issues = issues
+        this.data[key].error = false
 
-      if (that.data[key].lastRead) {
-        lastRead.setTime(that.data[key].lastRead)
-      }
+        if (this.data[key].lastRead) {
+          lastRead.setTime(this.data[key].lastRead)
+        }
 
-      if (that.data[key].lastNotified) {
-        lastNotified.setTime(that.data[key].lastNotified)
-      }
+        if (this.data[key].lastNotified) {
+          lastNotified.setTime(this.data[key].lastNotified)
+        }
 
-      if (that.data[key].readList) {
-        readList = that.data[key].readList
-      } else {
-        that.data[key].readList = []
-      }
+        if (this.data[key].readList) {
+          readList = this.data[key].readList
+        } else {
+          this.data[key].readList = []
+        }
 
-      var count = 0
-      for (var i = that.data[key].issues.length - 1; i >= 0; i--) {
-        var issue = that.data[key].issues[i],
-          updatedOn = new Date(issue.updated_on)
+        let count = 0
+        for (let i = this.data[key].issues.length - 1; i >= 0; i--) {
+          const issue = this.data[key].issues[i]
+          const updatedOn = new Date(issue.updated_on)
 
-        if (lastRead < updatedOn) {
-          if ($.inArray(util.getIuid(issue), readList) === -1) {
-            count++
-            unreadList.push(util.getIuid(issue))
+          if (lastRead < updatedOn) {
+            if ($.inArray(util.getIuid(issue), readList) === -1) {
+              count++
+              unreadList.push(util.getIuid(issue))
+            }
+          }
+          if (lastNotified < updatedOn) {
+            lastNotified.setTime(updatedOn.getTime())
+            if (count < 4) {
+              this.showNotification(issue)
+            }
           }
         }
-        if (lastNotified < updatedOn) {
-          lastNotified.setTime(updatedOn.getTime())
-          if (count < 4) {
-            that.showNotification(issue)
-          }
+
+        this.data[key].lastNotified = lastNotified.getTime()
+        this.data[key].unreadList = unreadList
+        this.unreadCount += count
+        callback()
+      },
+      error: () => {
+        if (!this.data.hasOwnProperty(key)) {
+          this.data[key] = {}
         }
+        this.data[key].error = true
+        this.error = true
+        callback()
       }
-
-      that.data[key].lastNotified = lastNotified.getTime()
-      that.data[key].unreadList = unreadList
-      that.unreadCount += count
-      callback()
-    },
-    error: function() {
-      if (!that.data.hasOwnProperty(key)) {
-        that.data[key] = {}
-      }
-      that.data[key].error = true
-      that.error = true
-      callback()
-    }
-  })
-}
-
-Background.prototype.showNotification = function(issue) {
-  if (!settings('notify')) return
-  if (settings('notify_status').indexOf(issue.status.id) === -1) return
-
-  chrome.notifications.create(new Date().getTime() + '', {
-    type: 'basic',
-    title: issue.subject,
-    message: $('<div/>').html(util.convertTextile(issue.description)).text(),
-    iconUrl: chrome.runtime.getURL("/icon128.png")
-  }, function(id) {
-    setTimeout(function() {
-      chrome.notifications.clear(id, function() {})
-    }, 5000)
-  })
-}
-
-Background.prototype.refresh = function() {
-  if (this.timeoutId) {
-    clearTimeout(this.timeoutId)
+    })
   }
-  this.initRequest()
+
+  showNotification (issue) {
+    if (!settings('notify')) return
+    if (settings('notify_status').indexOf(issue.status.id) === -1) return
+
+    chrome.notifications.create(new Date().getTime() + '', {
+      type: 'basic',
+      title: issue.subject,
+      message: $('<div/>').html(util.convertTextile(issue.description)).text(),
+      iconUrl: chrome.runtime.getURL('/icon128.png')
+    }, id => {
+      setTimeout(() => {
+        chrome.notifications.clear(id, () => {})
+      }, 5000)
+    })
+  }
+
+  refresh () {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+    }
+    this.initRequest()
+  }
+
+  reset () {
+    chrome.browserAction.setBadgeText({
+      text: ''
+    })
+    settings('data', {})
+    settings('unread', 0)
+    settings('url_index', 0)
+    settings('role_index', 0)
+    this.refresh()
+  }
 }
 
-Background.prototype.reset = function() {
-  chrome.browserAction.setBadgeText({
-    text: ''
-  })
-  settings('data', {})
-  settings('unread', 0)
-  settings('url_index', 0)
-  settings('role_index', 0)
-  this.refresh()
-}
-
-var background = new Background()
-background.init()
+this.background = new Background()
 
 // add listener for content scripts
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+chrome.extension.onRequest.addListener((request, sender, sendResponse) => {
   switch (request.method) {
     case 'getUrls':
       sendResponse({

@@ -1,2 +1,4 @@
 *.sh
 *.zip
+node_modules
+yarn.lock

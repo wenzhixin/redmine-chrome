@@ -57,6 +57,7 @@ Background.prototype.getList = function(address, role, callback) {
       set_filter: 1,
       sort: 'updated_on:desc',
       status_id: settings('status').join('|'),
+      tracker_id: settings('trackers').join('|'),
       limit: settings('number'),
       key: address.key
     }

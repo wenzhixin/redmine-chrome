@@ -39,5 +39,6 @@ var locale = {
     order_by_priority: '優先度',
     order_by_updated: '更新時間',
     order_by_created: '作成時間',
-    go_backup: '戻る'
+    go_backup: '戻る',
+    trackers: 'トラッカー'
 };

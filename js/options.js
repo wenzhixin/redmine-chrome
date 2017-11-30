@@ -115,7 +115,10 @@ $(function() {
           html.push(`<option value="${item.id}">${item.name}</option>`)
       });
       $('#trackers').html(html.join(''));
-      initMultipleSelects()
+      initMultipleSelects();
+      if(settings('firstStart') && $('#trackers option:selected').size() == 0){
+          $('#trackers').multipleSelect('checkAll');
+      }
     });
   }
 
@@ -144,6 +147,7 @@ $(function() {
       keys.push($.trim($(this).val()))
     })
     settings('urls', urls)
+    settings('firstStart', false)
     settings('keys', keys)
     settings('roles', $roles.multipleSelect('getSelects'))
     settings('status', $status.multipleSelect('getSelects').map(function(i) {

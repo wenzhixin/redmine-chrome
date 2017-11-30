@@ -20,7 +20,8 @@ var settings = function(key, value) {
     unread: 0,
     url_index: 0,
     role_index: 0,
-    order: 'default' // default, updated_on, priority.id, created_on
+    order: 'default', // default, updated_on, priority.id, created_on
+    firstStart: true
   }
 
   if (typeof value === 'undefined') {

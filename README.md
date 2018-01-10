@@ -15,6 +15,10 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 
 ## Changelog
 
+### 2.4.1
+
+* Add trackers option
+
 ### 2.4.0
 
 * Fix #51: get statuses from API

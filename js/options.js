@@ -46,25 +46,27 @@ $(() => {
 
     if (settings('urls').length) {
       $advance.show()
-      getStatus()
-      getTrackers()
+
+      const url = $urls.find('input[name="url"]').val().trim()
+      const key = $urls.find('input[name="key"]').val().trim()
+      getStatus(url, key)
+      getTrackers(url, key)
     } else {
       $addUrl.trigger('click')
-      $urls.find('input[name="url"]').focus().keyup(e => {
-        if ($.trim($(e.currentTarget).val())) {
-          $advance.show()
-        } else {
-          $advance.hide()
-        }
-      })
     }
 
+    initMultipleSelects(['roles'])
     $urls.find('input[name="url"], input[name="key"]').blur(e => {
-      getStatus()
-      getTrackers()
-    })
+      const url = $urls.find('input[name="url"]').val().trim()
+      const key = $urls.find('input[name="key"]').val().trim()
+      if (!url || !key) {
+        return $advance.hide()
+      }
+      $advance.show()
 
-    initMultipleSelects()
+      getStatus(url, key)
+      getTrackers(url, key)
+    })
 
     // number, interval
     $.each(['number', 'interval'], (i, name) => {
@@ -74,55 +76,54 @@ $(() => {
         name: name
       }).multipleSelect('setSelects', [settings(name)])
     })
-
-    $notify.prop('checked', settings('notify'))
-    // notify_status
-    const updateNotifyStatus = checked => {
-      $notifyStatus.multipleSelect(checked ? 'enable' : 'disable')
-    }
-    $notify.click(() => {
-      updateNotifyStatus($notify.prop('checked'))
-    })
-    updateNotifyStatus(settings('notify'))
   }
 
-  const getStatus = () => {
-    let url = $urls.find('input[name="url"]').val().trim()
-    const key = $urls.find('input[name="key"]').val().trim()
-
-    if (!url || !key) return
-    url = url.replace(/\/$/, '') + '/issue_statuses.json?key=' + key
-    $.getJSON(url).then(res => {
+  const getStatus = (url, key) => {
+    $.getJSON(url.replace(/\/$/, '') + '/issue_statuses.json?key=' + key).then(res => {
       const html = []
       res.issue_statuses.forEach(item => {
         html.push(`<option value="${item.id}">${item.name}</option>`)
       })
       $('#status, #notify_status').html(html.join(''))
-      initMultipleSelects()
+
+      if (!settings('status').length) {
+        settings('status', res.issue_statuses.map(item => item.id))
+      }
+      if (!settings('notify_status').length) {
+        settings('notify_status', res.issue_statuses.map(item => item.id))
+      }
+      initMultipleSelects(['status', 'notify_status'])
+
+      $notify.prop('checked', settings('notify'))
+      // notify_status
+      const updateNotifyStatus = checked => {
+        $notifyStatus.multipleSelect(checked ? 'enable' : 'disable')
+      }
+      $notify.click(() => {
+        updateNotifyStatus($notify.prop('checked'))
+      })
+      updateNotifyStatus(settings('notify'))
     })
   }
-  const getTrackers = () => {
-    let url = $urls.find('input[name="url"]').val().trim()
-    const key = $urls.find('input[name="key"]').val().trim()
 
-    if (!url || !key) return
-    url = url.replace(/\/$/, '') + '/trackers.json?key=' + key
-    $.getJSON(url).then(res => {
+  const getTrackers = (url, key) => {
+    $.getJSON(url.replace(/\/$/, '') + '/trackers.json?key=' + key).then(res => {
       const html = []
       res.trackers.forEach(item => {
         html.push(`<option value="${item.id}">${item.name}</option>`)
       })
       $('#trackers').html(html.join(''))
-      initMultipleSelects()
-      if (settings('firstStart') && !$('#trackers').multipleSelect('getSelects').length) {
-        $('#trackers').multipleSelect('checkAll')
+
+      if (!settings('trackers').length) {
+        settings('trackers', res.trackers.map(item => item.id))
       }
+      initMultipleSelects(['trackers'])
     })
   }
 
-  const initMultipleSelects = () => {
-    // roles, status, notify_status, trackers
-    $.each(['roles', 'status', 'notify_status', 'trackers'], (i, name) => {
+  const initMultipleSelects = ids => {
+    roles, status, notify_status, trackers
+    $.each(ids, (i, name) => {
       $('#' + name).multipleSelect({
         width: '100%',
         selectAll: false,

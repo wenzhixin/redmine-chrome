@@ -8,20 +8,19 @@ window.settings = (key, value) => {
     urls: [],
     keys: [],
     roles: ['assigned_to_id'],
-    status: [1, 2, 7, 4], // [1, 2, 7, 4, 3, 6, 16, 5]
+    status: [],
+    trackers: [],
     number: 25,
     interval: 5,
     notify: true,
-    notify_status: [1, 2, 7, 4, 3, 6, 16, 5],
-    trackers: [],
+    notify_status: [],
     'new': false,
     data: {},
     editors: {}, // save the editor content
     unread: 0,
     url_index: 0,
     role_index: 0,
-    order: 'default', // default, updated_on, priority.id, created_on
-    firstStart: true
+    order: 'default' // default, updated_on, priority.id, created_on
   }
 
   if (typeof value === 'undefined') {

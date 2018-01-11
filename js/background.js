@@ -59,10 +59,14 @@ class Background {
     const data = {
       set_filter: 1,
       sort: 'updated_on:desc',
-      status_id: settings('status').join('|'),
-      tracker_id: settings('trackers').join('|'),
       limit: settings('number'),
       key: address.key
+    }
+    if (settings('status').length) {
+      data.status_id = settings('status').join('|')
+    }
+    if (settings('trackers').length) {
+      data.tracker_id = settings('trackers').join('|')
     }
 
     data[role] = 'me'

@@ -122,7 +122,6 @@ $(() => {
   }
 
   const initMultipleSelects = ids => {
-    roles, status, notify_status, trackers
     $.each(ids, (i, name) => {
       $('#' + name).multipleSelect({
         width: '100%',

@@ -27,7 +27,7 @@ window.locale = {
   description: 'Description: ',
   save_your_changes: 'Save your changes',
   save_successful: 'Save successful!',
-  add_redmine_first: 'Please add redmine first！',
+  add_redmine_first: 'Please add Redmine first！',
   settings_error: 'Redmine settings error!',
   mark_all_read: 'Mark all as read',
   update: 'Update',

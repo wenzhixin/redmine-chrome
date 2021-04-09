@@ -15,6 +15,7 @@ window.locale = {
   issue_status: 'チケットステータス：',
   issue_number: 'チケット件数：',
   update_interval: '更新間隔：',
+  minutes_1: '1分',
   minutes_5: '5分',
   minutes_10: '10分',
   minutes_20: '20分',

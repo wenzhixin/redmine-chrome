@@ -15,6 +15,7 @@ window.locale = {
   issue_status: 'Issue status: ',
   issue_number: 'Issue number: ',
   update_interval: 'Update interval: ',
+  minutes_1: '1 minutes',
   minutes_5: '5 minutes',
   minutes_10: '10 minutes',
   minutes_20: '20 minutes',

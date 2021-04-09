@@ -15,6 +15,7 @@ window.locale = {
   issue_status: 'Статус задачи: ',
   issue_number: 'Количество задач: ',
   update_interval: 'Интервал обновления: ',
+  minutes_1: '1 минут',
   minutes_5: '5 минут',
   minutes_10: '10 минут',
   minutes_20: '20 минут',

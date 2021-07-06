@@ -16,6 +16,7 @@ window.locale = {
   issue_status: '问题状态：',
   issue_number: '问题条数：',
   update_interval: '更新间隔：',
+  minutes_1: '1分钟',
   minutes_5: '5分钟',
   minutes_10: '10分钟',
   minutes_20: '20分钟',

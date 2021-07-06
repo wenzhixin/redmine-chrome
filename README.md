@@ -18,6 +18,7 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 ### 2.5.0
 
 * Added spanish locale
+* Added 1 minutes update interval
 
 ### 2.4.2
 

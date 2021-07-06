@@ -16,6 +16,7 @@ window.locale = {
   issue_status: 'Estado de la incidencia: ',
   issue_number: 'Número de incidentes: ',
   update_interval: 'Actualizar intervalo: ',
+  minutes_1: '1 minuto',
   minutes_5: '5 minutos',
   minutes_10: '10 minutos',
   minutes_20: '20 minutos',

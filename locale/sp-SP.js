@@ -6,7 +6,7 @@ window.locale = {
   english: 'Inglés',
   japanese: 'Japonés',
   russian: 'Ruso',
-  spanish: 'Español'
+  spanish: 'Español',
   redmine_list: 'Dirección Redmine: ',
   issues_list: 'Lista de incidencias: ',
   roles_assigned_to_id: 'Asignado a mí',

@@ -6,6 +6,7 @@ window.locale = {
   english: 'English',
   japanese: 'Japanese',
   russian: 'Русский',
+  spanish: 'испанский',
   redmine_list: 'Адрес сервера: ',
   issues_list: 'Список задач: ',
   roles_assigned_to_id: 'Назначенные мне',

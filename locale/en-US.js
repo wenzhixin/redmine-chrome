@@ -6,6 +6,7 @@ window.locale = {
   english: 'English',
   japanese: 'Japanese',
   russian: 'Russian',
+  spanish: 'Spanish',
   redmine_list: 'Redmine address: ',
   issues_list: 'Issues list: ',
   roles_assigned_to_id: 'Assigned to me',

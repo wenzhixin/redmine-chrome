@@ -29,7 +29,7 @@ window.locale = {
   description: '説明：',
   save_your_changes: '保存',
   save_successful: '保存成功！',
-  add_redmine_first: 'redmineを追加してください！',
+  add_redmine_first: 'Redmine を追加してください！',
   settings_error: 'Redmine 設定エラー！',
   mark_all_read: '全てを既読にする',
   update: '更新',

@@ -29,7 +29,7 @@ window.locale = {
   description: '描述：',
   save_your_changes: '保存您的更改',
   save_successful: '保存成功！',
-  add_redmine_first: '请先添加 redmine！',
+  add_redmine_first: '请先添加 Redmine！',
   settings_error: 'Redmine 设置错误！',
   mark_all_read: '标记所有为已读',
   update: '更新',

@@ -60,7 +60,7 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 
 ### 2.3.4
 
-Fix issue update textare name.
+Fix issue update textarea name.
 
 ### 2.3.3
 

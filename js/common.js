@@ -14,7 +14,7 @@ window.settings = (key, value) => {
     interval: 5,
     notify: true,
     notify_status: [],
-    'new': false,
+    new: false,
     data: {},
     editors: {}, // save the editor content
     unread: 0,
@@ -38,7 +38,7 @@ window.util = {
     let i = 1
 
     str = str.replace(/%s/g, () => {
-      let arg = args[i++]
+      const arg = args[i++]
 
       if (typeof arg === 'undefined') {
         flag = false

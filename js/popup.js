@@ -224,7 +224,7 @@ class Popup {
     $.ajax({
       url: url + '.json',
       data: {
-        key: key
+        key
       },
       timeout: 1000,
       success: res => {
@@ -293,7 +293,8 @@ class Popup {
 
       // fix #29
       $edit.find('[name="issue[status_id]"]').on('change', e => {
-        $('[name="issue[done_ratio]"]').val(+$(e.currentTarget).val() === 3 ? '100'
+        $('[name="issue[done_ratio]"]').val(+$(e.currentTarget).val() === 3
+          ? '100'
           : $res.find('[name="issue[done_ratio]"]').val())
       })
 
@@ -319,7 +320,7 @@ class Popup {
         $(e.currentTarget).find(':submit').prop('disabled', true)
 
         $.ajax({
-          url: url,
+          url,
           type: 'POST',
           cache: false,
           contentType: false,

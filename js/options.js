@@ -73,7 +73,7 @@ $(() => {
       $('#' + name).multipleSelect({
         width: '100%',
         single: true,
-        name: name
+        name
       }).multipleSelect('setSelects', [settings(name)])
     })
   }

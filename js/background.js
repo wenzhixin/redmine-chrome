@@ -32,7 +32,7 @@ class Background {
     this.keys = []
     settings('urls').forEach((url, i) => {
       addresses.push({
-        url: url,
+        url,
         key: settings('keys')[i] || ''
       })
     })
@@ -72,7 +72,7 @@ class Background {
     data[role] = 'me'
     $.ajax({
       url: address.url + '/issues.json',
-      data: data,
+      data,
       dataType: 'json',
       success: res => {
         const lastRead = new Date(0)
@@ -83,7 +83,7 @@ class Background {
 
         this.keys.push(key)
 
-        if (!this.data.hasOwnProperty(key)) {
+        if (!this.data[key]) {
           this.data[key] = {}
         }
 
@@ -129,7 +129,7 @@ class Background {
         callback()
       },
       error: () => {
-        if (!this.data.hasOwnProperty(key)) {
+        if (!this.data[key]) {
           this.data[key] = {}
         }
         this.data[key].error = true

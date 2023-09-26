@@ -2,168 +2,194 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
 
-$(() => {
-  const $language = $('#language')
-  const $save = $('#save')
-  const $urls = $('#urls')
-  const $advance = $('#advance')
-  const $addUrl = $('#addUrl')
-  const $roles = $('#roles')
-  const $status = $('#status')
-  const $trackers = $('#trackers')
-  const $number = $('#number')
-  const $interval = $('#interval')
-  const $notify = $('#notify')
-  const $notifyStatus = $('#notify_status')
+class Options {
+  constructor () {
+    this.init()
+    this.initEvents()
+  }
 
-  const init = () => {
-    $('[data-toggle="tooltip"]').tooltip({
-      placement: 'bottom'
-    })
+  init () {
+    this.$language = $('#language')
+    this.$save = $('#save')
+    this.$urls = $('#urls')
+    this.$advance = $('#advance')
+    this.$addUrl = $('#addUrl')
+    this.$projects = $('#projects')
+    this.$roles = $('#roles')
+    this.$status = $('#status')
+    this.$trackers = $('#trackers')
+    this.$number = $('#number')
+    this.$interval = $('#interval')
+    this.$notify = $('#notify')
+    this.$notifyStatus = $('#notify_status')
+  }
 
-    // language
-    $language.change(e => {
+  initEvents () {
+    this.$language.on('change', e => {
       settings('language', $(e.currentTarget).val())
       window.location.reload(true)
     }).val(settings('language'))
 
-    $save.click(save)
+    this.$save.on('click', () => this.save())
 
     // urls
     const itemTpl = $('#itemTpl').html()
-    const urlsHtml = []
 
-    $.each(settings('urls'), (i, url) => {
-      urlsHtml.push(util.sprintf(itemTpl, url, settings('keys')[i] || ''))
-    })
-    $urls.html(urlsHtml.join(''))
-    $addUrl.click(() => {
-      $urls.append(util.sprintf(itemTpl, '', ''))
+    this.$urls.html(settings('urls').map((url, i) =>
+      util.sprintf(itemTpl, url, settings('keys')[i] || '')))
+
+    this.$addUrl.on('click', () => {
+      this.$urls.append(util.sprintf(itemTpl, '', ''))
     })
     $(document).on('click', '.remove-url', e => {
       $(e.currentTarget).parents('.input-inline').remove()
     })
 
-    if (settings('urls').length) {
-      $advance.show()
-
-      const url = $urls.find('input[name="url"]').val().trim()
-      const key = $urls.find('input[name="key"]').val().trim()
-      getStatus(url, key)
-      getTrackers(url, key)
-    } else {
-      $addUrl.trigger('click')
-    }
-
-    initMultipleSelects(['roles'])
-    $urls.find('input[name="url"], input[name="key"]').blur(e => {
-      const url = $urls.find('input[name="url"]').val().trim()
-      const key = $urls.find('input[name="key"]').val().trim()
-      if (!url || !key) {
-        return $advance.hide()
-      }
-      $advance.show()
-
-      getStatus(url, key)
-      getTrackers(url, key)
+    this.$urls.find('input[name="url"], input[name="key"]').on('blur', () => {
+      this.initData()
     })
 
+    if (settings('urls').length) {
+      this.initData()
+    } else {
+      this.$addUrl.trigger('click')
+    }
+
+    this.initMultipleSelects(['roles'])
+
     // number, interval
-    $.each(['number', 'interval'], (i, name) => {
-      $('#' + name).multipleSelect({
+    for (const name of ['number', 'interval']) {
+      $(`#${name}`).multipleSelect({
         width: '100%',
         single: true,
         name
       }).multipleSelect('setSelects', [settings(name)])
+    }
+  }
+
+  initData () {
+    const url = this.$urls.find('input[name="url"]').val().trim().replace(/\/$/, '')
+    const key = this.$urls.find('input[name="key"]').val().trim()
+
+    if (!url || !key) {
+      return this.$advance.hide()
+    }
+    this.$advance.show()
+
+    this.getProjects(url, key)
+    this.getStatus(url, key)
+    this.getTrackers(url, key)
+  }
+
+  getProjects (url, key) {
+    $.getJSON(`${url}/projects.json?limit=1000&key=${key}`).then(res => {
+      this.$projects.html(res.projects.map(it =>
+        `<option value="${it.id}">${it.name}</option>`))
+
+      if (!settings('projects').length) {
+        settings('projects', [0])
+      }
+      this.initMultipleSelects(['projects'])
     })
   }
 
-  const getStatus = (url, key) => {
-    $.getJSON(url.replace(/\/$/, '') + '/issue_statuses.json?key=' + key).then(res => {
-      const html = []
-      res.issue_statuses.forEach(item => {
-        html.push(`<option value="${item.id}">${item.name}</option>`)
-      })
-      $('#status, #notify_status').html(html.join(''))
+  getStatus (url, key) {
+    $.getJSON(`${url}/issue_statuses.json?key=${key}`).then(res => {
+      this.$status.add(this.$notifyStatus).html(res.issue_statuses.map(it =>
+        `<option value="${it.id}">${it.name}</option>`))
 
       if (!settings('status').length) {
-        settings('status', res.issue_statuses.map(item => item.id))
+        settings('status', [0])
       }
       if (!settings('notify_status').length) {
-        settings('notify_status', res.issue_statuses.map(item => item.id))
+        settings('notify_status', [0])
       }
-      initMultipleSelects(['status', 'notify_status'])
+      this.initMultipleSelects(['status', 'notify_status'])
 
-      $notify.prop('checked', settings('notify'))
+      this.$notify.prop('checked', settings('notify'))
       // notify_status
       const updateNotifyStatus = checked => {
-        $notifyStatus.multipleSelect(checked ? 'enable' : 'disable')
+        this.$notifyStatus.multipleSelect(checked ? 'enable' : 'disable')
       }
-      $notify.click(() => {
-        updateNotifyStatus($notify.prop('checked'))
+
+      this.$notify.off('click').on('click', () => {
+        updateNotifyStatus(this.$notify.prop('checked'))
       })
       updateNotifyStatus(settings('notify'))
     })
   }
 
-  const getTrackers = (url, key) => {
-    $.getJSON(url.replace(/\/$/, '') + '/trackers.json?key=' + key).then(res => {
-      const html = []
-      res.trackers.forEach(item => {
-        html.push(`<option value="${item.id}">${item.name}</option>`)
-      })
-      $('#trackers').html(html.join(''))
+  getTrackers (url, key) {
+    $.getJSON(`${url}/trackers.json?key=${key}`).then(res => {
+      this.$trackers.html(res.trackers.map(it =>
+        `<option value="${it.id}">${it.name}</option>`))
 
       if (!settings('trackers').length) {
-        settings('trackers', res.trackers.map(item => item.id))
+        settings('trackers', [0])
       }
-      initMultipleSelects(['trackers'])
+      this.initMultipleSelects(['trackers'])
     })
   }
 
-  const initMultipleSelects = ids => {
-    $.each(ids, (i, name) => {
-      $('#' + name).multipleSelect({
+  initMultipleSelects (ids) {
+    for (const id of ids) {
+      const $select = $(`#${id}`)
+
+      $select.multipleSelect({
         width: '100%',
-        selectAll: false,
+        selectAll: true,
         countSelected: false
-      }).multipleSelect('setSelects', settings(name))
-    })
+      })
+
+      if (settings(id)[0] === 0) {
+        $select.multipleSelect('checkAll')
+      } else {
+        $select.multipleSelect('setSelects', settings(id))
+      }
+    }
   }
 
-  const save = () => {
+  getSelects ($select) {
+    const selects = $select.multipleSelect('getSelects')
+
+    if (selects.length === $select.multipleSelect('getData').length) {
+      return [0]
+    }
+    return selects.map(i => +i)
+  }
+
+  save () {
     const urls = []
     const keys = []
 
-    $urls.find('input[name="url"]').each((i, el) => {
+    this.$urls.find('input[name="url"]').each((i, el) => {
       const url = $(el).val().trim()
+
       if (url) {
         urls.push(url.replace(/\/$/, ''))
       }
     })
-    $urls.find('input[name="key"]').each((i, el) => {
-      keys.push($.trim($(el).val()))
+    this.$urls.find('input[name="key"]').each((i, el) => {
+      keys.push($(el).val().trim())
     })
     settings('urls', urls)
     settings('firstStart', false)
     settings('keys', keys)
-    settings('roles', $roles.multipleSelect('getSelects'))
-    settings('status', $status.multipleSelect('getSelects').map(i => {
-      return +i
-    }))
-    settings('trackers', $trackers.multipleSelect('getSelects').map(i => {
-      return +i
-    }))
-    settings('number', +($number.multipleSelect('getSelects')[0]))
-    settings('interval', +($interval.multipleSelect('getSelects')[0]))
-    settings('notify', $notify.prop('checked'))
-    settings('notify_status', $notifyStatus.multipleSelect('getSelects').map(i => {
-      return +i
-    }))
+    settings('projects', this.getSelects(this.$projects))
+    settings('roles', this.$roles.multipleSelect('getSelects'))
+    settings('status', this.getSelects(this.$status))
+    settings('trackers', this.getSelects(this.$trackers))
+    settings('number', +this.$number.multipleSelect('getSelects')[0])
+    settings('interval', +this.$interval.multipleSelect('getSelects')[0])
+    settings('notify', this.$notify.prop('checked'))
+    settings('notify_status', this.getSelects(this.$notifyStatus))
 
     window.alert(locale.save_successful)
     chrome.extension.getBackgroundPage().background.reset()
   }
+}
 
-  util.initLocale(init)
+$(() => {
+  util.initLocale()
+  new Options()
 })

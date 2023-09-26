@@ -11,6 +11,7 @@
     $('pre').each((i, el) => {
       if (!$(el).find('code').length) {
         const code = $(el).html()
+
         $(el).html('')
         $('<code></code>').html(code).appendTo($(el))
       }
@@ -24,6 +25,7 @@
         client.on('copy', () => {
           ZeroClipboard.clearData()
           const $code = $this.parent().find('code').clone()
+
           $code.find('.line-numbers').remove()
           ZeroClipboard.setData('text/plain', $code.text())
           $this.text('Copied!')

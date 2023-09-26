@@ -20,15 +20,12 @@
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],
         "css": ["assets/font-awesome/css/all.min.css", "css/redmine.css"],
-        "js": ["assets/jquery.min.js", "assets/jsonlint.js", "js/redmine.js"]
+        "js": ["assets/jquery.min.js", "assets/jsonlint.js"]
     }],
     "web_accessible_resources": [
         "assets/jquery.min.js",
         "assets/ZeroClipboard.js",
         "assets/ZeroClipboard.swf",
-        "js/copy.js",
-        "assets/font-awesome/fonts/fontawesome-webfont.eot",
-        "assets/font-awesome/fonts/fontawesome-webfont.woff",
-        "assets/font-awesome/fonts/fontawesome-webfont.ttf"
+        "js/copy.js"
     ]
 }

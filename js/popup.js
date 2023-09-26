@@ -56,7 +56,7 @@ class Popup {
 
       html.push(util.sprintf($('#roleTpl').html(),
         i,
-        locale['roles_' + role],
+        locale[`roles_${role}`],
         data.issues.length,
         data.unreadList.length === 0 ? 'none' : ' ',
         data.unreadList.length
@@ -64,11 +64,14 @@ class Popup {
     })
     if (settings('roles').length > 1) {
       this.$roles.show().html(html.join(''))
-        .find('li').click(e => {
-          settings('role_index', $(e.currentTarget).index())
-          $(e.currentTarget).addClass('active').siblings().removeClass('active')
+        .find('li').off('click').on('click', e => {
+          const $el = $(e.currentTarget)
+
+          settings('role_index', $el.index())
+          $el.siblings().find('a').removeClass('active')
+          $el.find('a').addClass('active')
           this.initIssues()
-        }).eq(settings('role_index')).addClass('active')
+        }).eq(settings('role_index')).find('a').addClass('active')
     }
   }
 
@@ -103,7 +106,7 @@ class Popup {
         issue.project.name,
         moment(new Date(issue.updated_on)).format('YYYY-MM-DD HH:mm:ss'),
         moment(new Date(issue.updated_on)).fromNow(),
-        url + '/issues/' + issue.id,
+        `${url}/issues/${issue.id}`,
         issue.tracker.name,
         issue.id,
         issue.subject
@@ -134,10 +137,8 @@ class Popup {
       e.stopImmediatePropagation()
 
       const index = $(e.currentTarget).parents('.list-group-item').data('index')
-      util.copyText('#' + issues[index].id)
-    })
-    this.$issues.find('[data-toggle="tooltip"]').tooltip({
-      placement: 'bottom'
+
+      util.copyText(`#${issues[index].id}`)
     })
   }
 
@@ -151,9 +152,10 @@ class Popup {
         const status = settings('status').map(i => {
           return +i
         })
+
         if (status.indexOf(issue.status.id) === -1) {
           issues.splice(i, 1)
-          this.$issues.find('[data-index="' + i + '"]').remove()
+          this.$issues.find(`[data-index="${i}"]`).remove()
         }
         settings('data', data)
       }
@@ -161,7 +163,7 @@ class Popup {
   }
 
   showIssue (issue) {
-    const url = settings('urls')[settings('url_index')] + '/issues/' + issue.id
+    const url = `${settings('urls')[settings('url_index')]}/issues/${issue.id}`
     const key = settings('keys')[settings('url_index')]
 
     this.getIssue(issue, url, key, (issue, error) => {
@@ -197,19 +199,16 @@ class Popup {
         util.convertTextile(issue.description)
       ))
         .find('img').hide().end()
-        .css('padding-top', this.$detail.find('.detail-header').height())
+        .css('padding-top', this.$detail.find('.detail-header').outerHeight())
 
-      this.$detail.find('.close, .btn-close').off('click').on('click', () => {
+      this.$detail.find('.close, .button-close').off('click').on('click', () => {
         this.$detail.hide()
         this.$main.show()
       })
 
       util.setLocale(this.$detail)
       this.$detail.find('.copy-issue').off('click').on('click', () => {
-        util.copyText('#' + issue.id)
-      })
-      this.$detail.find('[data-toggle="tooltip"]').tooltip({
-        placement: 'bottom'
+        util.copyText(`#${issue.id}`)
       })
 
       this.updateUnreadCount(issue)
@@ -222,7 +221,7 @@ class Popup {
 
   getIssue (issue, url, key, callback) {
     $.ajax({
-      url: url + '.json',
+      url: `${url}.json`,
       data: {
         key
       },
@@ -260,6 +259,7 @@ class Popup {
       })
       this.$detail.find('img').each((i, el) => {
         const src = util.getUrl(url, $(el).attr('src'))
+
         $(el).attr('src', src)
         $(el).wrap(util.sprintf('<a href="%s" target="_blank"></a>', src))
       }).show()
@@ -272,7 +272,7 @@ class Popup {
   showEdit (issue, url) {
     const editors = settings('editors')
 
-    $.get(url + '/edit', res => {
+    $.get(`${url}/edit`, res => {
       const $res = $(res)
       const $edit = this.$detail.find('.edit').show()
 
@@ -293,13 +293,14 @@ class Popup {
 
       // fix #29
       $edit.find('[name="issue[status_id]"]').on('change', e => {
-        $('[name="issue[done_ratio]"]').val(+$(e.currentTarget).val() === 3
-          ? '100'
-          : $res.find('[name="issue[done_ratio]"]').val())
+        $('[name="issue[done_ratio]"]').val(+$(e.currentTarget).val() === 3 ?
+          '100' :
+          $res.find('[name="issue[done_ratio]"]').val())
       })
 
       /* eslint-disable new-cap */
       const toolbar = new jsToolBar($edit.find('textarea')[0])
+
       toolbar.setHelpLink('http://www.redmine.org/help/en/wiki_syntax.html')
       toolbar.draw()
 
@@ -309,6 +310,7 @@ class Popup {
         editors[issue.id] = $edit.find('textarea').val()
         settings('editors', editors)
       }
+
       $edit.find('textarea').on('keyup focus', () => {
         clearTimeout(saveTimeout)
         saveTimeout = setTimeout(saveEditor, 500)
@@ -376,12 +378,13 @@ class Popup {
     }
     settings('unread', count)
     chrome.browserAction.setBadgeText({
-      text: count > 0 ? count + '' : ''
+      text: count > 0 ? `${count}` : ''
     })
   }
 
   resetUnreadData () {
     const data = settings('data')
+
     data[this.getKey()].lastRead = +new Date()
     data[this.getKey()].unreadList = []
     data[this.getKey()].readList = []
@@ -397,12 +400,8 @@ class Popup {
 }
 
 $(() => {
-  'use strict'
-
   moment.lang(settings('language').toLowerCase())
 
-  util.initLocale(() => {
-    /* eslint-disable no-new */
-    new Popup()
-  })
+  util.initLocale()
+  new Popup()
 })

@@ -7,6 +7,7 @@ window.settings = (key, value) => {
     language: 'en-US',
     urls: [],
     keys: [],
+    projects: [],
     roles: ['assigned_to_id'],
     status: [],
     trackers: [],
@@ -52,16 +53,15 @@ window.util = {
     return ''
   },
 
-  initLocale (callback) {
-    $.getScript('locale/' + settings('language') + '.js', () => {
-      util.setLocale($('html'))
-      callback()
-    })
+  initLocale () {
+    window.locale = window.locales[settings('language')]
+    util.setLocale($('html'))
   },
 
   setLocale ($el) {
     $el.find('[i18n-properties]').each((i, el) => {
       const properties = $(el).attr('i18n-properties').split(':')
+
       if (properties.length === 2) {
         $(el).attr(properties[0], locale[properties[1]])
       }
@@ -95,6 +95,7 @@ window.util = {
 
   copyText (text) {
     const $copyFrom = $('<textarea></textarea>')
+
     $('body').append($copyFrom)
     $copyFrom.val(text).select()
     document.execCommand('copy')
@@ -103,6 +104,7 @@ window.util = {
 
   convertTextile (text) {
     const $copyFrom = $('<textarea></textarea>')
+
     $('body').append($copyFrom)
     $copyFrom.val(text)
     text = textile.convert($copyFrom.val())
@@ -114,8 +116,10 @@ window.util = {
     s = s.replace(/\[(\w+)\]/g, '.$1') // convert indexes to properties
     s = s.replace(/^\./, '') // strip a leading dot
     const a = s.split('.')
+
     while (a.length) {
       const n = a.shift()
+
       if (n in o) {
         o = o[n]
       } else {
@@ -128,8 +132,9 @@ window.util = {
   getUrl (base, url) {
     if (url && url.slice(0, 1) === '/') {
       const a = document.createElement('a')
+
       a.href = base
-      return a.protocol + '//' + a.host + url
+      return `${a.protocol}//${a.host}${url}`
     }
     return url
   },

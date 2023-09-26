@@ -1,13 +1,26 @@
-$(() => {
-  const $body = $('body')
-  const $main = $('#main')
-  const $sidebar = $('#sidebar')
-  const $content = $('#content')
-  let $toggle
-  let hidden = (localStorage && +localStorage['redmine.hidden']) || 0
+class Redmine {
+  constructor () {
+    this.init()
 
-  const initView = () => {
-    $body.append([
+    this.check(result => {
+      if (!result) {
+        return
+      }
+      this.initView()
+      this.onToggle()
+    })
+  }
+
+  init () {
+    this.$body = $('body')
+    this.$main = $('#main')
+    this.$sidebar = $('#sidebar')
+    this.$content = $('#content')
+    this.hidden = localStorage && +localStorage['redmine.hidden'] || 0
+  }
+
+  initView () {
+    this.$body.append([
       '<div class="redmine-pluin-tools">',
       '<a class="plugin-toggle" href="javascript:">',
       '<i class="fa fa-angle-double-right"></i>',
@@ -19,93 +32,85 @@ $(() => {
       '</div>'
     ].join(''))
 
-    // toggle
-    $toggle = $('.redmine-pluin-tools > .plugin-toggle')
+    this.$toggle = $('.redmine-pluin-tools > .plugin-toggle')
 
-    $toggle.click(() => {
-      hidden = hidden === 0 ? 1 : 0
-      if (localStorage) localStorage['redmine.hidden'] = hidden
-      onToggle()
+    this.$toggle.on('click', () => {
+      this.hidden = this.hidden === 0 ? 1 : 0
+      localStorage['redmine.hidden'] = this.hidden
+      this.onToggle()
     })
 
     // check json
     $('pre code.json').each((i, el) => {
-      const text = $.map($(el).text().split('\n'), str => {
-        return $.trim(str)
-      }).join('\n')
-      let alert = ''
+      const text = $.map($(el).text().split('\n'), str => str.trim()).join('\n')
+      const alert = ''
 
       try {
-        checkKey(jsonlint.parse(text))
+        this.checkKey(jsonlint.parse(text))
       } catch (e) {
-        alert = e
-      }
-      if (alert) {
-        $(el).parent().after('<pre>' + alert + '</pre>')
+        $(el).parent().after(`<pre>${alert}</pre>`)
       }
     })
   }
 
-  const onToggle = () => {
-    if (hidden) {
-      hideSidebar()
+  onToggle () {
+    if (this.hidden) {
+      this.hideSidebar()
     } else {
-      showSidebar()
+      this.showSidebar()
     }
   }
 
-  const hideSidebar = () => {
-    $toggle.find('i').removeClass('fa-angle-double-right')
+  hideSidebar () {
+    this.$toggle.find('i')
+      .removeClass('fa-angle-double-right')
       .addClass('fa-angle-double-left')
-    $sidebar.hide()
-    $content.css('width', '98%')
+    this.$sidebar.hide()
+    this.$content.css('width', '98%')
   }
 
-  const showSidebar = () => {
-    $toggle.find('i').removeClass('fa-angle-double-left')
+  showSidebar () {
+    this.$toggle.find('i')
+      .removeClass('fa-angle-double-left')
       .addClass('fa-angle-double-right')
-    $sidebar.show()
-    $content.css('width', '75%')
+    this.$sidebar.show()
+    this.$content.css('width', '75%')
   }
 
-  const check = callback => {
+  check (callback) {
     chrome.extension.sendRequest({
       method: 'getUrls'
     }, response => {
       let result = false
 
-      $.each(response.urls, (i, url) => {
-        if (window.location.href.indexOf(url) !== -1) {
+      for (const url of response.urls) {
+        if (window.location.href.includes(url)) {
           result = true
-          return false
+          break
         }
-      })
+      }
 
-      callback(result && !$main.hasClass('nosidebar'))
+      callback(result && !this.$main.hasClass('nosidebar'))
     })
   }
 
-  check(result => {
-    if (!result) {
-      return
-    }
-    initView()
-    onToggle()
-  })
-
-  const checkKey = obj => {
-    if ($.isArray(obj)) {
-      $.each(obj, (i, value) => {
-        checkKey(value)
-      })
+  checkKey (obj) {
+    if (Array.isArray(obj)) {
+      for (const value of obj) {
+        this.checkKey(value)
+      }
     }
     if ($.isPlainObject(obj)) {
-      for (const key in obj) {
+      for (const key of Object.keys(obj)) {
         if (/[A-Z]/.test(key)) {
-          throw new Error('Key "' + key + '" can not use Upper Case...')
+          throw new Error(`Key "${key}" can not use Upper Case...`)
         }
-        checkKey(obj[key])
+        this.checkKey(obj[key])
       }
     }
   }
+}
+
+$(() => {
+  new Redmine()
 })

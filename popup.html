@@ -6,6 +6,7 @@
   <title></title>
   <meta name="author" content="zhixin wen">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/font-awesome/css/all.min.css" />
   <link rel="stylesheet" href="assets/jstoolbar/jstoolbar.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/popup.css">
@@ -23,17 +24,17 @@
   <div class="issue-detail none"></div>
 
   <script id="roleTpl" type="text/template">
-    <li data-value="%s">
-      <a href="javascript:void(0)">
+    <li class="nav-item" data-value="%s">
+      <a class="nav-link" href="#">
         %s(%s)
-        <span class="label label-info %s">%s</span>
+        <span class="badge rounded-pill bg-info %s">%s</span>
       </a>
     </li>
   </script>
   <script id="markTpl" type="text/template">
-    <div>
-      <button class="mark-all btn btn-default btn-xs btn-block %s">
-        <i class="glyphicon glyphicon-ok"></i>
+    <div class="d-grid">
+      <button class="mark-all btn btn-outline-primary btn-sm btn-block %s">
+        <i class="fa fa-ok"></i>
         <span i18n-values="mark_all_read"></span>
       </button>
     </div>
@@ -42,17 +43,17 @@
     <div class="list-group-item %s" data-index="%s">
       <div class="list-group-item-heading">
         <div class="fl">
-          <span class="label label-%s">%s</span>
-          <span class="f12">%s</span>
+          <span class="badge label-%s">%s</span>
+          <span class="f12 mr10">%s</span>
         </div>
         <div class="fr">
           <span>%s</span>
-          <span data-toggle="tooltip" class="f14" title="%s">(%s)</span>
+          <span class="f14" title="%s">(%s)</span>
         </div>
       </div>
       <p class="list-group-item-text cb pt10">
-        <a class="copy-issue f16 mr5 cp" data-toggle="tooltip" i18n-properties="title:copy_issue_id">
-          <i class="glyphicon glyphicon-floppy-saved"></i>
+        <a class="copy-issue f16 mr5 cp" i18n-properties="title:copy_issue_id">
+          <i class="fa fa-copy"></i>
         </a>
         <a href="%s" class="mr5" target="_blank">%s #%s: </a> %s
       </p>
@@ -60,31 +61,31 @@
   </script>
   <script id="sortTpl" type="text/template">
     <div class="order-by">
-      <a href="javascript:void(0)" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
+      <a href="#" data-bs-toggle="dropdown">
+        <i class="fa fa-sort-amount-down"></i>
       </a>
       <ul class="dropdown-menu" role="menu">
         <li data-order="default">
-          <a href="javascript:void(0)">
-            <i class="glyphicon glyphicon-heart"></i>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-heart"></i>
             <span i18n-values="order_by_default"></span>
           </a>
         </li>
         <li data-order="priority.id">
-          <a href="javascript:void(0)">
-            <i class="glyphicon glyphicon-arrow-down"></i>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-arrow-down"></i>
             <span i18n-values="order_by_priority"></span>
           </a>
         </li>
         <li data-order="updated_on">
-          <a href="javascript:void(0)">
-            <i class="glyphicon glyphicon-arrow-down"></i>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-arrow-down"></i>
             <span i18n-values="order_by_updated"></span>
           </a>
         </li>
         <li data-order="created_on">
-          <a href="javascript:void(0)">
-            <i class="glyphicon glyphicon-arrow-down"></i>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-arrow-down"></i>
             <span i18n-values="order_by_created"></span>
           </a>
         </li>
@@ -94,11 +95,11 @@
   <script id="detailTpl" type="text/template">
     <div class="detail-header">
       <a class="close" i18n-properties="title:go_back">
-        <i class="glyphicon glyphicon-arrow-left"></i>
+        <i class="fa fa-arrow-left"></i>
       </a>
       <div class="title">
-        <a class="copy-issue f16 mr5 cp" data-toggle="tooltip" i18n-properties="title:copy_issue_id">
-          <i class="glyphicon glyphicon-floppy-saved"></i>
+        <a class="copy-issue f16 mr5 cp" i18n-properties="title:copy_issue_id">
+          <i class="fa fa-copy"></i>
         </a>
         <a href="%s" target="_blank">%s #%s: %s</a>
       </div>
@@ -150,11 +151,11 @@
       </div>
       <div class="mt10">
         <button type="submit" class="btn btn-primary">
-          <i class="glyphicon glyphicon-edit"></i>
+          <i class="fa fa-edit"></i>
           <span i18n-values="update"></span>
         </button>
-        <a class="btn btn-default btn-close">
-          <i class="glyphicon glyphicon-arrow-left"></i>
+        <a class="btn btn-secondary button-close">
+          <i class="fa fa-arrow-left"></i>
           <span i18n-values="go_backup"></span>
         </a>
       </div>
@@ -167,6 +168,11 @@
   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   <script src="assets/jquery.md5.js"></script>
   <script src="assets/store.js"></script>
+  <script src="locale/en-US.js"></script>
+  <script src="locale/ja-JP.js"></script>
+  <script src="locale/ru-RU.js"></script>
+  <script src="locale/sp-SP.js"></script>
+  <script src="locale/zh-CN.js"></script>
   <script src="assets/moment-with-langs.min.js"></script>
   <script src="assets/textile.js"></script>
   <script src="assets/jstoolbar/jstoolbar.js"></script>

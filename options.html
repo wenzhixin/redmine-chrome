@@ -6,23 +6,23 @@
   <title i18n-values="options"></title>
   <meta name="author" content="zhixin wen" />
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="assets/bootstrap/css/narrow.css" />
-  <link rel="stylesheet" href="assets/multiple-select/multiple-select.css" />
+  <link rel="stylesheet" href="assets/font-awesome/css/all.min.css" />
+  <link rel="stylesheet" href="assets/multiple-select/multiple-select.min.css" />
   <link rel="stylesheet" href="css/base.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h3 class="text-muted pull-left" i18n-values="title"></h3>
-      <a data-toggle="tooltip" href="https://github.com/wenzhixin/scutech-redmine/issues" target="_blank" i18n-properties="title:feedback">
-        <i class="f16 glyphicon glyphicon-send"></i>
+      <h3 class="text-muted fl" i18n-values="title"></h3>
+      <a class="ml10" href="https://github.com/wenzhixin/scutech-redmine/issues" target="_blank" i18n-properties="title:feedback">
+        <i class="f16 fa fa-reply"></i>
       </a>
 
-      <div class="pull-right">
-        <i class="glyphicon glyphicon-flag"></i>
+      <div class="fr">
+        <i class="fa fa-flag"></i>
         <span i18n-values="language"></span>
-        <select id="language">
+        <select id="language" class="form-control dib">
           <option value="zh-CN" i18n-values="chinese"></option>
           <option value="en-US" i18n-values="english"></option>
           <option value="ja-JP" i18n-values="japanese"></option>
@@ -33,82 +33,89 @@
       <div class="clearfix"></div>
     </div>
 
-    <div>
+    <hr class="text-info">
+
+    <div class="form">
+      <div class="mb-3">
+        <label class="form-label">
+          <span i18n-values="redmine_list"></span>
+          <a id="addUrl" href="#" class="hidden">
+            <i class="fa fa-plus"></i>
+          </a>
+        </label>
+
+        <div id="urls"></div>
+      </div>
+    </div>
+
+    <div id="advance" class="form none">
+      <hr class="text-info">
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="projects_list"></label>
+        <select id="projects" class="w" multiple="multiple"></select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="issues_list"></label>
+        <select id="roles" class="w" multiple="multiple">
+          <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
+          <option value="author_id" i18n-values="roles_author_id"></option>
+          <option value="watcher_id" i18n-values="roles_watcher_id"></option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="issue_status"></label>
+        <select id="status" class="w" multiple="multiple"></select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="issue_number"></label>
+        <select id="number" class="w">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="trackers_list"></label>
+        <select id="trackers" class="w" multiple="multiple"></select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" i18n-values="update_interval"></label>
+        <select id="interval" class="w">
+          <option value="1" i18n-values="minutes_1"></option>
+          <option value="5" i18n-values="minutes_5"></option>
+          <option value="10" i18n-values="minutes_10"></option>
+          <option value="20" i18n-values="minutes_20"></option>
+          <option value="30" i18n-values="minutes_30"></option>
+          <option value="60" i18n-values="hours_1"></option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label checkbox">
+          <input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span>
+        </label>
+        <select id="notify_status" class="w" multiple="multiple">
+        </select>
+      </div>
+    </div>
+
+    <div class="mt20">
       <button id="save" class="btn btn-primary btn-lg">
-        <i class="glyphicon glyphicon-floppy-open"></i> <span i18n-values="save_your_changes"></span>
+        <i class="fa fa-save"></i> <span i18n-values="save_your_changes"></span>
       </button>
     </div>
 
-    <hr>
-
-    <h3>
-      <span i18n-values="redmine_list"></span>
-      <a id="addUrl" href="javascript:void(0)" class="hidden">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </h3>
-
-    <div id="urls"></div>
-    <div class="clearfix"></div>
-
-    <div id="advance" class="none">
-      <hr>
-
-      <h3 i18n-values="issues_list"></h3>
-      <select id="roles" class="w" multiple="multiple">
-        <option value="assigned_to_id" i18n-values="roles_assigned_to_id"></option>
-        <option value="author_id" i18n-values="roles_author_id"></option>
-        <option value="watcher_id" i18n-values="roles_watcher_id"></option>
-      </select>
-
-      <hr>
-
-      <h3 i18n-values="issue_status"></h3>
-      <select id="status" class="w" multiple="multiple">
-      </select>
-
-      <hr>
-
-      <h3 i18n-values="issue_number"></h3>
-      <select id="number" class="w">
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
-
-      <hr>
-
-      <h3 i18n-values="trackers"></h3>
-      <select id="trackers" class="w" multiple="multiple">
-      </select>
-
-      <hr>
-
-      <h3 i18n-values="update_interval"></h3>
-      <select id="interval" class="w">
-        <option value="1" i18n-values="minutes_1"></option>
-        <option value="5" i18n-values="minutes_5"></option>
-        <option value="10" i18n-values="minutes_10"></option>
-        <option value="20" i18n-values="minutes_20"></option>
-        <option value="30" i18n-values="minutes_30"></option>
-        <option value="60" i18n-values="hours_1"></option>
-      </select>
-
-      <hr>
-
-      <div class="checkbox">
-        <label><input id="notify" type="checkbox"> <span i18n-values="desktop_notify"></span></label>
-      </div>
-      <select id="notify_status" class="w" multiple="multiple">
-      </select>
-
-    </div>
-
-    <hr>
+    <hr class="text-info">
 
     <div class="footer">
       <p>
-        &copy; http://wenzhixin.net.cn 2014-2022
+        &copy; <a href="https://github.com/wenzhixin/">https://github.com/wenzhixin</a> 2014-2030
       </p>
     </div>
   </div>
@@ -121,16 +128,21 @@
       <div class="form-group col-md-6">
         <input name="key" class="form-control" type="text" value="%s" placeholder="Access API key">
       </div>
-      <span class="form-group col-md-1 hidden">
-        <button class="remove-url btn btn-danger" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></button>
+      <span class="form-group col-md-1 none">
+        <button class="remove-url btn btn-danger" href="#"><i class="fa fa-remove"></i></button>
       </span>
     </div>
   </script>
 
   <script src="assets/jquery.min.js"></script>
   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/multiple-select/jquery.multiple.select.js"></script>
+  <script src="assets/multiple-select/multiple-select.min.js"></script>
   <script src="assets/store.js"></script>
+  <script src="locale/en-US.js"></script>
+  <script src="locale/ja-JP.js"></script>
+  <script src="locale/ru-RU.js"></script>
+  <script src="locale/sp-SP.js"></script>
+  <script src="locale/zh-CN.js"></script>
   <script src="js/common.js"></script>
   <script src="js/options.js"></script>
 </body>

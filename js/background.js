@@ -43,15 +43,25 @@ class Background {
     }, () => {
       settings('data', this.data)
       settings('unread', this.unreadCount)
-      console.log(this.error)
+      console.error(this.error)
       chrome.browserAction.setBadgeText({
-        text: this.error ? 'x' : (this.unreadCount > 0 ? this.unreadCount + '' : '')
+        text: this.error ? 'x' : this.unreadCount > 0 ? `${this.unreadCount}` : ''
       })
       this.unreadCount = 0
       this.timeoutId = setTimeout(() => {
         this.initRequest()
       }, settings('interval') * 60 * 1000)
     })
+  }
+
+  setQuery (data, name, values) {
+    if (!data.f) {
+      data.f = []
+    }
+    data.f.push(name)
+
+    data[`op[${name}]`] = '='
+    data[`v[${name}]`] = values
   }
 
   getList (address, role, callback) {
@@ -62,16 +72,21 @@ class Background {
       limit: settings('number'),
       key: address.key
     }
-    if (settings('status').length) {
-      data.status_id = settings('status').join('|')
+
+    if (settings('projects')[0] !== 0) {
+      this.setQuery(data, 'project_id', settings('projects'))
     }
-    if (settings('trackers').length) {
-      data.tracker_id = settings('trackers').join('|')
+    if (settings('status')[0] !== 0) {
+      this.setQuery(data, 'status_id', settings('status'))
+    }
+    if (settings('trackers')[0] !== 0) {
+      this.setQuery(data, 'tracker_id', settings('trackers'))
     }
 
-    data[role] = 'me'
+    this.setQuery(data, role, ['me'])
+
     $.ajax({
-      url: address.url + '/issues.json',
+      url: `${address.url}/issues.json`,
       data,
       dataType: 'json',
       success: res => {
@@ -105,6 +120,7 @@ class Background {
         }
 
         let count = 0
+
         for (let i = this.data[key].issues.length - 1; i >= 0; i--) {
           const issue = this.data[key].issues[i]
           const updatedOn = new Date(issue.updated_on)
@@ -140,10 +156,15 @@ class Background {
   }
 
   showNotification (issue) {
-    if (!settings('notify')) return
-    if (settings('notify_status').indexOf(issue.status.id) === -1) return
+    if (
+      !settings('notify') ||
+      settings('notify_status')[0] !== 0 &&
+      settings('notify_status').includes(issue.status.id)
+    ) {
+      return
+    }
 
-    chrome.notifications.create(new Date().getTime() + '', {
+    chrome.notifications.create(`${new Date().getTime()}`, {
       type: 'basic',
       title: issue.subject,
       message: $('<div/>').html(util.convertTextile(issue.description)).text(),

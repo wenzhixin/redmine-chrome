@@ -1,3 +1,4 @@
+import autoImports from './.wxt/eslint-auto-imports.mjs'
 import babelParser from '@babel/eslint-parser'
 import globals from 'globals'
 import js from '@eslint/js'
@@ -5,6 +6,7 @@ import pluginImport from 'eslint-plugin-import'
 import pluginVue from 'eslint-plugin-vue'
 
 export default [
+  autoImports,
   {
     ignores: [
       'dist/**/*'

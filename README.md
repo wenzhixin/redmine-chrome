@@ -15,6 +15,19 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 
 ## Changelog
 
+### 3.0.0 (2025-11-13)
+
+#### Major Changes
+
+* Migration from Manifest V2 to V3 using WXT framework
+* Complete rewrite using Vue 3 with Composition API
+
+#### Improvements
+
+* Modernized build tooling (WXT, Vite, ESLint 9)
+* Restructured i18n system from window.locale to ES modules
+* Updated dependencies (Bootstrap 5, FontAwesome 7, dayjs, etc.)
+
 ### 2.5.0
 
 * Added spanish locale

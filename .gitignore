@@ -1,4 +1,8 @@
-*.zip
+.DS_Store
+.claude
+.vscode
+.wxt
 node_modules
+output
+CLAUDE.md
 yarn.lock
-dist

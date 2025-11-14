@@ -47,7 +47,9 @@ const isUnread = issue => {
   return currentData.value.unreadList.includes(iuid)
 }
 const sortedIssues = computed(() => {
-  if (!currentData.value?.issues) return []
+  if (!currentData.value?.issues) {
+    return []
+  }
 
   const getValueByString = (obj, path) => {
     if (!obj || !path) return ''
@@ -162,8 +164,23 @@ const loadSettings = async () => {
   data.value = await Utils.getStorage('data') || {}
 }
 
+const fixBadgeError = async () => {
+  const badgeText = await Utils.getBadgeText()
+
+  // Fix background request error display x
+  if (
+    badgeText === 'x' &&
+    Object.values(data.value).some(it => it.issues.length > 0)
+  ) {
+    // Clear error badge and update with actual count
+    const totalUnread = calculateTotalUnread()
+    Utils.setBadgeText(totalUnread > 0 ? `${totalUnread}` : '')
+  }
+}
+
 onMounted(async () => {
   await loadSettings()
+  await fixBadgeError()
 
   // Listen for storage changes
   chrome.storage?.onChanged?.addListener(changes => {

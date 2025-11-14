@@ -15,6 +15,13 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 
 ## Changelog
 
+### 3.0.1 (2025-11-14)
+
+#### Improvements
+
+* Added badge checking functionality to handle background request error display
+* Refactored badge checking logic into a separate method for better code structure
+
 ### 3.0.0 (2025-11-13)
 
 #### Major Changes

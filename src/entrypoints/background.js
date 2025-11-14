@@ -3,7 +3,6 @@ import { onMessage } from '@/utils/messaging'
 
 class Background {
   constructor () {
-    this.timeoutId = 0
     this.unreadCount = 0
 
     this.init()
@@ -13,6 +12,12 @@ class Background {
     if (!await this.initOptions()) {
       return
     }
+    // Listen for alarm events
+    chrome.alarms.onAlarm.addListener(alarm => {
+      if (alarm.name === 'refreshAlarm') {
+        this.initRequest()
+      }
+    })
     this.initRequest()
   }
 
@@ -41,9 +46,12 @@ class Background {
 
     Utils.setBadgeText(this.error ? 'x' : this.unreadCount > 0 ? `${this.unreadCount}` : '')
     this.unreadCount = 0
-    this.timeoutId = setTimeout(() => {
-      this.initRequest()
-    }, this.options.interval * 60 * 1000)
+
+    chrome.alarms.clearAll().then(() => {
+      chrome.alarms.create('refreshAlarm', {
+        delayInMinutes: this.options.interval
+      })
+    })
   }
 
   setQuery (query, name, values) {
@@ -141,16 +149,14 @@ class Background {
   }
 
   refresh () {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-    }
-    this.initRequest()
+    // Clear all alarms and refresh immediately
+    chrome.alarms.clearAll().then(() => {
+      this.initRequest()
+    })
   }
 
   destroy () {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-    }
+    chrome.alarms.clearAll()
   }
 
   reset () {

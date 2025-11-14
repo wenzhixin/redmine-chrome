@@ -3,6 +3,13 @@ export default {
     chrome.action.setBadgeText({ text })
   },
 
+  async getBadgeText () {
+    if (chrome?.action) {
+      return chrome.action.getBadgeText({})
+    }
+    return ''
+  },
+
   setStorage (key, value) {
     if (chrome?.storage?.local) {
       return chrome.storage.local.set({ [key]: JSON.stringify(value) })
@@ -65,16 +72,11 @@ export default {
   },
 
   convertTextile (text) {
-    if (!text) return ''
+    if (!text) {
+      return ''
+    }
 
-    // Use native DOM method to handle textile conversion
     try {
-      // Check if textile converter exists
-      if (window.textile && typeof window.textile.convert === 'function') {
-        return window.textile.convert(text)
-      }
-
-      // Fallback: basic HTML escape
       return text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')

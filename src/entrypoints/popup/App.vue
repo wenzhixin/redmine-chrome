@@ -5,7 +5,7 @@
       class="p20 tc"
     >
       <a
-        href="index.html#options"
+        href="options.html"
         target="_blank"
       >
         {{ t('add_redmine_first') }}

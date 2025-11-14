@@ -145,6 +145,7 @@ const markIssueRead = async uuid => {
 
     if (index !== -1) {
       curData.unreadList.splice(index, 1)
+      curData.lastRead = Date.now()
       await saveData()
     }
   }

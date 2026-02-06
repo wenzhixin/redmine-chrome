@@ -4,6 +4,8 @@ import { onMessage } from '@/utils/messaging'
 class Background {
   constructor () {
     this.unreadCount = 0
+    this.keepAliveIntervalId = null
+    this.alarmListener = null
 
     this.init()
   }
@@ -13,18 +15,58 @@ class Background {
       if (!await this.initOptions()) {
         return
       }
-      // Listen for alarm events
-      chrome.alarms.onAlarm.addListener(alarm => {
+
+      // Create and store the alarm listener for this instance
+      this.alarmListener = alarm => {
         if (alarm.name === 'refreshAlarm') {
           this.initRequest().catch(error => {
             console.error('Error in initRequest from alarm:', error)
           })
         }
-      })
+      }
+      chrome.alarms.onAlarm.addListener(this.alarmListener)
+
+      // Ensure alarm is set (in case SW was terminated)
+      await this.ensureAlarm()
+
+      // Start periodic alarm check (every minute)
+      this.startAlarmKeepAlive()
+
       await this.initRequest()
     } catch (error) {
       console.error('Error initializing background:', error)
     }
+  }
+
+  async ensureAlarm () {
+    const alarms = await chrome.alarms.getAll()
+    const refreshAlarm = alarms.find(alarm => alarm.name === 'refreshAlarm')
+    const interval = this.options?.interval || 5
+
+    if (!refreshAlarm) {
+      console.log('No alarm found, creating new one with interval:', interval, 'minutes')
+      chrome.alarms.create('refreshAlarm', {
+        periodInMinutes: interval
+      })
+    } else if (refreshAlarm.periodInMinutes !== interval) {
+      console.log('Alarm interval mismatch. Current:', refreshAlarm.periodInMinutes, 'Expected:', interval, '. Recreating alarm...')
+      await chrome.alarms.clear('refreshAlarm')
+      chrome.alarms.create('refreshAlarm', {
+        periodInMinutes: interval
+      })
+      console.log('Alarm recreated with interval:', interval, 'minutes')
+    } else {
+      console.log('Alarm exists with correct interval:', interval, 'minutes')
+    }
+  }
+
+  startAlarmKeepAlive () {
+    // Check if alarm exists every minute
+    this.keepAliveIntervalId = setInterval(() => {
+      this.ensureAlarm().catch(error => {
+        console.error('Error in alarm keep-alive check:', error)
+      })
+    }, 60000) // Check every minute
   }
 
   async initOptions () {
@@ -37,6 +79,33 @@ class Background {
       return false
     }
 
+    // Validate options structure
+    if (!this.options.url || !this.options.key) {
+      console.error('Invalid options: missing url or key')
+      chrome.tabs.create({
+        url: chrome.runtime.getURL('options.html')
+      })
+      return false
+    }
+
+    // Ensure issues is a valid array
+    if (!this.options.issues || !Array.isArray(this.options.issues)) {
+      console.warn('Invalid options.issues, defaulting to ["assigned_to_id"]')
+      this.options.issues = ['assigned_to_id']
+    }
+
+    // Ensure interval is valid (between 1 and 30 minutes)
+    if (!this.options.interval || this.options.interval < 1 || this.options.interval > 30) {
+      console.warn('Invalid options.interval, defaulting to 5 minutes')
+      this.options.interval = 5
+    }
+
+    // Ensure number is valid
+    if (!this.options.number || this.options.number < 1) {
+      console.warn('Invalid options.number, defaulting to 25')
+      this.options.number = 25
+    }
+
     this.data = await Utils.getStorage('data') || {}
     return true
   }
@@ -45,6 +114,9 @@ class Background {
     try {
       this.error = false
       console.log('Starting initRequest...')
+
+      // Reload data from storage to get the latest state (e.g., lastRead, readList)
+      this.data = await Utils.getStorage('data') || this.data
 
       // Ensure options.issues exists and is an array
       if (!this.options.issues || !Array.isArray(this.options.issues)) {
@@ -63,16 +135,9 @@ class Background {
       console.error('Error in initRequest:', error)
       this.error = true
     } finally {
-      // Always update badge text and create alarm, even if there was an error
+      // Always update badge text
       Utils.setBadgeText(this.error ? 'x' : this.unreadCount > 0 ? `${this.unreadCount}` : '')
       this.unreadCount = 0
-
-      // Always clear and create new alarm to ensure periodic checks continue
-      await chrome.alarms.clearAll()
-      chrome.alarms.create('refreshAlarm', {
-        delayInMinutes: this.options.interval || 5 // Default to 5 minutes if not set
-      })
-      console.log('Alarm set for next refresh in', this.options.interval || 5, 'minutes')
     }
   }
 
@@ -180,6 +245,18 @@ class Background {
   }
 
   destroy () {
+    if (this.alarmListener) {
+      chrome.alarms.onAlarm.removeListener(this.alarmListener)
+      this.alarmListener = null
+    }
+
+    // Clear the keep-alive interval to prevent memory leaks
+    if (this.keepAliveIntervalId !== null) {
+      clearInterval(this.keepAliveIntervalId)
+      this.keepAliveIntervalId = null
+    }
+
+    // Clear all alarms
     chrome.alarms.clearAll()
   }
 
@@ -206,6 +283,8 @@ export default defineBackground(() => {
   onMessage('OPTIONS_SAVED', async () => {
     try {
       background?.destroy()
+      // Wait a bit to ensure storage is fully written before creating new instance
+      await new Promise(resolve => setTimeout(resolve, 100))
       background = new Background()
       return { success: true }
     } catch (error) {

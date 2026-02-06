@@ -33,6 +33,13 @@
         >
           <i class="fas fa-copy" />
         </button>
+        <button
+          class="btn btn-sm btn-link p-0 open-btn"
+          title="Open in new tab"
+          @click.stop="openIssueInNewTab(issue)"
+        >
+          <i class="fa-solid fa-arrow-up-right-from-square" />
+        </button>
         <a
           href="#"
           target="_blank"
@@ -67,11 +74,12 @@
 import { useI18n } from 'vue-i18n'
 import Utils from '@/utils'
 import dayjs from 'dayjs'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const { t } = useI18n()
 
 const toast = ref()
+const options = ref({})
 
 const props = defineProps({
   sortedIssues: {
@@ -108,6 +116,18 @@ const selectIssue = (issue, index) => {
     emit('select-issue', issue, index)
   })
 }
+
+const openIssueInNewTab = issue => {
+  const baseUrl = options.value.url?.endsWith('/') ?
+    options.value.url.slice(0, -1) :
+    options.value.url
+
+  window.open(`${baseUrl}/issues/${issue.id}`, '_blank')
+}
+
+onMounted(async () => {
+  options.value = await Utils.getStorage('options') || {}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -143,7 +163,8 @@ const selectIssue = (issue, index) => {
   }
 }
 
-.copy-btn {
+.copy-btn,
+.open-btn {
   width: 18px;
   height: 18px;
   font-size: 12px;

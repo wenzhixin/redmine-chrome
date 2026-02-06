@@ -1,5 +1,7 @@
 import i18n from '@/i18n'
 
+const REQUEST_TIMEOUT = 180000 // 180 seconds
+
 export default {
   setBadgeText (text) {
     chrome.action.setBadgeText({ text })
@@ -12,20 +14,61 @@ export default {
     return ''
   },
 
-  setStorage (key, value) {
+  async setStorage (key, value) {
+    const data = JSON.stringify(value)
+
     if (chrome?.storage?.local) {
-      return chrome.storage.local.set({ [key]: JSON.stringify(value) })
+      try {
+        await chrome.storage.local.set({ [key]: data })
+      } catch (error) {
+        console.error('Chrome storage set error:', error)
+        // Fallback to localStorage
+        localStorage[key] = data
+      }
+    } else {
+      localStorage[key] = data
     }
-    localStorage[key] = JSON.stringify(value)
   },
 
   async getStorage (key = 'options') {
-    if (chrome?.storage?.local) {
-      const res = await chrome.storage.local.get([key])
+    try {
+      if (chrome?.storage?.local) {
+        const res = await chrome.storage.local.get([key])
 
-      return res[key] && JSON.parse(res[key])
+        if (!res[key]) {
+          return null
+        }
+
+        try {
+          return JSON.parse(res[key])
+        } catch (parseError) {
+          console.error('Storage parse error:', parseError, 'key:', key)
+          // Only clear data for 'options' key, preserve 'data' key
+          if (key === 'options') {
+            chrome.storage.local.remove([key]).catch(() => {})
+          }
+          return null
+        }
+      }
+
+      if (!localStorage[key]) {
+        return null
+      }
+
+      try {
+        return JSON.parse(localStorage[key])
+      } catch (parseError) {
+        console.error('localStorage parse error:', parseError, 'key:', key)
+        // Only clear data for 'options' key, preserve 'data' key
+        if (key === 'options') {
+          delete localStorage[key]
+        }
+        return null
+      }
+    } catch (error) {
+      console.error('Storage get error:', error)
+      return null
     }
-    return localStorage[key] && JSON.parse(localStorage[key])
   },
 
   async getAPI (options, name, params = {}) {
@@ -41,7 +84,12 @@ export default {
     const url = `${baseUrl}/${name}.json?${urlParams.toString()}`
 
     try {
-      const response = await fetch(url)
+      // Add timeout mechanism (30 seconds)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT)
+      const response = await fetch(url, { signal: controller.signal })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -50,6 +98,10 @@ export default {
 
       return data[name] || data
     } catch (error) {
+      if (error.name === 'AbortError') {
+        console.error('API request timeout:', url)
+        throw new Error(`Request timeout after ${REQUEST_TIMEOUT / 1000} seconds`)
+      }
       console.error('API request failed:', error)
       throw error
     }

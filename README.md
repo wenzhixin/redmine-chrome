@@ -15,6 +15,23 @@ Redmine notification tools for chrome extension.[![Build Status](https://travis-
 
 ## Changelog
 
+### 3.2.0 (2026-03-05)
+
+#### Fixes
+
+* Improved background service stability using periodInMinutes for alarms
+* Added alarm keep-alive mechanism to prevent loss after SW termination
+* Enhanced instance lifecycle management with proper listener removal
+* Added OPTIONS_SAVED delay to ensure storage writes before reinit
+
+#### Improvements
+
+* Added comprehensive error handling for storage operations
+* Added API request timeout (180 seconds)
+* Improved error messages and logging
+* Added configuration validation (url, key, issues, interval, number)
+* Added "Open in new tab" button in issue list
+
 ### 3.1.3 (2025-12-14)
 
 #### Fixes
